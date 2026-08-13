@@ -1,0 +1,21 @@
+---
+interface Props {
+  brand: string;
+  active?: string;
+}
+
+const { brand, active = 'Home' } = Astro.props;
+const links = ['Home', 'Research', 'Projects', 'Publications', 'Experience', 'Writing'];
+---
+<header class="site-header">
+  <a class="wordmark" href="/" aria-label={`${brand} home`}>
+    <span>{brand.replace('.io', '')}</span><i>.io</i>
+  </a>
+  <nav aria-label="Primary navigation">
+    {links.map((label) => {
+      const href = label === 'Home' ? '/' : `/#${label.toLowerCase()}`;
+      return <a href={href} aria-current={active === label ? 'page' : undefined}>{label}</a>;
+    })}
+  </nav>
+  <a class="status" href="#contact"><span></span> Identity core · v0.1</a>
+</header>

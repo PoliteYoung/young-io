@@ -1,0 +1,62 @@
+schema_version: 1
+publications:
+  - id: degas-3dv-2025
+    title: "DEGAS: Detailed Expressions on Full-Body Gaussian Avatars"
+    authors:
+      - Zhijing Shao
+      - Duotun Wang
+      - Qing-Yao Tian
+      - Yao-Dong Yang
+      - Hengyu Meng
+      - Zeyu Cai
+      - Bo Dong
+      - Yu Zhang
+      - Kang Zhang
+      - Zeyu Wang
+    year: 2025
+    venue: 2025 International Conference on 3D Vision (3DV)
+    pages: 1529–1540
+    type: conference-paper
+    identifiers:
+      doi: 10.1109/3DV66043.2025.00143
+      arxiv: "2408.10588"
+    links:
+      primary: https://doi.org/10.1109/3DV66043.2025.00143
+      preprint: https://arxiv.org/abs/2408.10588
+    source:
+      type: publication
+      reference: Crossref DOI record and DBLP conf/3dim/ShaoWTYMCDZZW25; also listed on Google Scholar profile mKJL8mQAAAAJ
+    verified: true
+    status: verified
+    visibility: public
+  - id: hi-reco-cgi-2025
+    title: "Hi-Reco: High-Fidelity Real-Time Conversational Digital Humans"
+    authors:
+      - Hongbin Huang
+      - Junwei Li
+      - Tianxin Xie
+      - Zhuang Li
+      - Cekai Weng
+      - Yaodong Yang
+      - Yue Luo
+      - Li Liu
+      - Jing Tang
+      - Zhijing Shao
+      - Zeyu Wang
+    year: 2025
+    venue: Computer Graphics International Conference (CGI)
+    pages: 167–179
+    type: conference-paper
+    notes: DBLP and Google Scholar associate the work with CGI 2025; the Crossref DOI record currently reports a 2026 publication date for the Springer proceedings chapter. DBLP currently links the Yaodong Yang author entry to a different researcher profile, so an author-disambiguation correction is needed.
+    identifiers:
+      doi: 10.1007/978-3-032-22261-9_14
+      arxiv: "2511.12662"
+    links:
+      primary: https://doi.org/10.1007/978-3-032-22261-9_14
+      preprint: https://arxiv.org/abs/2511.12662
+    source:
+      type: publication
+      reference: DBLP conf/cgi/HuangLXLWYLLTSW25 and Crossref DOI record; also listed on Google Scholar profile mKJL8mQAAAAJ
+    verified: true
+    status: verified
+    visibility: public

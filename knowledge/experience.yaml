@@ -1,0 +1,59 @@
+schema_version: 1
+experience: []
+capability_domains:
+  - id: digital-humans
+    title: Digital Humans
+    summary: Human reconstruction, body models, pose, and avatar systems.
+    topics:
+      - Human Reconstruction
+      - SMPL / SMPL-X
+      - 3DGS Avatar
+      - Human Pose Estimation
+    source:
+      type: user-provided
+      reference: Initial Young.io project brief
+    verified: true
+    status: verified
+    visibility: public
+  - id: graphics-xr
+    title: Graphics & XR
+    summary: Computer graphics, Gaussian Splatting, immersive systems, motion capture, and XR development.
+    topics:
+      - Computer Graphics
+      - Gaussian Splatting
+      - XR / Immersive Systems
+      - Motion Capture Systems
+    source:
+      type: user-provided
+      reference: Initial Young.io project brief
+    verified: true
+    status: verified
+    visibility: public
+  - id: research-engineering
+    title: Research Engineering
+    summary: Modernizing research code and making demanding GPU systems reproducible across environments.
+    topics:
+      - PyTorch Ecosystem
+      - CUDA Migration
+      - GPU Computing
+      - Legacy Framework Migration
+    source:
+      type: user-provided
+      reference: Initial Young.io project brief
+    verified: true
+    status: verified
+    visibility: public
+  - id: infrastructure
+    title: AI Infrastructure
+    summary: The systems layer beneath research, from GPU clusters to Linux and Windows environments and research facilities.
+    topics:
+      - GPU Cluster Infrastructure
+      - Linux / Windows Research Environments
+      - Research Facility Operation
+      - Research Code Modernization
+    source:
+      type: user-provided
+      reference: Initial Young.io project brief
+    verified: true
+    status: verified
+    visibility: public

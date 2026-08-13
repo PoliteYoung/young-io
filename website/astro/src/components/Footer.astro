@@ -1,0 +1,18 @@
+---
+interface Props {
+  name: string;
+  website: string;
+}
+const { name, website } = Astro.props;
+---
+<footer id="contact" class="site-footer">
+  <div>
+    <p class="eyebrow">Output / connection</p>
+    <h2>Building an identity<br />that can keep learning.</h2>
+  </div>
+  <div class="footer-meta">
+    <p>Young.io is a living knowledge system for {name}.</p>
+    <a href={`https://${website}`}>{website} ↗</a>
+    <p class="copyright">© {new Date().getFullYear()} · compiled from verified knowledge</p>
+  </div>
+</footer>

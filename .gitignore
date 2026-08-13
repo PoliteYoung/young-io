@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+dist/
+.astro/
+website/astro/.astro/
+.DS_Store
+.env
+.env.*
+!.env.example

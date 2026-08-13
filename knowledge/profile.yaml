@@ -1,0 +1,52 @@
+schema_version: 1
+profile:
+  id: yaodong-yang
+  name:
+    display: Yaodong Yang
+    alternatives:
+      - Polite Yaodong Yang
+      - PoliteYoung
+  headline: Researcher and Research Engineer
+  positioning: Researcher and Research Engineer working on Digital Humans, Computer Graphics, XR systems, and AI infrastructure.
+  synthesis:
+    - Research
+    - Engineering
+    - Infrastructure
+  introduction: I work where digital-human research meets the engineering and infrastructure required to make it real — from reconstruction and avatar systems to GPU environments, motion capture, and XR platforms.
+  location: null
+  links:
+    website:
+      label: pol1te.cc.cd
+      url: https://pol1te.cc.cd
+    github:
+      label: yyd003
+      url: https://github.com/yyd003
+    linkedin:
+      label: politeyoung
+      url: https://www.linkedin.com/in/politeyoung
+    orcid:
+      label: 0009-0007-5760-4373
+      url: https://orcid.org/0009-0007-5760-4373
+    scholar:
+      label: Google Scholar
+      url: https://scholar.google.com/citations?user=mKJL8mQAAAAJ
+  source:
+    type: user-provided
+    reference: Initial Young.io project brief
+  verified: true
+  status: verified
+  visibility: public
+brand:
+  name: Young.io
+  statement: A bridge between human identity and digital identity.
+  meanings:
+    - term: Young
+      detail: Connects Yang (杨), personal identity, growth, and continuous learning.
+    - term: IO
+      detail: Connects input/output, binary 1/0, and the sounds 一/零 and 幺/洞.
+  source:
+    type: user-provided
+    reference: Initial Young.io project brief
+  verified: true
+  status: verified
+  visibility: public

@@ -1,0 +1,13 @@
+{
+  "name": "young-io",
+  "private": true,
+  "version": "0.1.0",
+  "description": "The source repository for Young.io — Yaodong Yang's digital identity compiler.",
+  "packageManager": "pnpm@10.15.1",
+  "scripts": {
+    "dev": "pnpm --dir website/astro dev",
+    "build": "pnpm --dir website/astro build",
+    "preview": "pnpm --dir website/astro preview",
+    "check": "pnpm --dir website/astro check"
+  }
+}

@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getPublicKnowledge } from '../lib/knowledge';
+
+const { profile, brand, capabilities, education, publications } = await getPublicKnowledge();
+const formatPeriod = (value: string | Date | null) => {
+  if (!value) return 'Present';
+  const text = value instanceof Date ? value.toISOString().slice(0, 10) : String(value);
+  return text.slice(0, 7);
+};
+const links = Object.values(profile.links);
+const periodEnd = (period: { end?: string | Date | null; expected_end?: string | Date | null }) =>
+  period.end ?? period.expected_end ?? null;
+---
+<BaseLayout title={`${profile.name.display} — ${profile.headline}`} description={profile.positioning}>
+  <main>
+    <Header brand={brand.name} />
+
+    <section class="hero shell" id="home">
+      <div class="hero-index" aria-hidden="true">Y/O — 001</div>
+      <div class="hero-copy">
+        <p class="eyebrow hero-eyebrow">Human identity <span>↔</span> Digital identity</p>
+        <h1>
+          I build the systems<br />
+          <span>behind digital humans.</span>
+        </h1>
+        <p class="hero-intro">{profile.introduction}</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#research">Explore the work <span>↓</span></a>
+          <a class="text-link" href={profile.links.github.url}>Proof of work ↗</a>
+        </div>
+      </div>
+      <div class="signal-card" aria-label="Research, engineering, and infrastructure diagram">
+        <div class="signal-grid"></div>
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="signal-core"><span>Y</span><i>IO</i></div>
+        {profile.synthesis.map((item, index) => <span class={`signal-label label-${index + 1}`}>{String(index + 1).padStart(2, '0')} / {item}</span>)}
+        <p>{brand.statement}</p>
+      </div>
+      <div class="scroll-note">SCROLL TO COMPILE <span>↓</span></div>
+    </section>
+
+    <section class="manifesto shell" data-reveal>
+      <p class="section-number">01 / POSITION</p>
+      <div>
+        <p class="manifesto-lead">Not one role. A working intersection.</p>
+        <h2>Research asks the question.<br />Engineering makes it possible.<br /><em>Infrastructure keeps it real.</em></h2>
+      </div>
+    </section>
+
+    <section class="domains shell" id="research">
+      <div class="section-heading" data-reveal>
+        <div>
+          <p class="section-number">02 / RESEARCH FIELD</p>
+          <h2>A connected<br />capability system.</h2>
+        </div>
+        <p>Capabilities are presented as relationships, not a wall of software logos. Each field connects scientific questions to implementation and operation.</p>
+      </div>
+      <div class="domain-list">
+        {capabilities.map((domain, index) => (
+          <article class="domain-row" data-reveal>
+            <div class="domain-number">{String(index + 1).padStart(2, '0')}</div>
+            <div class="domain-title">
+              <h3>{domain.title}</h3>
+              <p>{domain.summary}</p>
+            </div>
+            <ul>
+              {domain.topics.map((topic) => <li>{topic}</li>)}
+            </ul>
+            <span class="domain-arrow">↗</span>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="project-field shell" id="projects" data-reveal>
+      <div class="field-graphic" aria-hidden="true">
+        <span class="axis axis-x"></span><span class="axis axis-y"></span>
+        <div class="human human-a"></div><div class="human human-b"></div><div class="human human-c"></div>
+        <span class="point p1"></span><span class="point p2"></span><span class="point p3"></span><span class="point p4"></span>
+      </div>
+      <div class="field-copy">
+        <p class="section-number">03 / PROJECT RECORD</p>
+        <h2>Evidence before exhibition.</h2>
+        <p>Young.io is currently reconstructing project history from repositories, papers, resumes, and primary notes. Projects will appear only when role, dates, outcomes, and sources can be traced.</p>
+        <span class="verification-chip">Phase 0 · collection in progress</span>
+      </div>
+    </section>
+
+    <section class="publications shell" id="publications">
+      <div class="section-heading compact" data-reveal>
+        <div>
+          <p class="section-number">04 / PUBLICATIONS</p>
+          <h2>Published work.<br />Traceable records.</h2>
+        </div>
+        <p>Records are compiled from Google Scholar and checked against DOI registries and DBLP. Preprints and final proceedings are represented as one work, not duplicated.</p>
+      </div>
+      <div class="publication-list">
+        {publications.map((publication, index) => (
+          <a class="publication-row" href={publication.links.primary} data-reveal>
+            <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{publication.title}</h3>
+              <p>{publication.authors.join(' · ')}</p>
+            </div>
+            <div class="publication-meta"><strong>{publication.year}</strong><span>{publication.venue}</span><i>DOI ↗</i></div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="outputs shell">
+      <div class="section-heading compact" data-reveal>
+        <div><p class="section-number">05 / OUTPUTS</p><h2>One core.<br />Many expressions.</h2></div>
+        <p>The same verified knowledge supports channel-specific profiles without fragmenting the source of truth.</p>
+      </div>
+      <div class="output-grid" data-reveal>
+        <article class="output-card active"><span>01</span><h3>Personal website</h3><p>Identity, selected research, and durable context.</p><i>LIVE VIEW</i></article>
+        <article class="output-card"><span>02</span><h3>GitHub profile</h3><p>Code, technical contributions, and proof of work.</p><i>GENERATOR PLANNED</i></article>
+        <article class="output-card"><span>03</span><h3>CV & biographies</h3><p>Audience-specific documents built from traceable records.</p><i>GENERATOR PLANNED</i></article>
+        <article class="output-card"><span>04</span><h3>LinkedIn</h3><p>Reviewed distribution — never the source database.</p><i>HUMAN APPROVAL</i></article>
+      </div>
+    </section>
+
+    <section class="education shell" id="experience">
+      <div class="section-heading compact" data-reveal>
+        <div><p class="section-number">06 / EDUCATION</p><h2>A research path<br />across disciplines.</h2></div>
+        <p>Education is compiled from the public LinkedIn and ORCID records. The current doctoral end date is shown as expected, not completed.</p>
+      </div>
+      <div class="education-list">
+        {education.map((item, index) => (
+          <article class="education-row" data-reveal>
+            <span class="education-index">{String(index + 1).padStart(2, '0')}</span>
+            <div><h3>{item.institution}</h3><p>{item.degree}{item.field ? ` · ${item.field}` : ''}</p>{item.school && <small>{item.school}</small>}</div>
+            <div class="education-period"><strong>{formatPeriod(item.period.start)}</strong><span>→</span><strong>{formatPeriod(periodEnd(item.period))}</strong>{item.period.expected_end && <i>EXPECTED</i>}</div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="writing shell" id="writing" data-reveal>
+      <p class="section-number">07 / WRITING</p>
+      <div class="writing-title">
+        <h2>Notes from the bridge.</h2>
+        <p>Future writing will connect research practice, technical systems, and the quieter work of keeping complex environments usable.</p>
+      </div>
+      <div class="empty-note"><span>NO PUBLIC NOTES YET</span><p>Silence is better than manufactured expertise.</p></div>
+    </section>
+
+    <section class="identity-strip">
+      <div class="shell strip-inner">
+        <div class="binary" aria-hidden="true">01 / 一零 / IO / YOUNG / 杨 / INPUT / OUTPUT /</div>
+        <div class="identity-copy">
+          <p>{brand.meanings[0].detail}</p>
+          <strong>YOUNG<span>.IO</span></strong>
+          <p>{brand.meanings[1].detail}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="links shell" data-reveal>
+      <p class="section-number">08 / PUBLIC PRESENCE</p>
+      <div class="link-list">
+        {links.map((link) => <a href={link.url}><span>{link.label}</span><i>↗</i></a>)}
+      </div>
+    </section>
+
+    <Footer name={profile.name.display} website={profile.links.website.label} />
+  </main>
+</BaseLayout>
