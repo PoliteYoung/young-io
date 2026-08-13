@@ -22,12 +22,12 @@ const dateText = (value: string | Date | null | undefined) => {
   return normalized.slice(0, 7).replace('-', '.');
 };
 const publicLinks = [
-  { key: 'website', label: copy.website, value: profile.links.website.label, url: profile.links.website.url },
-  { key: 'github', label: copy.github, value: profile.links.github.label, url: profile.links.github.url },
-  { key: 'linkedin', label: copy.linkedin, value: profile.links.linkedin.label, url: profile.links.linkedin.url },
-  { key: 'scholar', label: copy.scholar, value: locale === 'zh' ? '论文列表' : 'Publications', url: profile.links.scholar.url },
-  { key: 'orcid', label: copy.orcid, value: profile.links.orcid.label, url: profile.links.orcid.url },
-  { key: 'openreview', label: copy.openreview, value: profile.links.openreview.label, url: profile.links.openreview.url },
+  { key: 'website', label: copy.website, value: profile.links.website.label, printValue: profile.links.website.label, url: profile.links.website.url },
+  { key: 'github', label: copy.github, value: `@${profile.links.github.label}`, printValue: `github.com/${profile.links.github.label}`, url: profile.links.github.url },
+  { key: 'linkedin', label: copy.linkedin, value: `@${profile.links.linkedin.label}`, printValue: `linkedin.com/in/${profile.links.linkedin.label}`, url: profile.links.linkedin.url },
+  { key: 'scholar', label: copy.scholar, value: 'Author profile', printValue: 'scholar.google.com/citations?user=mKJL8mQAAAAJ', url: profile.links.scholar.url },
+  { key: 'orcid', label: copy.orcid, value: profile.links.orcid.label, printValue: `orcid.org/${profile.links.orcid.label}`, url: profile.links.orcid.url },
+  { key: 'openreview', label: copy.openreview, value: '~Yao-Dong_Yang2', printValue: 'openreview.net/profile?id=~Yao-Dong_Yang2', url: profile.links.openreview.url },
 ];
 ---
 <BaseLayout
@@ -67,7 +67,7 @@ const publicLinks = [
         <nav class="resume-contact" aria-label={copy.profilesTitle}>
           {publicLinks.map((link) => (
             <a class={`resume-contact--${link.key}`} href={link.url} target="_blank" rel="me noopener noreferrer">
-              <span>{link.label}</span><strong>{link.value}</strong>
+              <span>{link.label}</span><strong class="resume-contact-screen">{link.value}</strong><strong class="resume-contact-print">{link.printValue}</strong>
             </a>
           ))}
         </nav>
@@ -94,9 +94,9 @@ const publicLinks = [
                     <p class="resume-authors">{translated ? translated.authors : <Fragment set:html={formatEnglishAuthors(publication.authors)} />}</p>
                     <p class="resume-venue">{translated?.venue ?? publication.venue}{publication.pages ? ` · ${publication.pages}` : ''}</p>
                     <div class="resume-pub-links">
-                      <a href={publication.links.primary} target="_blank" rel="noopener noreferrer">{copy.doi} · {publication.identifiers.doi}</a>
-                      {publication.links.preprint && <a href={publication.links.preprint} target="_blank" rel="noopener noreferrer">{copy.preprint} · arXiv:{publication.identifiers.arxiv}</a>}
-                      {publication.links.code && <a href={publication.links.code} target="_blank" rel="noopener noreferrer">GitHub · {copy.code}</a>}
+                      <a href={publication.links.primary} target="_blank" rel="noopener noreferrer">DOI · doi.org/{publication.identifiers.doi}</a>
+                      {publication.links.preprint && <a href={publication.links.preprint} target="_blank" rel="noopener noreferrer">arXiv · arxiv.org/abs/{publication.identifiers.arxiv}</a>}
+                      {publication.links.code && <a href={publication.links.code} target="_blank" rel="noopener noreferrer">GitHub · {publication.links.code.replace('https://', '')}</a>}
                     </div>
                   </li>
                 );
@@ -157,7 +157,7 @@ const publicLinks = [
     </article>
   </main>
 
-  <script is:inline>
+  <script is:inline data-astro-rerun>
     document.querySelector('[data-print-resume]')?.addEventListener('click', () => window.print());
   </script>
 </BaseLayout>
@@ -264,6 +264,7 @@ const publicLinks = [
   .resume-contact a:last-child { border-right: 0; }
   .resume-contact span { color: #77736a; font: 500 5.8pt/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
   .resume-contact strong { overflow: hidden; color: #23231f; font-size: 6.5pt; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
+  .resume-contact-print { display: none; }
   .resume-contact a:hover strong { text-decoration: underline; text-underline-offset: 1.2mm; }
   .resume-rule-section { display: grid; grid-template-columns: 31mm 1fr; gap: 6mm; padding: 4.5mm 0; border-bottom: .2mm solid rgba(23,23,20,.28); }
   .resume-rule-section h2, .resume-section > h2 {
@@ -384,9 +385,11 @@ const publicLinks = [
       box-shadow: none;
     }
     .resume-identity { grid-template-columns: minmax(0, 1.6fr) minmax(53mm, .7fr); gap: 9mm; }
-    .resume-contact { grid-template-columns: repeat(6, 1fr); }
+    .resume-contact { grid-template-columns: repeat(3, 1fr); }
     .resume-columns { grid-template-columns: minmax(0, 1.55fr) minmax(52mm, .72fr); gap: 9mm; }
     .resume-footer { grid-template-columns: auto 1fr auto; }
+    .resume-contact-screen { display: none; }
+    .resume-contact-print { display: block; overflow: visible; overflow-wrap: anywhere; word-break: break-word; text-overflow: clip; white-space: normal; }
     .resume-footer p { display: block; }
     a { color: inherit !important; }
   }
@@ -401,7 +404,19 @@ const publicLinks = [
     .resume-contact a,
     .resume-contact a:first-child { padding: 2.5mm 2.5mm 2.3mm; border-bottom: 0; }
     .resume-contact a:first-child { padding-left: 0; }
-    .resume-contact a:nth-child(2n) { border-right: .2mm solid rgba(23,23,20,.18); }
+    .resume-contact a { min-height: 15.5mm; border-bottom: .2mm solid rgba(23,23,20,.18); }
+    .resume-contact .resume-contact-screen { display: none; }
+    .resume-contact .resume-contact-print {
+      display: block;
+      overflow: visible;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      text-overflow: clip;
+      white-space: normal;
+      line-height: 1.2;
+    }
+    .resume-contact a:nth-child(3n) { border-right: 0; }
+    .resume-contact a:nth-child(n+4) { border-bottom: 0; }
     .resume-contact a:last-child { grid-column: auto; border-right: 0; }
     .resume-contact span { font-size: 5.8pt; }
     .resume-contact strong { font-size: 6.5pt; }

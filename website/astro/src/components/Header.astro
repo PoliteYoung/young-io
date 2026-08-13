@@ -2,32 +2,41 @@
 import type { Locale } from '../i18n/home';
 import { homeCopy } from '../i18n/home';
 
+export type PageKey = 'home' | 'research' | 'publications' | 'experience' | 'writing';
+
 interface Props {
   brand: string;
   locale: Locale;
+  activePage: PageKey;
 }
 
-const { brand, locale } = Astro.props;
+const { brand, locale, activePage } = Astro.props;
 const copy = homeCopy[locale];
-const base = locale === 'zh' ? '/zh' : '';
-const languageHref = locale === 'zh' ? '/?lang=en' : '/zh?lang=zh';
-const links = [
-  [copy.nav.home, 'home'],
-  [copy.nav.research, 'research'],
-  [copy.nav.publications, 'publications'],
-  [copy.nav.experience, 'experience'],
-  [copy.nav.writing, 'writing'],
-] as const;
+const localeBase = locale === 'zh' ? '/zh' : '';
+const routes: Array<{ key: PageKey; label: string; path: string }> = [
+  { key: 'home', label: copy.nav.home, path: '' },
+  { key: 'research', label: copy.nav.research, path: '/research' },
+  { key: 'publications', label: copy.nav.publications, path: '/publications' },
+  { key: 'experience', label: copy.nav.experience, path: '/experience' },
+  { key: 'writing', label: copy.nav.writing, path: '/writing' },
+];
+const currentPath = routes.find((route) => route.key === activePage)?.path ?? '';
+const languageHref = locale === 'zh'
+  ? `${currentPath || '/'}?lang=en`
+  : `/zh${currentPath}?lang=zh`;
+const routeHref = (path: string) => `${localeBase}${path}` || '/';
 ---
-<header class="site-header">
-  <a class="wordmark" href={base || '/'} aria-label={`${brand} ${copy.nav.home}`}>
+<header class="site-header" transition:name="site-header" transition:animate="none">
+  <a class="wordmark" href={routeHref('')} aria-label={`${brand} ${copy.nav.home}`}>
     <span>{brand.replace('.io', '')}</span><i>.io</i>
   </a>
   <nav aria-label={locale === 'zh' ? '主导航' : 'Primary navigation'}>
-    {links.map(([label, id], index) => <a href={index === 0 ? (base || '/') : `${base}#${id}`} aria-current={index === 0 ? 'page' : undefined}>{label}</a>)}
+    {routes.map((route) => (
+      <a href={routeHref(route.path)} aria-current={route.key === activePage ? 'page' : undefined}>{route.label}</a>
+    ))}
   </nav>
   <div class="header-tools">
-    <a class="status" href="#contact"><span></span> {copy.status}</a>
+    <span class="status"><span></span> {copy.status}</span>
     <a class="language-switch" href={languageHref} lang={locale === 'zh' ? 'en' : 'zh-CN'} hreflang={locale === 'zh' ? 'en' : 'zh-CN'} aria-label={copy.languageLabel}>
       <span>{copy.languageShort}</span><i aria-hidden="true">↗</i>
     </a>

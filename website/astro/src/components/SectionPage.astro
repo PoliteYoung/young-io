@@ -1,0 +1,150 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getPublicKnowledge } from '../lib/knowledge';
+import { capabilityZh, educationZh, homeCopy, publicationZh, type Locale } from '../i18n/home';
+import type { PageKey } from './Header.astro';
+
+interface Props {
+  locale: Locale;
+  page: Exclude<PageKey, 'home'>;
+}
+
+const { locale, page } = Astro.props;
+const copy = homeCopy[locale];
+const { profile, capabilities, education, publications } = await getPublicKnowledge();
+const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
+const knownAuthorNames = new Set([profile.name.display, ...profile.name.alternatives]);
+const formatAuthor = (author: string) => knownAuthorNames.has(author) ? displayName : author;
+const formatPeriod = (value: string | Date | null | undefined) => {
+  if (!value) return copy.present;
+  const text = value instanceof Date ? value.toISOString().slice(0, 10) : String(value);
+  return text.slice(0, 7);
+};
+const pageMap = {
+  research: {
+    number: copy.sections.research,
+    title: copy.sections.researchTitle,
+    intro: copy.sections.researchIntro,
+  },
+  publications: {
+    number: copy.sections.publications,
+    title: copy.sections.publicationsTitle,
+    intro: copy.sections.publicationsIntro,
+  },
+  experience: {
+    number: copy.sections.education,
+    title: copy.sections.educationTitle,
+    intro: copy.sections.educationIntro,
+  },
+  writing: {
+    number: copy.sections.writing,
+    title: [copy.sections.writingTitle, locale === 'zh' ? '等待真实内容。' : 'Waiting for real material.'],
+    intro: copy.sections.writingIntro,
+  },
+} as const;
+const current = pageMap[page];
+const path = `/${page}`;
+---
+<SiteLayout
+  title={`${current.title.join(' ')} — ${displayName}`}
+  description={current.intro}
+  locale={locale}
+  activePage={page}
+  alternatePath={path}
+>
+  <section class="page-hero">
+    <div class="shell page-hero-inner" data-reveal>
+      <p class="section-number">{current.number}</p>
+      <h1>{current.title[0]}<br /><span>{current.title[1]}</span></h1>
+      <p>{current.intro}</p>
+      <span class="page-coordinate" aria-hidden="true">Y/O — {String(['research', 'publications', 'experience', 'writing'].indexOf(page) + 2).padStart(3, '0')}</span>
+    </div>
+  </section>
+
+  {page === 'research' && (
+    <section class="domains page-content shell">
+      <div class="domain-list">
+        {capabilities.map((domain, index) => {
+          const translated = locale === 'zh' ? capabilityZh[domain.id] : null;
+          return (
+            <article class="domain-row" data-reveal>
+              <div class="domain-number">{String(index + 1).padStart(2, '0')}</div>
+              <div class="domain-title">
+                <h3>{translated?.title ?? domain.title}</h3>
+                <p>{translated?.summary ?? domain.summary}</p>
+              </div>
+              <ul>{(translated?.topics ?? domain.topics).map((topic) => <li>{topic}</li>)}</ul>
+              <span class="domain-arrow">↗</span>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  {page === 'publications' && (
+    <section class="publications page-content shell">
+      <div class="publication-list">
+        {publications.map((publication, index) => {
+          const translated = locale === 'zh' ? publicationZh[publication.id] : null;
+          const publicationLinks = [
+            { key: 'doi', label: copy.publicationLinks.doi, url: publication.links.primary },
+            ...(publication.links.preprint ? [{ key: 'arxiv', label: copy.publicationLinks.arxiv, url: publication.links.preprint }] : []),
+            ...(publication.links.code ? [{ key: 'github', label: copy.publicationLinks.github, url: publication.links.code }] : []),
+          ];
+          return (
+            <article class="publication-row" data-reveal>
+              <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3><a href={publication.links.primary} target="_blank" rel="noopener noreferrer">{translated?.title ?? publication.title}</a></h3>
+                <p>{translated?.authors ?? publication.authors.map(formatAuthor).join(' · ')}</p>
+              </div>
+              <div class="publication-meta">
+                <strong>{publication.year}</strong>
+                <span>{translated?.venue ?? publication.venue}</span>
+                <div class="publication-links" aria-label={`${translated?.title ?? publication.title} links`}>
+                  {publicationLinks.map((link) => (
+                    <a class={`publication-link publication-link--${link.key}`} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>
+                  ))}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  {page === 'experience' && (
+    <section class="education page-content shell">
+      <div class="experience-note" data-reveal>
+        <span>{locale === 'zh' ? '当前公开范围' : 'Current public scope'}</span>
+        <p>{locale === 'zh' ? '本页目前仅展示已核验的教育经历；不会用推测补齐职业记录。' : 'This page currently contains verified education only; career records are not filled with assumptions.'}</p>
+      </div>
+      <div class="education-list">
+        {education.map((item, index) => {
+          const translated = locale === 'zh' ? educationZh[item.id] : null;
+          return (
+            <article class="education-row" data-reveal>
+              <span class="education-index">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{translated?.institution ?? item.institution}</h3>
+                <p>{translated?.degree ?? item.degree}{(translated?.field ?? item.field) ? ` · ${translated?.field ?? item.field}` : ''}</p>
+                {(translated?.school ?? item.school) && <small>{translated?.school ?? item.school}</small>}
+              </div>
+              <div class="education-period"><strong>{formatPeriod(item.period.start)}</strong><span>→</span><strong>{formatPeriod(item.period.end)}</strong></div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  {page === 'writing' && (
+    <section class="writing writing-page shell" data-reveal>
+      <p class="section-number">{copy.sections.writing}</p>
+      <div class="writing-title"><h2>{copy.sections.writingTitle}</h2><p>{copy.sections.writingIntro}</p></div>
+      <div class="empty-note"><span>{copy.sections.writingEmpty}</span><p>{copy.sections.writingEmptyDetail}</p></div>
+    </section>
+  )}
+</SiteLayout>

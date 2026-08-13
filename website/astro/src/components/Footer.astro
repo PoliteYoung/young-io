@@ -10,7 +10,7 @@ interface Props {
 const { name, website, locale } = Astro.props;
 const copy = homeCopy[locale];
 ---
-<footer id="contact" class="site-footer">
+<footer id="contact" class="site-footer" transition:name="site-footer" transition:animate="none">
   <div>
     <p class="eyebrow">{copy.footerEyebrow}</p>
     <h2>{copy.footerTitle[0]}<br />{copy.footerTitle[1]}</h2>

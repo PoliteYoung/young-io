@@ -83,10 +83,10 @@ After the repository is pushed to GitHub:
 1. Open **Settings → Pages**.
 2. Set **Source** to **GitHub Actions**.
 3. Add `pol1te.cc.cd` under **Custom domain** in the Pages settings.
-4. At the DNS provider, create a `CNAME` for `pol1te` pointing to `yyd003.github.io` (the GitHub Pages account hostname, without `/young-io`).
+4. At the DNS provider, create a `CNAME` for `pol1te` pointing to `politeyoung.github.io` (the GitHub Pages account hostname, without `/young-io`).
 5. Wait for DNS verification, then enable **Enforce HTTPS**.
 
-The Astro configuration targets the custom-domain root. If the site is temporarily published only at `https://yyd003.github.io/young-io/`, add `base: '/young-io'` to `website/astro/astro.config.mjs` for that temporary mode.
+The Astro configuration targets the custom-domain root. If the site is temporarily published only at `https://politeyoung.github.io/young-io/`, add `base: '/young-io'` to `website/astro/astro.config.mjs` for that temporary mode.
 
 ## Long-term principle
 

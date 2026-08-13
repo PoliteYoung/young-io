@@ -1,0 +1,35 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header, { type PageKey } from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getPublicKnowledge } from '../lib/knowledge';
+import type { Locale } from '../i18n/home';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  activePage: PageKey;
+  alternatePath?: string;
+  home?: boolean;
+}
+
+const { title, description, locale, activePage, alternatePath = '/', home = false } = Astro.props;
+const { profile, brand } = await getPublicKnowledge();
+const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
+---
+<BaseLayout
+  title={title}
+  description={description}
+  locale={locale}
+  alternatePath={alternatePath}
+  bodyClass={home ? 'site-page site-page--home' : 'site-page site-page--inner'}
+>
+  <div class="site-frame">
+    <Header brand={brand.name} locale={locale} activePage={activePage} />
+    <main class="site-main">
+      <slot />
+    </main>
+    <Footer name={displayName} website={profile.links.website.label} locale={locale} />
+  </div>
+</BaseLayout>
