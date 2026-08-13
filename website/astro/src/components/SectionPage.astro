@@ -1,7 +1,7 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getPublicKnowledge } from '../lib/knowledge';
-import { capabilityZh, educationZh, homeCopy, publicationZh, type Locale } from '../i18n/home';
+import { capabilityZh, educationZh, experienceZh, homeCopy, publicationZh, type Locale } from '../i18n/home';
 import type { PageKey } from './Header.astro';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 const { locale, page } = Astro.props;
 const copy = homeCopy[locale];
-const { profile, capabilities, education, publications } = await getPublicKnowledge();
+const { profile, capabilities, education, experience, publications } = await getPublicKnowledge();
 const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
 const knownAuthorNames = new Set([profile.name.display, ...profile.name.alternatives]);
 const formatAuthor = (author: string) => knownAuthorNames.has(author) ? displayName : author;
@@ -116,26 +116,59 @@ const path = `/${page}`;
   )}
 
   {page === 'experience' && (
-    <section class="education page-content shell">
-      <div class="experience-note" data-reveal>
-        <span>{locale === 'zh' ? '当前公开范围' : 'Current public scope'}</span>
-        <p>{locale === 'zh' ? '本页目前仅展示已核验的教育经历；不会用推测补齐职业记录。' : 'This page currently contains verified education only; career records are not filled with assumptions.'}</p>
+    <section class="experience-page page-content shell">
+      <div class="experience-group">
+        <header class="experience-heading" data-reveal>
+          <span>01</span>
+          <h2>{copy.sections.professionalExperienceTitle}</h2>
+          <p>{locale === 'zh' ? '来源：公开领英职业经历，核验于 2026 年 8 月 13 日。' : 'Source: public LinkedIn experience records, verified August 13, 2026.'}</p>
+        </header>
+        <div class="career-list">
+          {experience.map((item, index) => {
+            const translated = locale === 'zh' ? experienceZh[item.id] : null;
+            const location = translated?.location ?? [item.location.city, item.location.region, item.location.country].filter(Boolean).join(', ');
+            return (
+              <article class="career-row" data-reveal>
+                <div class="career-rail">
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <div class="career-period"><strong>{formatPeriod(item.period.start)}</strong><i>→</i><strong>{formatPeriod(item.period.end)}</strong></div>
+                </div>
+                <div class="career-main">
+                  <p class="career-type">{translated?.employmentType ?? item.employment_type}</p>
+                  <h3>{translated?.title ?? item.title}</h3>
+                  <h4>{translated?.organization ?? item.organization}</h4>
+                  <p class="career-summary">{translated?.summary ?? item.summary}</p>
+                  <ul>{(translated?.highlights ?? item.highlights).map((highlight) => <li>{highlight}</li>)}</ul>
+                </div>
+                <p class="career-location">{location}</p>
+              </article>
+            );
+          })}
+        </div>
       </div>
-      <div class="education-list">
-        {education.map((item, index) => {
-          const translated = locale === 'zh' ? educationZh[item.id] : null;
-          return (
-            <article class="education-row" data-reveal>
-              <span class="education-index">{String(index + 1).padStart(2, '0')}</span>
-              <div>
-                <h3>{translated?.institution ?? item.institution}</h3>
-                <p>{translated?.degree ?? item.degree}{(translated?.field ?? item.field) ? ` · ${translated?.field ?? item.field}` : ''}</p>
-                {(translated?.school ?? item.school) && <small>{translated?.school ?? item.school}</small>}
-              </div>
-              <div class="education-period"><strong>{formatPeriod(item.period.start)}</strong><span>→</span><strong>{formatPeriod(item.period.end)}</strong></div>
-            </article>
-          );
-        })}
+
+      <div class="experience-group experience-group--education">
+        <header class="experience-heading" data-reveal>
+          <span>02</span>
+          <h2>{copy.sections.educationHistoryTitle}</h2>
+          <p>{locale === 'zh' ? '依据公开职业档案与研究者身份记录整理。' : 'Compiled from public professional and researcher identity records.'}</p>
+        </header>
+        <div class="education-list">
+          {education.map((item, index) => {
+            const translated = locale === 'zh' ? educationZh[item.id] : null;
+            return (
+              <article class="education-row" data-reveal>
+                <span class="education-index">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{translated?.institution ?? item.institution}</h3>
+                  <p>{translated?.degree ?? item.degree}{(translated?.field ?? item.field) ? ` · ${translated?.field ?? item.field}` : ''}</p>
+                  {(translated?.school ?? item.school) && <small>{translated?.school ?? item.school}</small>}
+                </div>
+                <div class="education-period"><strong>{formatPeriod(item.period.start)}</strong><span>→</span><strong>{formatPeriod(item.period.end)}</strong></div>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   )}

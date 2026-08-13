@@ -1,13 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getPublicKnowledge } from '../lib/knowledge';
-import { capabilityZh, educationZh, publicationZh, type Locale } from '../i18n/home';
+import { capabilityZh, educationZh, experienceZh, publicationZh, type Locale } from '../i18n/home';
 import { resumeCopy } from '../i18n/resume';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const copy = resumeCopy[locale];
-const { profile, capabilities, education, publications } = await getPublicKnowledge();
+const { profile, capabilities, education, experience, publications } = await getPublicKnowledge();
 const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
 const homeHref = locale === 'zh' ? '/zh' : '/';
 const languageHref = locale === 'zh' ? '/resume?lang=en' : '/zh/resume?lang=zh';
@@ -97,6 +97,29 @@ const publicLinks = [
                       <a href={publication.links.primary} target="_blank" rel="noopener noreferrer">DOI · doi.org/{publication.identifiers.doi}</a>
                       {publication.links.preprint && <a href={publication.links.preprint} target="_blank" rel="noopener noreferrer">arXiv · arxiv.org/abs/{publication.identifiers.arxiv}</a>}
                       {publication.links.code && <a href={publication.links.code} target="_blank" rel="noopener noreferrer">GitHub · {publication.links.code.replace('https://', '')}</a>}
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+
+          <section class="resume-section resume-experience-section">
+            <h2>{copy.experienceTitle}</h2>
+            <ol class="resume-experience">
+              {experience.map((item) => {
+                const translated = locale === 'zh' ? experienceZh[item.id] : null;
+                return (
+                  <li>
+                    <div class="resume-experience-heading">
+                      <div>
+                        <h3>{translated?.title ?? item.title}</h3>
+                        <p>{translated?.organization ?? item.organization}</p>
+                      </div>
+                      <div class="resume-experience-meta">
+                        <strong>{dateText(item.period.start)} — {dateText(item.period.end)}</strong>
+                        <span>{translated?.employmentType ?? item.employment_type}</span>
+                      </div>
                     </div>
                   </li>
                 );
@@ -278,7 +301,7 @@ const publicLinks = [
   .resume-section { break-inside: avoid; page-break-inside: avoid; }
   .resume-section + .resume-section { margin-top: 6mm; }
   .resume-section > h2 { padding-bottom: 2.4mm; border-bottom: .55mm solid #171714; }
-  .resume-publications, .resume-education { margin: 0; padding: 0; list-style: none; }
+  .resume-publications, .resume-experience, .resume-education { margin: 0; padding: 0; list-style: none; }
   .resume-publications > li { position: relative; padding: 3.5mm 0 3.7mm 8mm; border-bottom: .2mm solid rgba(23,23,20,.19); break-inside: avoid; page-break-inside: avoid; }
   .resume-publications > li::before { content: counter(list-item, decimal-leading-zero); position: absolute; top: 4mm; left: 0; color: #77736a; font: 500 6pt/1 var(--mono); }
   .resume-publication-heading { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: start; }
@@ -290,6 +313,12 @@ const publicLinks = [
   .resume-pub-links { margin-top: 1.5mm; display: flex; flex-wrap: wrap; gap: 2.5mm 4mm; }
   .resume-pub-links a { color: #3c3b36; font: 500 5.75pt/1.2 var(--mono); text-decoration: underline; text-decoration-color: #a4a098; text-underline-offset: .7mm; }
   .resume-pub-links a:hover { color: #d33c1c; }
+  .resume-experience > li { padding: 2.7mm 0; border-bottom: .2mm solid rgba(23,23,20,.19); break-inside: avoid; page-break-inside: avoid; }
+  .resume-experience-heading { display: grid; grid-template-columns: 1fr auto; gap: 4mm; align-items: start; }
+  .resume-experience h3 { font: 700 8.3pt/1.22 var(--body); }
+  .resume-experience p { margin-top: .8mm; color: #55524c; font-size: 6.5pt; line-height: 1.25; }
+  .resume-experience-meta { display: grid; gap: .8mm; justify-items: end; color: #55534c; font: 500 5.8pt/1.15 var(--mono); white-space: nowrap; }
+  .resume-experience-meta span { color: #e24422; }
   .resume-education > li { padding: 3.3mm 0; display: grid; grid-template-columns: 31mm 1fr; gap: 5mm; border-bottom: .2mm solid rgba(23,23,20,.19); break-inside: avoid; page-break-inside: avoid; }
   .resume-education-date { display: flex; gap: 1.5mm; align-items: baseline; color: #55534c; font: 500 6.2pt/1 var(--mono); }
   .resume-education-date span { color: #e24422; }
@@ -340,8 +369,14 @@ const publicLinks = [
     .resume-section + .resume-section { margin-top: 34px; }
     .resume-section > h2 { padding-bottom: 11px; }
     .resume-publications > li { padding: 18px 0 18px 30px; }
+    .resume-experience > li { padding: 15px 0; }
+    .resume-experience-heading { grid-template-columns: 1fr; gap: 7px; }
+    .resume-experience-meta { justify-items: start; }
     .resume-publications > li::before { top: 20px; }
     .resume-publication-heading h3 { font-size: .95rem; }
+    .resume-experience h3 { font-size: .88rem; }
+    .resume-experience p { font-size: .7rem; }
+    .resume-experience-meta { font-size: .62rem; }
     .resume-authors, .resume-venue, .resume-education p { font-size: .72rem; }
     .resume-pub-links a, .resume-education small, .resume-focus-list p { font-size: .65rem; }
     .resume-education > li { padding: 17px 0; grid-template-columns: 1fr; gap: 8px; }
@@ -433,6 +468,11 @@ const publicLinks = [
     .resume-authors { font-size: 6.55pt; }
     .resume-venue { font-size: 6.8pt; }
     .resume-pub-links a { font-size: 5.75pt; }
+    .resume-experience > li { padding: 2.7mm 0; }
+    .resume-experience-heading { grid-template-columns: 1fr auto; gap: 4mm; }
+    .resume-experience h3 { font-size: 8.3pt; }
+    .resume-experience p { font-size: 6.5pt; }
+    .resume-experience-meta { justify-items: end; font-size: 5.8pt; }
     .resume-education > li { padding: 3.3mm 0; grid-template-columns: 31mm 1fr; gap: 5mm; }
     .resume-education h3 { font-size: 8.3pt; }
     .resume-education p { font-size: 6.8pt; }
@@ -444,5 +484,22 @@ const publicLinks = [
     .resume-focus-list p { font-size: 6.3pt; }
     .resume-focus-list li { padding: 1mm 1.35mm; font-size: 5.3pt; }
     .resume-footer { margin-top: 6mm; }
+  }
+</style>
+
+<style is:global>
+  @media print {
+    .resume-sheet { height: 297mm; min-height: 297mm; overflow: hidden; padding-bottom: 7mm; }
+    .resume-identity { padding-top: 5.5mm; padding-bottom: 4mm; }
+    .resume-contact a { min-height: 13.5mm; padding-top: 2mm; padding-bottom: 1.8mm; }
+    .resume-rule-section { padding-top: 3.5mm; padding-bottom: 3.5mm; }
+    .resume-columns { padding-top: 4mm; }
+    .resume-section + .resume-section { margin-top: 4mm; }
+    .resume-publications > li { padding-top: 2.8mm; padding-bottom: 3mm; }
+    .resume-experience > li { padding-top: 2mm; padding-bottom: 2mm; }
+    .resume-education > li { padding-top: 2.4mm; padding-bottom: 2.4mm; }
+    .resume-focus-list article { padding-top: 2.4mm; padding-bottom: 2.6mm; }
+    .resume-focus-list article > span { top: 2.9mm; }
+    .resume-footer { margin-top: 4mm; padding-top: 2.2mm; }
   }
 </style>

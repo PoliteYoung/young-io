@@ -1,5 +1,87 @@
 schema_version: 1
-experience: []
+experience:
+  - id: minsheng-fintech-back-end-developer
+    organization: Minsheng Fintech
+    title: Back-end Developer
+    employment_type: Full-time
+    period:
+      start: 2022-07
+      end: 2023-06
+    location:
+      city: null
+      region: Sichuan
+      country: CN
+    summary: Developed internal group tools centered on server-side application creation, integrating reusable framework components and personalized configuration to support a one-stop application setup process for project teams.
+    highlights:
+      - Supported technology R&D by helping project teams create and configure server-side applications through a shared internal toolchain.
+    source:
+      type: public-profile
+      reference: LinkedIn experience section, politeyoung, checked 2026-08-13
+    verified: true
+    status: verified
+    visibility: public
+  - id: iscas-software-engineer-intern
+    organization: Institute of Software, Chinese Academy of Sciences
+    title: Software Engineer
+    employment_type: Internship
+    period:
+      start: 2021-05
+      end: 2022-06
+    location:
+      city: Guiyang
+      region: Guizhou
+      country: CN
+    summary: Contributed to back-end development and maintenance of a departmental portal using Spring Boot and MySQL.
+    highlights:
+      - Added an expert views section and wrote Python scripts to collect news from other departments.
+    source:
+      type: public-profile
+      reference: LinkedIn experience section, politeyoung, checked 2026-08-13; source description references the historical yyd003/ISCAS_spider repository
+    verified: true
+    status: verified
+    visibility: public
+  - id: vivedu-software-engineer-intern
+    organization: 威爱教育VIVEDU
+    title: Software Engineer
+    employment_type: Internship
+    period:
+      start: 2019-03
+      end: 2019-07
+    location:
+      city: Chengdu
+      region: Sichuan
+      country: CN
+    summary: Worked on VR and education solutions built around HTC VIVE, including project development, maintenance, and technology selection.
+    highlights:
+      - Built a Jenkins continuous-integration environment and an SMB file-sharing service.
+      - Replaced a commercial VR live-streaming module with an open-source solution, increasing user capacity by more than 200%.
+    source:
+      type: public-profile
+      reference: LinkedIn experience section, politeyoung, checked 2026-08-13
+    verified: true
+    status: verified
+    visibility: public
+  - id: mobotap-software-test-engineer-intern
+    organization: MoboTap
+    title: Software Test Engineer
+    employment_type: Internship
+    period:
+      start: 2016-08
+      end: 2016-11
+    location:
+      city: Wuhan
+      region: Hubei
+      country: CN
+    summary: Participated in weekly Android release testing for Dolphin Browser, which the LinkedIn record describes as serving 6M daily active users, and monitored daily crash logs.
+    highlights:
+      - Reproduced more than 10 high-frequency crash cases with support from the XDA forum and device manufacturers.
+      - Documented a general method for simulating user device environments in the internal wiki.
+    source:
+      type: public-profile
+      reference: LinkedIn experience section, politeyoung, checked 2026-08-13
+    verified: true
+    status: verified
+    visibility: public
 capability_domains:
   - id: digital-humans
     title: Digital Humans

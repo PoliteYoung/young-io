@@ -36,7 +36,24 @@ const brandRecordSchema = recordMetaSchema.extend({
 const profileFileSchema = z.object({ schema_version: z.number(), profile: profileRecordSchema, brand: brandRecordSchema });
 
 const capabilitySchema = recordMetaSchema.extend({ id: z.string(), title: z.string(), summary: z.string(), topics: z.array(z.string()) });
-const experienceFileSchema = z.object({ schema_version: z.number(), experience: z.array(z.unknown()), capability_domains: z.array(capabilitySchema) });
+const experienceSchema = recordMetaSchema.extend({
+  id: z.string(),
+  organization: z.string(),
+  title: z.string(),
+  employment_type: z.string(),
+  period: z.object({
+    start: z.union([z.string(), z.date()]),
+    end: z.union([z.string(), z.date()]).nullable().optional(),
+  }),
+  location: z.object({
+    city: z.string().nullable(),
+    region: z.string().nullable(),
+    country: z.string(),
+  }),
+  summary: z.string(),
+  highlights: z.array(z.string()),
+});
+const experienceFileSchema = z.object({ schema_version: z.number(), experience: z.array(experienceSchema), capability_domains: z.array(capabilitySchema) });
 
 const educationSchema = recordMetaSchema.extend({
   id: z.string(),
@@ -83,6 +100,7 @@ export async function getPublicKnowledge() {
   if (profile.visibility !== 'public' || brand.visibility !== 'public') throw new Error('The primary profile and brand records must be public to build the website.');
   return {
     profile, brand,
+    experience: experience.experience.filter((item) => item.visibility === 'public'),
     capabilities: experience.capability_domains.filter((item) => item.visibility === 'public'),
     education: education.filter((item) => item.visibility === 'public'),
     publications: publications.filter((item) => item.visibility === 'public'),

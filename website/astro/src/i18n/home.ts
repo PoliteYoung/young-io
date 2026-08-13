@@ -49,9 +49,11 @@ export const homeCopy = {
       publications: '03 / PUBLICATIONS',
       publicationsTitle: ['Published work.', 'Traceable records.'],
       publicationsIntro: 'Records are compiled from Google Scholar and checked against DOI registries and DBLP. Preprints and final proceedings are represented as one work, not duplicated.',
-      education: '04 / EDUCATION',
-      educationTitle: ['A research path', 'across disciplines.'],
-      educationIntro: 'Education is compiled from public LinkedIn and ORCID records.',
+      education: '04 / EXPERIENCE',
+      educationTitle: ['Work and study.', 'A traceable path.'],
+      educationIntro: 'Professional experience and education are compiled from public LinkedIn and researcher records.',
+      professionalExperienceTitle: 'Professional Experience',
+      educationHistoryTitle: 'Education',
       writing: '05 / WRITING',
       writingTitle: 'Notes from the bridge.',
       writingIntro: 'Future writing will connect research practice, technical systems, and the quieter work of keeping complex environments usable.',
@@ -116,9 +118,11 @@ export const homeCopy = {
       publications: '03 / 发表成果',
       publicationsTitle: ['已发表工作。', '可追溯记录。'],
       publicationsIntro: '记录依据公开学术档案整理，并与论文标识及文献数据库交叉核验；预印本和正式论文视为同一项工作，不重复计算。',
-      education: '04 / 教育经历',
-      educationTitle: ['跨越学科的', '研究路径。'],
-      educationIntro: '教育经历依据公开职业档案及研究者身份记录整理。',
+      education: '04 / 经历',
+      educationTitle: ['工作与求学。', '一条可追溯的路径。'],
+      educationIntro: '职业经历与教育经历依据公开职业档案及研究者身份记录整理。',
+      professionalExperienceTitle: '职业经历',
+      educationHistoryTitle: '教育经历',
       writing: '05 / 随笔',
       writingTitle: '来自交汇处的记录。',
       writingIntro: '未来的文章将连接研究实践、技术系统，以及让复杂环境长期可用的那些不太显眼却重要的工作。',
@@ -157,6 +161,49 @@ export const capabilityZh: Record<string, { title: string; summary: string; topi
     title: 'AI 基础设施',
     summary: '支撑研究的系统层：从 GPU 集群，到 Linux、Windows 环境与科研设施。',
     topics: ['GPU 集群基础设施', 'Linux / Windows 科研环境', '科研设施运行', '科研代码现代化'],
+  },
+};
+
+
+export const experienceZh: Record<string, {
+  organization: string;
+  title: string;
+  employmentType: string;
+  location: string;
+  summary: string;
+  highlights: string[];
+}> = {
+  'minsheng-fintech-back-end-developer': {
+    organization: 'Minsheng Fintech',
+    title: '后端开发工程师',
+    employmentType: '全职',
+    location: '中国四川',
+    summary: '参与集团内部工具开发，以服务端应用创建为核心，整合可复用的框架组件与个性化配置，为项目团队提供一站式应用创建流程。',
+    highlights: ['通过共享内部工具链，支持项目团队创建和配置服务端应用。'],
+  },
+  'iscas-software-engineer-intern': {
+    organization: '中国科学院软件研究所',
+    title: '软件工程师',
+    employmentType: '实习',
+    location: '中国贵州贵阳',
+    summary: '使用 Spring Boot 与 MySQL 参与部门门户的后端开发与维护。',
+    highlights: ['新增专家观点栏目，并编写 Python 脚本采集其他部门的新闻信息。'],
+  },
+  'vivedu-software-engineer-intern': {
+    organization: '威爱教育VIVEDU',
+    title: '软件工程师',
+    employmentType: '实习',
+    location: '中国四川成都',
+    summary: '参与围绕 HTC VIVE 的 VR+教育解决方案，负责项目开发、维护与技术选型。',
+    highlights: ['搭建 Jenkins 持续集成环境与 SMB 文件共享服务。', '以开源方案替代商业 VR 直播模块，用户容量提升超过 200%。'],
+  },
+  'mobotap-software-test-engineer-intern': {
+    organization: 'MoboTap',
+    title: '软件测试工程师',
+    employmentType: '实习',
+    location: '中国湖北武汉',
+    summary: '参与 Dolphin Browser Android 版本的每周发布测试，并监控日常崩溃日志；领英记录注明该产品拥有 600 万日活跃用户。',
+    highlights: ['在 XDA 论坛与设备厂商支持下，复现 10 余个高频崩溃问题。', '在内部 Wiki 中整理并分享模拟用户设备环境的通用方法。'],
   },
 };
 
