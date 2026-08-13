@@ -15,12 +15,12 @@ const formatPeriod = (value: string | Date | null) => {
   return text.slice(0, 7);
 };
 const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
-const profileTagKeys = ['github', 'linkedin', 'orcid', 'scholar'] as const;
+const profileTagKeys = ['github', 'linkedin', 'orcid', 'scholar', 'openreview'] as const;
 const profileTags = [
   ...profileTagKeys.map((key) => ({
     key,
     label: copy.profileTags[key],
-    value: key === 'scholar' ? copy.profileTags.scholarValue : profile.links[key].label,
+    value: key === 'scholar' ? copy.profileTags.scholarValue : key === 'openreview' ? copy.profileTags.openreviewValue : profile.links[key].label,
     url: profile.links[key].url,
     external: true,
   })),
@@ -74,6 +74,7 @@ const affiliation = locale === 'zh'
                 {link.key === 'scholar' && (
                   <svg viewBox="0 0 24 24" role="img"><path d="m12 2 10 5.4-4.1 2.2v5.75h-1.7v-4.83L12 12.8 2 7.4 12 2Zm-6.4 8.15L12 13.6l6.4-3.45v6.1c0 1.58-2.87 3.65-6.4 3.65s-6.4-2.07-6.4-3.65v-6.1Z" /></svg>
                 )}
+                {link.key === 'openreview' && <span class="profile-tag-letter">OR</span>}
                 {link.key === 'resume' && (
                   <svg viewBox="0 0 24 24" role="img"><path d="M6 2h8.5L19 6.5V22H6V2Zm8 1.8V7h3.2L14 3.8ZM8.5 11v1.5h8V11h-8Zm0 4v1.5h8V15h-8Zm0 4v1.5h5V19h-5Z" /></svg>
                 )}

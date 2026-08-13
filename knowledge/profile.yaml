@@ -38,6 +38,9 @@ profile:
     scholar:
       label: Google Scholar
       url: https://scholar.google.com/citations?user=mKJL8mQAAAAJ
+    openreview:
+      label: Yao-Dong Yang
+      url: https://openreview.net/profile?id=~Yao-Dong_Yang2
   source:
     type: user-provided
     reference: Initial Young.io project brief
