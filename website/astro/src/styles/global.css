@@ -184,12 +184,16 @@ html[lang='zh-CN'] .identity-copy strong { max-width: 100%; }
 .section-heading.compact { margin-bottom: 65px; }
 .output-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--line); }
 .output-card { min-height: 310px; padding: 28px; display: flex; flex-direction: column; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background .2s ease, color .2s ease, transform .2s ease; }
+.output-card[href] { cursor: pointer; }
+.output-card[href]:focus-visible { outline: 3px solid var(--orange); outline-offset: -3px; }
+.output-card-pending { cursor: default; }
 .output-card.active, .output-card:hover { background: var(--ink); color: var(--paper); transform: translateY(-8px); }
 .output-card > span { font: 400 .65rem/1 var(--mono); color: #77746d; }
 .output-card h3 { margin-top: auto; font: 600 1.5rem/1.1 var(--display); letter-spacing: -.04em; }
 .output-card p { min-height: 70px; margin-top: 16px; color: #77746d; font-size: .76rem; line-height: 1.6; }
 .output-card i { font: 500 .53rem/1 var(--mono); font-style: normal; color: var(--orange); letter-spacing: .08em; }
 .output-card.active i { color: var(--acid); }
+.output-card[href]:hover i { color: var(--acid); }
 .publication-state { margin-top: 20px; color: #77746d; font: 400 .6rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; text-align: right; }
 
 .timeline { padding: 125px 0; display: grid; grid-template-columns: .55fr 1.5fr .8fr; gap: 70px; align-items: center; border-top: 1px solid var(--line); }

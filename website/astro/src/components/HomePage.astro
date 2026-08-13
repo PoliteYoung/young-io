@@ -15,10 +15,16 @@ const formatPeriod = (value: string | Date | null) => {
   return text.slice(0, 7);
 };
 const links = Object.values(profile.links);
+const outputLinks = [
+  locale === 'zh' ? '/zh' : '/',
+  profile.links.github.url,
+  null,
+  profile.links.linkedin.url,
+] as const;
 const synthesis = locale === 'zh' ? ['研究', '工程', '基础设施'] : profile.synthesis;
 const affiliation = locale === 'zh'
-  ? { institution: profile.affiliation.institution_zh, secondary: profile.affiliation.institution, role: copy.affiliationRole, field: '计算媒体与艺术' }
-  : { institution: profile.affiliation.institution_zh, secondary: profile.affiliation.institution, role: profile.affiliation.role, field: profile.affiliation.field };
+  ? { institution: profile.affiliation.institution_zh, role: copy.affiliationRole, field: '计算媒体与艺术' }
+  : { institution: profile.affiliation.institution, role: profile.affiliation.role, field: profile.affiliation.field };
 ---
 <BaseLayout title={`${profile.name.display} — ${copy.titleHeadline}`} description={copy.description} locale={locale}>
   <main>
@@ -28,7 +34,7 @@ const affiliation = locale === 'zh'
       <div class="hero-index" aria-hidden="true">Y/O — 001</div>
       <div class="hero-copy">
         <p class="eyebrow hero-eyebrow">{copy.heroEyebrow[0]} <span>↔</span> {copy.heroEyebrow[1]}</p>
-        <div class="affiliation-lockup" aria-label={`${affiliation.role} · ${affiliation.secondary}`}>
+        <div class="affiliation-lockup" aria-label={`${affiliation.role} · ${affiliation.institution}`}>
           <span class="affiliation-code">HKUST(GZ)</span>
           <span class="affiliation-divider" aria-hidden="true"></span>
           <span class="affiliation-name"><strong>{affiliation.institution}</strong><small>{affiliation.role} · {affiliation.field}</small></span>
@@ -58,7 +64,7 @@ const affiliation = locale === 'zh'
         <figcaption>
           <span class="portrait-id">{copy.portraitId}</span>
           <span class="portrait-name">Yaodong Yang</span>
-          <span class="portrait-role">{affiliation.role}<br />{affiliation.secondary}</span>
+          <span class="portrait-role">{affiliation.role}<br />{affiliation.institution}</span>
         </figcaption>
         <div class="portrait-synthesis" aria-label={synthesis.join('、')}>
           {synthesis.map((item, index) => <span>{String(index + 1).padStart(2, '0')} / {item}</span>)}
@@ -125,7 +131,7 @@ const affiliation = locale === 'zh'
       </div>
       <div class="publication-list">
         {publications.map((publication, index) => (
-          <a class="publication-row" href={publication.links.primary} data-reveal>
+          <a class="publication-row" href={publication.links.primary} target="_blank" rel="noopener noreferrer" data-reveal>
             <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
             <div><h3>{publication.title}</h3><p>{publication.authors.join(' · ')}</p></div>
             <div class="publication-meta"><strong>{publication.year}</strong><span>{publication.venue}</span><i>DOI ↗</i></div>
@@ -140,9 +146,13 @@ const affiliation = locale === 'zh'
         <p>{copy.sections.outputsIntro}</p>
       </div>
       <div class="output-grid" data-reveal>
-        {copy.outputs.map((item, index) => (
-          <article class:list={['output-card', { active: index === 0 }]}><span>{String(index + 1).padStart(2, '0')}</span><h3>{item[0]}</h3><p>{item[1]}</p><i>{item[2]}</i></article>
-        ))}
+        {copy.outputs.map((item, index) => {
+          const href = outputLinks[index];
+          const content = <><span>{String(index + 1).padStart(2, '0')}</span><h3>{item[0]}</h3><p>{item[1]}</p><i>{item[2]}{href && index > 0 ? ' ↗' : ''}</i></>;
+          return href
+            ? <a class:list={['output-card', { active: index === 0 }]} href={href} target={index > 0 ? '_blank' : undefined} rel={index > 0 ? 'me noopener noreferrer' : undefined} aria-label={`${item[0]} — ${item[2]}`}>{content}</a>
+            : <article class="output-card output-card-pending">{content}</article>;
+        })}
       </div>
     </section>
 
@@ -188,7 +198,7 @@ const affiliation = locale === 'zh'
 
     <section class="links shell" data-reveal>
       <p class="section-number">{copy.sections.presence}</p>
-      <div class="link-list">{links.map((link) => <a href={link.url}><span>{link.label}</span><i>↗</i></a>)}</div>
+      <div class="link-list">{links.map((link) => <a href={link.url} target="_blank" rel="me noopener noreferrer"><span>{link.label}</span><i>↗</i></a>)}</div>
     </section>
 
     <Footer name={profile.name.display} website={profile.links.website.label} locale={locale} />

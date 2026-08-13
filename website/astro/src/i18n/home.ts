@@ -49,9 +49,9 @@ export const homeCopy = {
     },
     outputs: [
       ['Personal website', 'Identity, selected research, and durable context.', 'LIVE VIEW'],
-      ['GitHub profile', 'Code, technical contributions, and proof of work.', 'GENERATOR PLANNED'],
-      ['CV & biographies', 'Audience-specific documents built from traceable records.', 'GENERATOR PLANNED'],
-      ['LinkedIn', 'Reviewed distribution — never the source database.', 'HUMAN APPROVAL'],
+      ['GitHub profile', 'Code, technical contributions, and proof of work.', 'VISIT GITHUB'],
+      ['CV & biographies', 'A concise, verified academic CV for readers who need the full record.', 'IN PREPARATION'],
+      ['LinkedIn', 'Professional history and public updates, reviewed before publication.', 'VISIT LINKEDIN'],
     ],
     identityMeanings: [
       'Connects Yang (杨), personal identity, growth, and continuous learning.',
@@ -111,9 +111,9 @@ export const homeCopy = {
     },
     outputs: [
       ['个人网站', '个人身份、代表性研究与可长期维护的背景信息。', '当前页面'],
-      ['GitHub 主页', '代码、技术贡献与可验证的实践成果。', '生成器规划中'],
-      ['简历与个人简介', '从同一知识源生成面向不同读者的材料。', '生成器规划中'],
-      ['LinkedIn', '经过审核后再发布，不把平台资料当作源数据库。', '人工确认'],
+      ['GitHub 主页', '代码、技术贡献与可验证的实践成果。', '访问主页'],
+      ['简历与个人简介', '为需要完整经历的读者提供简洁、经过核验的学术简历。', '整理中'],
+      ['LinkedIn', '职业经历与公开动态，发布前经过人工核验。', '访问主页'],
     ],
     identityMeanings: [
       'Young 连接 Yang（杨）、个人身份、成长与持续学习。',
@@ -153,13 +153,13 @@ export const capabilityZh: Record<string, { title: string; summary: string; topi
 export const educationZh: Record<string, { institution: string; school?: string; degree: string; field?: string }> = {
   'hkust-gz-phd-compute-media-art': {
     institution: '香港科技大学（广州）',
-    school: 'The Hong Kong University of Science and Technology (Guangzhou)',
+    school: '',
     degree: '哲学博士',
-    field: 'Compute Media Art',
+    field: '计算媒体与艺术',
   },
   'binghamton-university-msc-cs': {
     institution: '宾汉姆顿大学',
-    school: 'Thomas J. Watson 工程与应用科学学院',
+    school: '托马斯·J·沃森工程与应用科学学院',
     degree: '理学硕士',
     field: '计算机科学',
   },
