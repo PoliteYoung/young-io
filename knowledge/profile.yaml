@@ -2,8 +2,11 @@ schema_version: 1
 profile:
   id: yaodong-yang
   name:
-    display: Yaodong Yang
+    display: "Yao-Dong 'Polite Young' Yang"
+    display_zh: 杨耀东
     alternatives:
+      - Yaodong Yang
+      - Yao-Dong Yang
       - Polite Yaodong Yang
       - PoliteYoung
   headline: Researcher and Research Engineer

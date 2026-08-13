@@ -129,10 +129,11 @@ html[lang='zh-CN'] .identity-copy strong { max-width: 100%; }
   background: #181816;
   box-shadow: 24px 24px 0 rgba(216,255,95,.055);
 }
-.portrait-card::before { content: ''; position: absolute; z-index: 4; inset: 0; background: linear-gradient(180deg, transparent 46%, rgba(9,9,8,.18) 62%, rgba(9,9,8,.94) 100%); pointer-events: none; }
+.portrait-card::before { content: ''; position: absolute; z-index: 4; inset: 0; background: linear-gradient(180deg, rgba(216,255,95,.035) 0%, transparent 40%, rgba(9,9,8,.28) 64%, rgba(9,9,8,.96) 100%), linear-gradient(125deg, rgba(216,255,95,.05), rgba(255,92,53,.045)); pointer-events: none; }
 .portrait-card::after { content: ''; position: absolute; z-index: 6; width: 74px; height: 74px; top: 16px; right: 16px; border-top: 2px solid var(--orange); border-right: 2px solid var(--orange); pointer-events: none; }
-.portrait-card img { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(.82) contrast(1.07); }
-.portrait-grid { position: absolute; z-index: 2; inset: 0; opacity: .38; background-image: linear-gradient(rgba(240,238,230,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(240,238,230,.12) 1px, transparent 1px); background-size: 44px 44px; mask-image: linear-gradient(to bottom, black, transparent 42%); pointer-events: none; }
+.portrait-card img { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: grayscale(.76) sepia(.08) saturate(.42) contrast(1.18) brightness(.79); transform: scale(1.015); transition: filter .45s ease, transform .6s cubic-bezier(.2,.8,.2,1); }
+.portrait-card:hover img { filter: grayscale(.54) sepia(.06) saturate(.58) contrast(1.2) brightness(.82); transform: scale(1.035); }
+.portrait-grid { position: absolute; z-index: 2; inset: 0; opacity: .46; background-image: linear-gradient(rgba(240,238,230,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(240,238,230,.12) 1px, transparent 1px); background-size: 44px 44px; mask-image: linear-gradient(to bottom, black, transparent 42%); pointer-events: none; }
 .portrait-orbit { position: absolute; z-index: 3; width: 250px; aspect-ratio: 1; top: 18%; left: 50%; translate: -50% -50%; border: 1px dashed rgba(216,255,95,.42); border-radius: 50%; animation: portrait-spin 24s linear infinite; pointer-events: none; }
 .portrait-card figcaption { position: absolute; z-index: 5; right: 22px; bottom: 22px; left: 22px; display: grid; grid-template-columns: 1fr auto; gap: 8px 22px; align-items: end; padding-left: 14px; border-left: 3px solid var(--acid); }
 .portrait-id { grid-column: 1 / -1; color: #85837b; font: 400 .5rem/1 var(--mono); letter-spacing: .13em; }
@@ -326,3 +327,6 @@ html[lang='zh-CN'] .identity-copy strong { max-width: 100%; }
   .publication-meta, .education-period { grid-column: 2; align-items: flex-start; justify-content: start; text-align: left; }
   .publication-meta { margin-top: 10px; }
 }
+
+html[lang='zh-CN'] .portrait-name { font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; letter-spacing: -.04em; }
+html[lang='en'] .portrait-name { font-size: clamp(1.35rem, 1.9vw, 2.05rem); max-width: 290px; line-height: 1.02; }

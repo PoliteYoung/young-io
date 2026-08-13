@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import { getPublicKnowledge } from '../lib/knowledge';
-import { capabilityZh, educationZh, homeCopy, type Locale } from '../i18n/home';
+import { capabilityZh, educationZh, homeCopy, publicationZh, type Locale } from '../i18n/home';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -14,7 +14,13 @@ const formatPeriod = (value: string | Date | null) => {
   const text = value instanceof Date ? value.toISOString().slice(0, 10) : String(value);
   return text.slice(0, 7);
 };
-const links = Object.values(profile.links);
+const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
+const linkLabels: Record<string, string> = locale === 'zh'
+  ? { website: '个人网站', github: 'GitHub', linkedin: '领英', orcid: '研究者身份档案', scholar: 'Google 学术' }
+  : Object.fromEntries(Object.entries(profile.links).map(([key, value]) => [key, value.label]));
+const links = Object.entries(profile.links).map(([key, value]) => ({ ...value, label: linkLabels[key] ?? value.label }));
+const knownAuthorNames = new Set([profile.name.display, ...profile.name.alternatives]);
+const formatAuthor = (author: string) => knownAuthorNames.has(author) ? displayName : author;
 const outputLinks = [
   locale === 'zh' ? '/zh' : '/',
   profile.links.github.url,
@@ -26,16 +32,16 @@ const affiliation = locale === 'zh'
   ? { institution: profile.affiliation.institution_zh, role: copy.affiliationRole, field: '计算媒体与艺术' }
   : { institution: profile.affiliation.institution, role: profile.affiliation.role, field: profile.affiliation.field };
 ---
-<BaseLayout title={`${profile.name.display} — ${copy.titleHeadline}`} description={copy.description} locale={locale}>
+<BaseLayout title={`${displayName} — ${copy.titleHeadline}`} description={copy.description} locale={locale}>
   <main>
     <Header brand={brand.name} locale={locale} />
 
     <section class="hero shell" id="home">
-      <div class="hero-index" aria-hidden="true">Y/O — 001</div>
+      <div class="hero-index" aria-hidden="true">{copy.heroIndex}</div>
       <div class="hero-copy">
         <p class="eyebrow hero-eyebrow">{copy.heroEyebrow[0]} <span>↔</span> {copy.heroEyebrow[1]}</p>
         <div class="affiliation-lockup" aria-label={`${affiliation.role} · ${affiliation.institution}`}>
-          <span class="affiliation-code">HKUST(GZ)</span>
+          <span class="affiliation-code">{copy.affiliationCode}</span>
           <span class="affiliation-divider" aria-hidden="true"></span>
           <span class="affiliation-name"><strong>{affiliation.institution}</strong><small>{affiliation.role} · {affiliation.field}</small></span>
         </div>
@@ -63,7 +69,7 @@ const affiliation = locale === 'zh'
         />
         <figcaption>
           <span class="portrait-id">{copy.portraitId}</span>
-          <span class="portrait-name">Yaodong Yang</span>
+          <span class="portrait-name">{displayName}</span>
           <span class="portrait-role">{affiliation.role}<br />{affiliation.institution}</span>
         </figcaption>
         <div class="portrait-synthesis" aria-label={synthesis.join('、')}>
@@ -130,13 +136,16 @@ const affiliation = locale === 'zh'
         <p>{copy.sections.publicationsIntro}</p>
       </div>
       <div class="publication-list">
-        {publications.map((publication, index) => (
-          <a class="publication-row" href={publication.links.primary} target="_blank" rel="noopener noreferrer" data-reveal>
-            <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
-            <div><h3>{publication.title}</h3><p>{publication.authors.join(' · ')}</p></div>
-            <div class="publication-meta"><strong>{publication.year}</strong><span>{publication.venue}</span><i>DOI ↗</i></div>
-          </a>
-        ))}
+        {publications.map((publication, index) => {
+          const translated = locale === 'zh' ? publicationZh[publication.id] : null;
+          return (
+            <a class="publication-row" href={publication.links.primary} target="_blank" rel="noopener noreferrer" data-reveal>
+              <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
+              <div><h3>{translated?.title ?? publication.title}</h3><p>{translated?.authors ?? publication.authors.map(formatAuthor).join(' · ')}</p></div>
+              <div class="publication-meta"><strong>{publication.year}</strong><span>{translated?.venue ?? publication.venue}</span><i>{copy.publicationLink}</i></div>
+            </a>
+          );
+        })}
       </div>
     </section>
 
@@ -187,7 +196,7 @@ const affiliation = locale === 'zh'
 
     <section class="identity-strip">
       <div class="shell strip-inner">
-        <div class="binary" aria-hidden="true">01 / 一零 / IO / YOUNG / 杨 / INPUT / OUTPUT /</div>
+        <div class="binary" aria-hidden="true">{copy.identityTicker}</div>
         <div class="identity-copy">
           <p>{copy.identityMeanings[0]}</p>
           <strong>YOUNG<span>.IO</span></strong>
@@ -201,6 +210,6 @@ const affiliation = locale === 'zh'
       <div class="link-list">{links.map((link) => <a href={link.url} target="_blank" rel="me noopener noreferrer"><span>{link.label}</span><i>↗</i></a>)}</div>
     </section>
 
-    <Footer name={profile.name.display} website={profile.links.website.label} locale={locale} />
+    <Footer name={displayName} website={profile.links.website.label} locale={locale} />
   </main>
 </BaseLayout>

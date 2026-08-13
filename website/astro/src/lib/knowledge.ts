@@ -14,7 +14,7 @@ const recordMetaSchema = z.object({
 
 const profileRecordSchema = recordMetaSchema.extend({
   id: z.string(),
-  name: z.object({ display: z.string(), alternatives: z.array(z.string()) }),
+  name: z.object({ display: z.string(), display_zh: z.string(), alternatives: z.array(z.string()) }),
   headline: z.string(),
   positioning: z.string(),
   synthesis: z.array(z.string()).length(3),
