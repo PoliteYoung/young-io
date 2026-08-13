@@ -2,7 +2,7 @@ schema_version: 1
 education:
   - id: hkust-gz-phd-compute-media-art
     institution: The Hong Kong University of Science and Technology (Guangzhou)
-    school: Information Hub (INFOHUB)
+    school: Info Hub
     degree: Doctor of Philosophy
     field: Compute Media Art
     period:
@@ -13,7 +13,7 @@ education:
     notes: Current doctoral program at the Guangzhou campus. The field name is preserved exactly as displayed on LinkedIn.
     source:
       type: user-provided
-      reference: User-provided correction, 2026-08-13, adds Information Hub (INFOHUB); LinkedIn education section, politeyoung, checked 2026-08-12; Google Scholar profile mKJL8mQAAAAJ confirms PhD Student at HKUST(GZ)
+      reference: User-provided correction, 2026-08-13, adds Info Hub; LinkedIn education section, politeyoung, checked 2026-08-12; Google Scholar profile mKJL8mQAAAAJ confirms PhD Student at HKUST(GZ)
     verified: true
     status: verified
     visibility: public

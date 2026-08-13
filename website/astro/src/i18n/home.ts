@@ -163,7 +163,7 @@ export const capabilityZh: Record<string, { title: string; summary: string; topi
 export const educationZh: Record<string, { institution: string; school?: string; degree: string; field?: string }> = {
   'hkust-gz-phd-compute-media-art': {
     institution: '香港科技大学（广州）',
-    school: '信息枢纽（INFOHUB）',
+    school: '信息枢纽',
     degree: '哲学博士',
     field: '计算媒体与艺术',
   },
