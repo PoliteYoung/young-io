@@ -7,11 +7,10 @@ education:
     field: Compute Media Art
     period:
       start: 2024-08
-      expected_end: 2027-06
     location:
       city: Guangzhou
       country: CN
-    notes: Current doctoral program. The field name is preserved exactly as displayed on LinkedIn. The end date is an expected date, not a completed degree date.
+    notes: Current doctoral program. The field name is preserved exactly as displayed on LinkedIn.
     source:
       type: public-profile
       reference: LinkedIn education section, politeyoung, checked 2026-08-12; Google Scholar profile mKJL8mQAAAAJ confirms PhD Student at HKUST(GZ)

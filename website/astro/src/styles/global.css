@@ -282,12 +282,10 @@ p, h1, h2, h3 { margin: 0; }
 .education-row small { display: block; margin-top: 9px; color: #8a877e; font-size: .66rem; }
 .education-period { display: grid; grid-template-columns: auto auto auto; gap: 12px; align-items: center; justify-content: end; font: 400 .68rem/1 var(--mono); }
 .education-period span { color: var(--orange); }
-.education-period i { grid-column: 1 / -1; justify-self: end; color: #77746d; font: 400 .5rem/1 var(--mono); font-style: normal; letter-spacing: .09em; }
 @media (max-width: 700px) {
   .publications, .education { padding-block: 90px; }
   .publication-row, .education-row { grid-template-columns: 34px 1fr; padding: 28px 0; gap: 14px; }
   .publication-index, .education-index { padding-top: 5px; }
   .publication-meta, .education-period { grid-column: 2; align-items: flex-start; justify-content: start; text-align: left; }
   .publication-meta { margin-top: 10px; }
-  .education-period i { justify-self: start; }
 }

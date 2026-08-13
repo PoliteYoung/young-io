@@ -11,8 +11,6 @@ const formatPeriod = (value: string | Date | null) => {
   return text.slice(0, 7);
 };
 const links = Object.values(profile.links);
-const periodEnd = (period: { end?: string | Date | null; expected_end?: string | Date | null }) =>
-  period.end ?? period.expected_end ?? null;
 ---
 <BaseLayout title={`${profile.name.display} — ${profile.headline}`} description={profile.positioning}>
   <main>
@@ -128,14 +126,14 @@ const periodEnd = (period: { end?: string | Date | null; expected_end?: string |
     <section class="education shell" id="experience">
       <div class="section-heading compact" data-reveal>
         <div><p class="section-number">06 / EDUCATION</p><h2>A research path<br />across disciplines.</h2></div>
-        <p>Education is compiled from the public LinkedIn and ORCID records. The current doctoral end date is shown as expected, not completed.</p>
+        <p>Education is compiled from public LinkedIn and ORCID records.</p>
       </div>
       <div class="education-list">
         {education.map((item, index) => (
           <article class="education-row" data-reveal>
             <span class="education-index">{String(index + 1).padStart(2, '0')}</span>
             <div><h3>{item.institution}</h3><p>{item.degree}{item.field ? ` · ${item.field}` : ''}</p>{item.school && <small>{item.school}</small>}</div>
-            <div class="education-period"><strong>{formatPeriod(item.period.start)}</strong><span>→</span><strong>{formatPeriod(periodEnd(item.period))}</strong>{item.period.expected_end && <i>EXPECTED</i>}</div>
+            <div class="education-period"><strong>{formatPeriod(item.period.start)}</strong><span>→</span><strong>{formatPeriod(item.period.end ?? null)}</strong></div>
           </article>
         ))}
       </div>
