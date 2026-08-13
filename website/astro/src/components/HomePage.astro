@@ -154,12 +154,28 @@ const affiliation = locale === 'zh'
       <div class="publication-list">
         {publications.map((publication, index) => {
           const translated = locale === 'zh' ? publicationZh[publication.id] : null;
+          const publicationLinks = [
+            { key: 'doi', label: copy.publicationLinks.doi, url: publication.links.primary },
+            ...(publication.links.preprint ? [{ key: 'arxiv', label: copy.publicationLinks.arxiv, url: publication.links.preprint }] : []),
+            ...(publication.links.code ? [{ key: 'github', label: copy.publicationLinks.github, url: publication.links.code }] : []),
+          ];
           return (
-            <a class="publication-row" href={publication.links.primary} target="_blank" rel="noopener noreferrer" data-reveal>
+            <article class="publication-row" data-reveal>
               <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
-              <div><h3>{translated?.title ?? publication.title}</h3><p>{translated?.authors ?? publication.authors.map(formatAuthor).join(' · ')}</p></div>
-              <div class="publication-meta"><strong>{publication.year}</strong><span>{translated?.venue ?? publication.venue}</span><i>{copy.publicationLink}</i></div>
-            </a>
+              <div>
+                <h3><a href={publication.links.primary} target="_blank" rel="noopener noreferrer">{translated?.title ?? publication.title}</a></h3>
+                <p>{translated?.authors ?? publication.authors.map(formatAuthor).join(' · ')}</p>
+              </div>
+              <div class="publication-meta">
+                <strong>{publication.year}</strong>
+                <span>{translated?.venue ?? publication.venue}</span>
+                <div class="publication-links" aria-label={`${translated?.title ?? publication.title} links`}>
+                  {publicationLinks.map((link) => (
+                    <a class={`publication-link publication-link--${link.key}`} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>
+                  ))}
+                </div>
+              </div>
+            </article>
           );
         })}
       </div>

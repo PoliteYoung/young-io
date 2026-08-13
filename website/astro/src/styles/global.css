@@ -306,11 +306,17 @@ html[lang='zh-CN'] .identity-copy strong { max-width: 100%; }
 .publication-row:hover { background: var(--paper-2); padding-inline: 16px; }
 .publication-index, .education-index { align-self: start; padding-top: 38px; color: #77746d; font: 400 .65rem/1 var(--mono); }
 .publication-row h3, .education-row h3 { font: 600 clamp(1.5rem, 2.5vw, 2.8rem)/1.08 var(--display); letter-spacing: -.05em; }
+.publication-row h3 a { transition: color .18s ease; }
+.publication-row h3 a:hover { color: var(--orange); }
 .publication-row p, .education-row p { margin-top: 14px; color: #67645d; font-size: .72rem; line-height: 1.55; }
 .publication-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; text-align: right; }
 .publication-meta strong { font: 600 2rem/1 var(--display); }
 .publication-meta span { color: #67645d; font-size: .72rem; line-height: 1.4; }
-.publication-meta i { color: var(--orange); font: 500 .55rem/1 var(--mono); font-style: normal; letter-spacing: .08em; }
+.publication-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; margin-top: 4px; }
+.publication-link { display: inline-flex; gap: 5px; align-items: center; padding: 7px 9px 6px; border: 1px solid var(--line); color: #5f5c55; font: 500 .55rem/1 var(--mono); letter-spacing: .06em; transition: border-color .18s ease, color .18s ease, transform .18s ease; }
+.publication-link > span { color: var(--orange); font-size: .62rem; }
+.publication-link:hover { border-color: var(--ink); color: var(--ink); transform: translateY(-2px); }
+.publication-link--github { border-color: rgba(216,255,95,.52); }
 .education-row { grid-template-columns: 80px 1fr .6fr; }
 .education-row small { display: block; margin-top: 9px; color: #8a877e; font-size: .66rem; }
 .education-period { display: grid; grid-template-columns: auto auto auto; gap: 12px; align-items: center; justify-content: end; font: 400 .68rem/1 var(--mono); }
@@ -321,6 +327,7 @@ html[lang='zh-CN'] .identity-copy strong { max-width: 100%; }
   .publication-index, .education-index { padding-top: 5px; }
   .publication-meta, .education-period { grid-column: 2; align-items: flex-start; justify-content: start; text-align: left; }
   .publication-meta { margin-top: 10px; }
+  .publication-links { justify-content: flex-start; }
 }
 
 html[lang='zh-CN'] .portrait-name { font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; letter-spacing: -.04em; }

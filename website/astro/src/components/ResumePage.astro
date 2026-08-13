@@ -96,6 +96,7 @@ const publicLinks = [
                     <div class="resume-pub-links">
                       <a href={publication.links.primary} target="_blank" rel="noopener noreferrer">{copy.doi} · {publication.identifiers.doi}</a>
                       {publication.links.preprint && <a href={publication.links.preprint} target="_blank" rel="noopener noreferrer">{copy.preprint} · arXiv:{publication.identifiers.arxiv}</a>}
+                      {publication.links.code && <a href={publication.links.code} target="_blank" rel="noopener noreferrer">GitHub · {copy.code}</a>}
                     </div>
                   </li>
                 );

@@ -23,6 +23,7 @@ publications:
     links:
       primary: https://doi.org/10.1109/3DV66043.2025.00143
       preprint: https://arxiv.org/abs/2408.10588
+      code: https://github.com/initialneil/DEGAS
     source:
       type: publication
       reference: Crossref DOI record and DBLP conf/3dim/ShaoWTYMCDZZW25; also listed on Google Scholar profile mKJL8mQAAAAJ
