@@ -1,0 +1,431 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublicKnowledge } from '../lib/knowledge';
+import { capabilityZh, educationZh, publicationZh, type Locale } from '../i18n/home';
+import { resumeCopy } from '../i18n/resume';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = resumeCopy[locale];
+const { profile, capabilities, education, publications } = await getPublicKnowledge();
+const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
+const homeHref = locale === 'zh' ? '/zh' : '/';
+const languageHref = locale === 'zh' ? '/resume?lang=en' : '/zh/resume?lang=zh';
+const languageCode = locale === 'zh' ? 'en' : 'zh-CN';
+const institution = locale === 'zh' ? profile.affiliation.institution_zh : profile.affiliation.institution;
+const knownAuthorNames = new Set([profile.name.display, ...profile.name.alternatives]);
+const formatAuthor = (author: string) => knownAuthorNames.has(author) ? profile.name.display : author;
+const formatEnglishAuthors = (authors: string[]) => authors.map(formatAuthor).join(', ').replace(profile.name.display, `<strong>${profile.name.display}</strong>`);
+const dateText = (value: string | Date | null | undefined) => {
+  if (!value) return copy.present;
+  const normalized = value instanceof Date ? value.toISOString() : String(value);
+  return normalized.slice(0, 7).replace('-', '.');
+};
+const publicLinks = [
+  { key: 'website', label: copy.website, value: profile.links.website.label, url: profile.links.website.url },
+  { key: 'github', label: copy.github, value: profile.links.github.label, url: profile.links.github.url },
+  { key: 'linkedin', label: copy.linkedin, value: profile.links.linkedin.label, url: profile.links.linkedin.url },
+  { key: 'scholar', label: copy.scholar, value: locale === 'zh' ? '论文列表' : 'Publications', url: profile.links.scholar.url },
+  { key: 'orcid', label: copy.orcid, value: profile.links.orcid.label, url: profile.links.orcid.url },
+];
+---
+<BaseLayout
+  title={copy.title}
+  description={copy.description}
+  locale={locale}
+  alternatePath="/resume"
+  bodyClass="resume-page"
+>
+  <main class="resume-stage">
+    <nav class="resume-toolbar" aria-label={locale === 'zh' ? '简历工具' : 'Résumé tools'}>
+      <a class="resume-tool resume-tool--back" href={homeHref}><span aria-hidden="true">←</span> {copy.back}</a>
+      <p>{copy.printHint}</p>
+      <div>
+        <a class="resume-tool" href={languageHref} lang={languageCode} hreflang={languageCode}>{copy.language}</a>
+        <button class="resume-tool resume-tool--print" type="button" data-print-resume>{copy.print} <span aria-hidden="true">↗</span></button>
+      </div>
+    </nav>
+
+    <article class="resume-sheet" aria-labelledby="resume-name">
+      <header class="resume-masthead">
+        <div class="resume-kicker">
+          <span>{copy.documentLabel}</span>
+          <span>{copy.edition}</span>
+        </div>
+        <div class="resume-identity">
+          <div>
+            <h1 id="resume-name">{displayName}</h1>
+            <p class="resume-headline">{copy.headline}</p>
+          </div>
+          <div class="resume-current">
+            <strong>{copy.affiliationRole}</strong>
+            <span>{institution}</span>
+            <span>{copy.location}</span>
+          </div>
+        </div>
+        <nav class="resume-contact" aria-label={copy.profilesTitle}>
+          {publicLinks.map((link) => (
+            <a class={`resume-contact--${link.key}`} href={link.url} target="_blank" rel="me noopener noreferrer">
+              <span>{link.label}</span><strong>{link.value}</strong>
+            </a>
+          ))}
+        </nav>
+      </header>
+
+      <section class="resume-summary resume-rule-section">
+        <h2>{copy.summaryTitle}</h2>
+        <p>{copy.summary}</p>
+      </section>
+
+      <div class="resume-columns">
+        <div class="resume-primary">
+          <section class="resume-section">
+            <h2>{copy.publicationsTitle}</h2>
+            <ol class="resume-publications">
+              {publications.map((publication) => {
+                const translated = locale === 'zh' ? publicationZh[publication.id] : null;
+                return (
+                  <li>
+                    <div class="resume-publication-heading">
+                      <h3>{translated?.title ?? publication.title}</h3>
+                      <span>{publication.year}</span>
+                    </div>
+                    <p class="resume-authors">{translated ? translated.authors : <Fragment set:html={formatEnglishAuthors(publication.authors)} />}</p>
+                    <p class="resume-venue">{translated?.venue ?? publication.venue}{publication.pages ? ` · ${publication.pages}` : ''}</p>
+                    <div class="resume-pub-links">
+                      <a href={publication.links.primary} target="_blank" rel="noopener noreferrer">{copy.doi} · {publication.identifiers.doi}</a>
+                      {publication.links.preprint && <a href={publication.links.preprint} target="_blank" rel="noopener noreferrer">{copy.preprint} · arXiv:{publication.identifiers.arxiv}</a>}
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+
+          <section class="resume-section resume-education-section">
+            <h2>{copy.educationTitle}</h2>
+            <ol class="resume-education">
+              {education.map((item) => {
+                const translated = locale === 'zh' ? educationZh[item.id] : null;
+                const school = translated?.school ?? item.school;
+                return (
+                  <li>
+                    <div class="resume-education-date">
+                      <strong>{dateText(item.period.start)}</strong>
+                      <span>—</span>
+                      <strong>{dateText(item.period.end)}</strong>
+                    </div>
+                    <div>
+                      <h3>{translated?.institution ?? item.institution}</h3>
+                      <p>{translated?.degree ?? item.degree}{(translated?.field ?? item.field) ? ` · ${translated?.field ?? item.field}` : ''}</p>
+                      {school && <small>{school}</small>}
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        </div>
+
+        <aside class="resume-sidebar">
+          <section class="resume-section">
+            <h2>{copy.focusTitle}</h2>
+            <div class="resume-focus-list">
+              {capabilities.map((domain, index) => {
+                const translated = locale === 'zh' ? capabilityZh[domain.id] : null;
+                return (
+                  <article>
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <h3>{translated?.title ?? domain.title}</h3>
+                    <p>{translated?.summary ?? domain.summary}</p>
+                    <ul>{(translated?.topics ?? domain.topics).map((topic) => <li>{topic}</li>)}</ul>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="resume-footer">
+        <span>Young<span class="resume-acid">.io</span></span>
+        <p>{copy.footer}</p>
+        <strong>{profile.links.website.label}</strong>
+      </footer>
+    </article>
+  </main>
+
+  <script is:inline>
+    document.querySelector('[data-print-resume]')?.addEventListener('click', () => window.print());
+  </script>
+</BaseLayout>
+
+<style is:global>
+  body.resume-page {
+    min-width: 320px;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(216,255,95,.10), transparent 28rem),
+      #151513;
+    color: #171714;
+    overflow-x: auto;
+  }
+  body.resume-page::before { display: none; }
+  .resume-stage { min-height: 100vh; padding: 32px 24px 72px; }
+  .resume-toolbar {
+    width: min(210mm, 100%);
+    min-height: 48px;
+    margin: 0 auto 18px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 18px;
+    color: #dedbd1;
+    font: 500 .66rem/1.2 var(--mono);
+    letter-spacing: .04em;
+  }
+  .resume-toolbar > p { color: #7f7d76; text-align: center; white-space: nowrap; }
+  .resume-toolbar > div { justify-self: end; display: flex; gap: 8px; }
+  .resume-tool {
+    min-height: 38px;
+    padding: 0 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(240,238,230,.24);
+    color: #dedbd1;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+    transition: background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .resume-tool:hover { color: #11110f; background: #f0eee6; border-color: #f0eee6; }
+  .resume-tool--print { color: #11110f; background: var(--acid); border-color: var(--acid); }
+  .resume-tool--print:hover { background: #e4ff8f; border-color: #e4ff8f; }
+  .resume-sheet {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 12mm 14mm 10mm;
+    background:
+      linear-gradient(90deg, transparent calc(100% - 1px), rgba(20,20,17,.027) 1px) 0 0 / 24mm 100%,
+      #f7f5ee;
+    box-shadow: 0 34px 90px rgba(0,0,0,.34);
+    font-family: var(--body);
+  }
+  .resume-kicker {
+    padding-bottom: 3mm;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: .35mm solid #171714;
+    color: #55534d;
+    font: 500 7pt/1 var(--mono);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .resume-identity {
+    padding: 6.5mm 0 5mm;
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(53mm, .7fr);
+    gap: 9mm;
+    align-items: end;
+  }
+  .resume-identity h1 {
+    max-width: 125mm;
+    font: 700 25pt/.96 var(--display);
+    letter-spacing: -.062em;
+  }
+  html[lang='zh-CN'] .resume-identity h1 {
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    font-size: 27pt;
+    font-weight: 700;
+    letter-spacing: -.08em;
+  }
+  .resume-headline { margin-top: 3mm; color: #56534c; font: 600 9.4pt/1.2 var(--body); }
+  .resume-current { display: grid; gap: 1.2mm; padding-left: 4mm; border-left: 1mm solid var(--acid); font-size: 7.7pt; line-height: 1.32; }
+  .resume-current strong { font-size: 8.3pt; }
+  .resume-current span { color: #5f5c55; }
+  .resume-contact {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: .2mm solid rgba(23,23,20,.28);
+    border-bottom: .2mm solid rgba(23,23,20,.28);
+  }
+  .resume-contact a {
+    min-width: 0;
+    padding: 2.5mm 2.5mm 2.3mm;
+    display: grid;
+    gap: .8mm;
+    border-right: .2mm solid rgba(23,23,20,.18);
+  }
+  .resume-contact a:first-child { padding-left: 0; }
+  .resume-contact a:last-child { border-right: 0; }
+  .resume-contact span { color: #77736a; font: 500 5.8pt/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+  .resume-contact strong { overflow: hidden; color: #23231f; font-size: 6.5pt; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
+  .resume-contact a:hover strong { text-decoration: underline; text-underline-offset: 1.2mm; }
+  .resume-rule-section { display: grid; grid-template-columns: 31mm 1fr; gap: 6mm; padding: 4.5mm 0; border-bottom: .2mm solid rgba(23,23,20,.28); }
+  .resume-rule-section h2, .resume-section > h2 {
+    font: 600 6.8pt/1.1 var(--mono);
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+  .resume-rule-section p { max-width: 132mm; color: #3f3e39; font-size: 8.1pt; line-height: 1.48; }
+  .resume-columns { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(52mm, .72fr); gap: 9mm; padding-top: 5mm; }
+  .resume-primary { min-width: 0; }
+  .resume-section { break-inside: avoid; page-break-inside: avoid; }
+  .resume-section + .resume-section { margin-top: 6mm; }
+  .resume-section > h2 { padding-bottom: 2.4mm; border-bottom: .55mm solid #171714; }
+  .resume-publications, .resume-education { margin: 0; padding: 0; list-style: none; }
+  .resume-publications > li { position: relative; padding: 3.5mm 0 3.7mm 8mm; border-bottom: .2mm solid rgba(23,23,20,.19); break-inside: avoid; page-break-inside: avoid; }
+  .resume-publications > li::before { content: counter(list-item, decimal-leading-zero); position: absolute; top: 4mm; left: 0; color: #77736a; font: 500 6pt/1 var(--mono); }
+  .resume-publication-heading { display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: start; }
+  .resume-publication-heading h3 { font: 700 9pt/1.18 var(--body); letter-spacing: -.018em; }
+  .resume-publication-heading > span { padding-top: .5mm; color: #e24422; font: 500 6.6pt/1 var(--mono); }
+  .resume-authors { margin-top: 1.4mm; color: #626057; font-size: 6.55pt; line-height: 1.42; }
+  .resume-authors strong { color: #24231f; font-weight: 700; }
+  .resume-venue { margin-top: 1.2mm; color: #34332f; font-size: 6.8pt; font-weight: 600; line-height: 1.3; }
+  .resume-pub-links { margin-top: 1.5mm; display: flex; flex-wrap: wrap; gap: 2.5mm 4mm; }
+  .resume-pub-links a { color: #3c3b36; font: 500 5.75pt/1.2 var(--mono); text-decoration: underline; text-decoration-color: #a4a098; text-underline-offset: .7mm; }
+  .resume-pub-links a:hover { color: #d33c1c; }
+  .resume-education > li { padding: 3.3mm 0; display: grid; grid-template-columns: 31mm 1fr; gap: 5mm; border-bottom: .2mm solid rgba(23,23,20,.19); break-inside: avoid; page-break-inside: avoid; }
+  .resume-education-date { display: flex; gap: 1.5mm; align-items: baseline; color: #55534c; font: 500 6.2pt/1 var(--mono); }
+  .resume-education-date span { color: #e24422; }
+  .resume-education h3 { font: 700 8.3pt/1.25 var(--body); }
+  .resume-education p { margin-top: 1mm; color: #484640; font-size: 6.8pt; line-height: 1.3; }
+  .resume-education small { display: block; margin-top: .8mm; color: #77736a; font-size: 5.9pt; line-height: 1.3; }
+  .resume-focus-list article { position: relative; padding: 3.2mm 0 3.4mm 8mm; border-bottom: .2mm solid rgba(23,23,20,.19); break-inside: avoid; page-break-inside: avoid; }
+  .resume-focus-list article > span { position: absolute; top: 3.7mm; left: 0; color: #e24422; font: 500 5.8pt/1 var(--mono); }
+  .resume-focus-list h3 { font: 700 8.2pt/1.2 var(--body); }
+  .resume-focus-list p { margin-top: 1mm; color: #66635b; font-size: 6.3pt; line-height: 1.35; }
+  .resume-focus-list ul { margin: 2mm 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1mm; list-style: none; }
+  .resume-focus-list li { padding: 1mm 1.35mm; border: .2mm solid rgba(23,23,20,.22); color: #35342f; font: 500 5.3pt/1 var(--mono); }
+  .resume-footer {
+    margin-top: 6mm;
+    padding-top: 2.8mm;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 5mm;
+    align-items: center;
+    border-top: .55mm solid #171714;
+    color: #6c6961;
+    font: 500 5.8pt/1.2 var(--mono);
+  }
+  .resume-footer > span { color: #171714; font: 800 9pt/1 var(--display); letter-spacing: -.05em; }
+  .resume-footer p { text-align: center; }
+  .resume-footer strong { color: #171714; font-weight: 500; }
+  .resume-acid { display: inline !important; color: #819d27 !important; }
+
+  @media (max-width: 860px) {
+    .resume-stage { padding: 18px 14px 50px; }
+    .resume-toolbar { grid-template-columns: 1fr auto; }
+    .resume-toolbar > p { display: none; }
+    .resume-tool--back { justify-self: start; }
+    .resume-sheet {
+      width: min(100%, 680px);
+      min-height: 0;
+      padding: 34px 28px 30px;
+    }
+    .resume-identity { grid-template-columns: 1fr; gap: 26px; }
+    .resume-identity h1 { max-width: 100%; font-size: clamp(2.3rem, 9vw, 4rem); }
+    .resume-current { max-width: 420px; }
+    .resume-contact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .resume-contact a, .resume-contact a:first-child { padding: 12px 10px; border-bottom: 1px solid rgba(23,23,20,.18); }
+    .resume-contact a:nth-child(2n) { border-right: 0; }
+    .resume-contact a:last-child { grid-column: 1 / -1; }
+    .resume-rule-section { grid-template-columns: 1fr; gap: 12px; padding-block: 22px; }
+    .resume-columns { grid-template-columns: 1fr; gap: 34px; padding-top: 24px; }
+    .resume-section + .resume-section { margin-top: 34px; }
+    .resume-section > h2 { padding-bottom: 11px; }
+    .resume-publications > li { padding: 18px 0 18px 30px; }
+    .resume-publications > li::before { top: 20px; }
+    .resume-publication-heading h3 { font-size: .95rem; }
+    .resume-authors, .resume-venue, .resume-education p { font-size: .72rem; }
+    .resume-pub-links a, .resume-education small, .resume-focus-list p { font-size: .65rem; }
+    .resume-education > li { padding: 17px 0; grid-template-columns: 1fr; gap: 8px; }
+    .resume-education h3, .resume-focus-list h3 { font-size: .9rem; }
+    .resume-education-date { font-size: .65rem; }
+    .resume-focus-list article { padding: 17px 0 18px 30px; }
+    .resume-focus-list article > span { top: 20px; }
+    .resume-focus-list li { padding: 5px 7px; font-size: .58rem; }
+    .resume-footer { margin-top: 34px; grid-template-columns: auto 1fr; }
+    .resume-footer p { display: none; }
+    .resume-footer strong { text-align: right; }
+  }
+
+  @media (max-width: 560px) {
+    .resume-toolbar { grid-template-columns: 1fr; }
+    .resume-toolbar > div { width: 100%; justify-self: stretch; display: grid; grid-template-columns: 1fr 1.25fr; }
+    .resume-tool--back { display: none; }
+    .resume-sheet { padding: 28px 20px 24px; }
+    .resume-kicker { font-size: .52rem; }
+    .resume-headline { font-size: .8rem; }
+    .resume-current { font-size: .68rem; }
+    .resume-contact strong { font-size: .62rem; }
+    .resume-contact span { font-size: .5rem; }
+    .resume-rule-section p { font-size: .79rem; }
+    .resume-publication-heading { grid-template-columns: 1fr; gap: 6px; }
+    .resume-publication-heading > span { grid-row: 1; color: #d84020; }
+  }
+
+  @media print {
+    @page { size: A4 portrait; margin: 0; }
+    html, body.resume-page { width: 210mm; min-width: 210mm; background: #fff !important; }
+    body.resume-page { -webkit-print-color-adjust: exact; print-color-adjust: exact; overflow: visible; }
+    .resume-stage { min-height: 0; padding: 0; }
+    .resume-toolbar { display: none !important; }
+    .resume-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0;
+      padding: 12mm 14mm 10mm;
+      background: #fff;
+      box-shadow: none;
+    }
+    .resume-identity { grid-template-columns: minmax(0, 1.6fr) minmax(53mm, .7fr); gap: 9mm; }
+    .resume-contact { grid-template-columns: repeat(5, 1fr); }
+    .resume-columns { grid-template-columns: minmax(0, 1.55fr) minmax(52mm, .72fr); gap: 9mm; }
+    .resume-footer { grid-template-columns: auto 1fr auto; }
+    .resume-footer p { display: block; }
+    a { color: inherit !important; }
+  }
+</style>
+
+<style is:global>
+  @media print {
+    .resume-identity h1 { max-width: 125mm; font-size: 25pt; }
+    html[lang='zh-CN'] .resume-identity h1 { font-size: 27pt; }
+    .resume-current { max-width: none; font-size: 7.7pt; }
+    .resume-headline { font-size: 9.4pt; }
+    .resume-contact a,
+    .resume-contact a:first-child { padding: 2.5mm 2.5mm 2.3mm; border-bottom: 0; }
+    .resume-contact a:first-child { padding-left: 0; }
+    .resume-contact a:nth-child(2n) { border-right: .2mm solid rgba(23,23,20,.18); }
+    .resume-contact a:last-child { grid-column: auto; border-right: 0; }
+    .resume-contact span { font-size: 5.8pt; }
+    .resume-contact strong { font-size: 6.5pt; }
+    .resume-rule-section { grid-template-columns: 31mm 1fr; gap: 6mm; padding: 4.5mm 0; }
+    .resume-rule-section p { font-size: 8.1pt; }
+    .resume-columns { padding-top: 5mm; }
+    .resume-section + .resume-section { margin-top: 6mm; }
+    .resume-section > h2 { padding-bottom: 2.4mm; }
+    .resume-publications > li { padding: 3.5mm 0 3.7mm 8mm; }
+    .resume-publications > li::before { top: 4mm; }
+    .resume-publication-heading { grid-template-columns: 1fr auto; gap: 3mm; }
+    .resume-publication-heading h3 { font-size: 9pt; }
+    .resume-publication-heading > span { grid-row: auto; }
+    .resume-authors { font-size: 6.55pt; }
+    .resume-venue { font-size: 6.8pt; }
+    .resume-pub-links a { font-size: 5.75pt; }
+    .resume-education > li { padding: 3.3mm 0; grid-template-columns: 31mm 1fr; gap: 5mm; }
+    .resume-education h3 { font-size: 8.3pt; }
+    .resume-education p { font-size: 6.8pt; }
+    .resume-education small { font-size: 5.9pt; }
+    .resume-education-date { font-size: 6.2pt; }
+    .resume-focus-list article { padding: 3.2mm 0 3.4mm 8mm; }
+    .resume-focus-list article > span { top: 3.7mm; }
+    .resume-focus-list h3 { font-size: 8.2pt; }
+    .resume-focus-list p { font-size: 6.3pt; }
+    .resume-focus-list li { padding: 1mm 1.35mm; font-size: 5.3pt; }
+    .resume-footer { margin-top: 6mm; }
+  }
+</style>

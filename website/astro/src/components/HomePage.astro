@@ -16,12 +16,22 @@ const formatPeriod = (value: string | Date | null) => {
 };
 const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
 const profileTagKeys = ['github', 'linkedin', 'orcid', 'scholar'] as const;
-const profileTags = profileTagKeys.map((key) => ({
-  key,
-  label: copy.profileTags[key],
-  value: key === 'scholar' ? copy.profileTags.scholarValue : profile.links[key].label,
-  url: profile.links[key].url,
-}));
+const profileTags = [
+  ...profileTagKeys.map((key) => ({
+    key,
+    label: copy.profileTags[key],
+    value: key === 'scholar' ? copy.profileTags.scholarValue : profile.links[key].label,
+    url: profile.links[key].url,
+    external: true,
+  })),
+  {
+    key: 'resume',
+    label: copy.profileTags.resume,
+    value: copy.profileTags.resumeValue,
+    url: locale === 'zh' ? '/zh/resume' : '/resume',
+    external: false,
+  },
+];
 const knownAuthorNames = new Set([profile.name.display, ...profile.name.alternatives]);
 const formatAuthor = (author: string) => knownAuthorNames.has(author) ? displayName : author;
 const synthesis = locale === 'zh' ? ['研究', '工程', '基础设施'] : profile.synthesis;
@@ -52,7 +62,7 @@ const affiliation = locale === 'zh'
         </div>
         <nav class="profile-tags" aria-label={copy.profileTags.label}>
           {profileTags.map((link) => (
-            <a class:list={["profile-tag", `profile-tag--${link.key}`]} href={link.url} target="_blank" rel="me noopener noreferrer" aria-label={`${link.label}: ${link.value}`}>
+            <a class:list={["profile-tag", `profile-tag--${link.key}`]} href={link.url} target={link.external ? "_blank" : undefined} rel={link.external ? "me noopener noreferrer" : undefined} aria-label={`${link.label}: ${link.value}`}>
               <span class="profile-tag-icon" aria-hidden="true">
                 {link.key === 'github' && (
                   <svg viewBox="0 0 24 24" role="img"><path d="M12 .7A11.5 11.5 0 0 0 8.36 23.1c.58.1.79-.25.79-.56v-2.23c-3.24.7-3.92-1.38-3.92-1.38-.53-1.35-1.3-1.71-1.3-1.71-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.27.74-1.56-2.59-.29-5.31-1.29-5.31-5.7 0-1.26.45-2.29 1.2-3.1-.12-.3-.52-1.48.11-3.07 0 0 .98-.32 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.07.75.81 1.2 1.84 1.2 3.1 0 4.43-2.73 5.4-5.32 5.7.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z" /></svg>
@@ -63,6 +73,9 @@ const affiliation = locale === 'zh'
                 {link.key === 'orcid' && <span class="profile-tag-letter">iD</span>}
                 {link.key === 'scholar' && (
                   <svg viewBox="0 0 24 24" role="img"><path d="m12 2 10 5.4-4.1 2.2v5.75h-1.7v-4.83L12 12.8 2 7.4 12 2Zm-6.4 8.15L12 13.6l6.4-3.45v6.1c0 1.58-2.87 3.65-6.4 3.65s-6.4-2.07-6.4-3.65v-6.1Z" /></svg>
+                )}
+                {link.key === 'resume' && (
+                  <svg viewBox="0 0 24 24" role="img"><path d="M6 2h8.5L19 6.5V22H6V2Zm8 1.8V7h3.2L14 3.8ZM8.5 11v1.5h8V11h-8Zm0 4v1.5h8V15h-8Zm0 4v1.5h5V19h-5Z" /></svg>
                 )}
               </span>
               <span class="profile-tag-copy"><b>#{link.label}</b><span>{link.value}</span></span>

@@ -325,3 +325,5 @@ html[lang='zh-CN'] .identity-copy strong { max-width: 100%; }
 
 html[lang='zh-CN'] .portrait-name { font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; letter-spacing: -.04em; }
 html[lang='en'] .portrait-name { font-size: clamp(1.35rem, 1.9vw, 2.05rem); max-width: 290px; line-height: 1.02; }
+.profile-tag--resume { border-color: rgba(216,255,95,.5); }
+.profile-tag--resume .profile-tag-icon { color: var(--acid); }
