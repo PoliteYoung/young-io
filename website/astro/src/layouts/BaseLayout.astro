@@ -36,6 +36,20 @@ const chineseUrl = new URL('/zh', Astro.site);
     <slot />
     <script is:inline>
       document.documentElement.classList.add('js');
+
+      // A manual language choice must take precedence over Cloudflare's regional default.
+      // Store it in both localStorage (for the browser) and a cookie (for edge rules).
+      const url = new URL(window.location.href);
+      const selectedLanguage = url.searchParams.get('lang');
+      if (selectedLanguage === 'en' || selectedLanguage === 'zh') {
+        try {
+          localStorage.setItem('youngio-language', selectedLanguage);
+        } catch {}
+        document.cookie = `youngio_language=${selectedLanguage}; Max-Age=31536000; Path=/; SameSite=Lax; Secure`;
+        url.searchParams.delete('lang');
+        history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      }
+
       const elements = document.querySelectorAll('[data-reveal]');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {

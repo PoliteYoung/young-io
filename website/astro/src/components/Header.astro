@@ -10,7 +10,7 @@ interface Props {
 const { brand, locale } = Astro.props;
 const copy = homeCopy[locale];
 const base = locale === 'zh' ? '/zh' : '';
-const languageHref = locale === 'zh' ? '/' : '/zh';
+const languageHref = locale === 'zh' ? '/?lang=en' : '/zh?lang=zh';
 const links = [
   [copy.nav.home, 'home'],
   [copy.nav.research, 'research'],
