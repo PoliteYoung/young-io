@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { getPublicKnowledge } from '../lib/knowledge';
+import { capabilityZh, educationZh, homeCopy, type Locale } from '../i18n/home';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = homeCopy[locale];
+const { profile, brand, capabilities, education, publications } = await getPublicKnowledge();
+const formatPeriod = (value: string | Date | null) => {
+  if (!value) return copy.present;
+  const text = value instanceof Date ? value.toISOString().slice(0, 10) : String(value);
+  return text.slice(0, 7);
+};
+const links = Object.values(profile.links);
+const synthesis = locale === 'zh' ? ['研究', '工程', '基础设施'] : profile.synthesis;
+const affiliation = locale === 'zh'
+  ? { institution: profile.affiliation.institution_zh, secondary: profile.affiliation.institution, role: copy.affiliationRole, field: '计算媒体与艺术' }
+  : { institution: profile.affiliation.institution_zh, secondary: profile.affiliation.institution, role: profile.affiliation.role, field: profile.affiliation.field };
+---
+<BaseLayout title={`${profile.name.display} — ${copy.titleHeadline}`} description={copy.description} locale={locale}>
+  <main>
+    <Header brand={brand.name} locale={locale} />
+
+    <section class="hero shell" id="home">
+      <div class="hero-index" aria-hidden="true">Y/O — 001</div>
+      <div class="hero-copy">
+        <p class="eyebrow hero-eyebrow">{copy.heroEyebrow[0]} <span>↔</span> {copy.heroEyebrow[1]}</p>
+        <div class="affiliation-lockup" aria-label={`${affiliation.role} · ${affiliation.secondary}`}>
+          <span class="affiliation-code">HKUST(GZ)</span>
+          <span class="affiliation-divider" aria-hidden="true"></span>
+          <span class="affiliation-name"><strong>{affiliation.institution}</strong><small>{affiliation.role} · {affiliation.field}</small></span>
+        </div>
+        <h1>
+          {copy.heroTitle[0]}<br />
+          <span>{copy.heroTitle[1]}</span>
+        </h1>
+        <p class="hero-intro">{copy.heroIntro}</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#research">{copy.explore} <span>↓</span></a>
+          <a class="text-link" href={profile.links.github.url}>{copy.proof} ↗</a>
+        </div>
+      </div>
+      <figure class="portrait-card">
+        <div class="portrait-grid" aria-hidden="true"></div>
+        <div class="portrait-orbit" aria-hidden="true"></div>
+        <img
+          src="/images/yaodong-yang-portrait.jpg"
+          alt={copy.portraitAlt}
+          width="853"
+          height="1280"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <figcaption>
+          <span class="portrait-id">{copy.portraitId}</span>
+          <span class="portrait-name">Yaodong Yang</span>
+          <span class="portrait-role">{affiliation.role}<br />{affiliation.secondary}</span>
+        </figcaption>
+        <div class="portrait-synthesis" aria-label={synthesis.join('、')}>
+          {synthesis.map((item, index) => <span>{String(index + 1).padStart(2, '0')} / {item}</span>)}
+        </div>
+      </figure>
+      <div class="scroll-note">{copy.scroll} <span>↓</span></div>
+    </section>
+
+    <section class="manifesto shell" data-reveal>
+      <p class="section-number">{copy.sections.position}</p>
+      <div>
+        <p class="manifesto-lead">{copy.sections.positionLead}</p>
+        <h2>{copy.sections.positionLines[0]}<br />{copy.sections.positionLines[1]}<br /><em>{copy.sections.positionLines[2]}</em></h2>
+      </div>
+    </section>
+
+    <section class="domains shell" id="research">
+      <div class="section-heading" data-reveal>
+        <div>
+          <p class="section-number">{copy.sections.research}</p>
+          <h2>{copy.sections.researchTitle[0]}<br />{copy.sections.researchTitle[1]}</h2>
+        </div>
+        <p>{copy.sections.researchIntro}</p>
+      </div>
+      <div class="domain-list">
+        {capabilities.map((domain, index) => {
+          const translated = locale === 'zh' ? capabilityZh[domain.id] : null;
+          return (
+            <article class="domain-row" data-reveal>
+              <div class="domain-number">{String(index + 1).padStart(2, '0')}</div>
+              <div class="domain-title">
+                <h3>{translated?.title ?? domain.title}</h3>
+                <p>{translated?.summary ?? domain.summary}</p>
+              </div>
+              <ul>{(translated?.topics ?? domain.topics).map((topic) => <li>{topic}</li>)}</ul>
+              <span class="domain-arrow">↗</span>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="project-field shell" id="projects" data-reveal>
+      <div class="field-graphic" aria-hidden="true">
+        <span class="axis axis-x"></span><span class="axis axis-y"></span>
+        <div class="human human-a"></div><div class="human human-b"></div><div class="human human-c"></div>
+        <span class="point p1"></span><span class="point p2"></span><span class="point p3"></span><span class="point p4"></span>
+      </div>
+      <div class="field-copy">
+        <p class="section-number">{copy.sections.projects}</p>
+        <h2>{copy.sections.projectsTitle}</h2>
+        <p>{copy.sections.projectsIntro}</p>
+        <span class="verification-chip">{copy.sections.projectsStatus}</span>
+      </div>
+    </section>
+
+    <section class="publications shell" id="publications">
+      <div class="section-heading compact" data-reveal>
+        <div>
+          <p class="section-number">{copy.sections.publications}</p>
+          <h2>{copy.sections.publicationsTitle[0]}<br />{copy.sections.publicationsTitle[1]}</h2>
+        </div>
+        <p>{copy.sections.publicationsIntro}</p>
+      </div>
+      <div class="publication-list">
+        {publications.map((publication, index) => (
+          <a class="publication-row" href={publication.links.primary} data-reveal>
+            <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
+            <div><h3>{publication.title}</h3><p>{publication.authors.join(' · ')}</p></div>
+            <div class="publication-meta"><strong>{publication.year}</strong><span>{publication.venue}</span><i>DOI ↗</i></div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="outputs shell">
+      <div class="section-heading compact" data-reveal>
+        <div><p class="section-number">{copy.sections.outputs}</p><h2>{copy.sections.outputsTitle[0]}<br />{copy.sections.outputsTitle[1]}</h2></div>
+        <p>{copy.sections.outputsIntro}</p>
+      </div>
+      <div class="output-grid" data-reveal>
+        {copy.outputs.map((item, index) => (
+          <article class:list={['output-card', { active: index === 0 }]}><span>{String(index + 1).padStart(2, '0')}</span><h3>{item[0]}</h3><p>{item[1]}</p><i>{item[2]}</i></article>
+        ))}
+      </div>
+    </section>
+
+    <section class="education shell" id="experience">
+      <div class="section-heading compact" data-reveal>
+        <div><p class="section-number">{copy.sections.education}</p><h2>{copy.sections.educationTitle[0]}<br />{copy.sections.educationTitle[1]}</h2></div>
+        <p>{copy.sections.educationIntro}</p>
+      </div>
+      <div class="education-list">
+        {education.map((item, index) => {
+          const translated = locale === 'zh' ? educationZh[item.id] : null;
+          return (
+            <article class="education-row" data-reveal>
+              <span class="education-index">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{translated?.institution ?? item.institution}</h3>
+                <p>{translated?.degree ?? item.degree}{(translated?.field ?? item.field) ? ` · ${translated?.field ?? item.field}` : ''}</p>
+                {(translated?.school ?? item.school) && <small>{translated?.school ?? item.school}</small>}
+              </div>
+              <div class="education-period"><strong>{formatPeriod(item.period.start)}</strong><span>→</span><strong>{formatPeriod(item.period.end ?? null)}</strong></div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="writing shell" id="writing" data-reveal>
+      <p class="section-number">{copy.sections.writing}</p>
+      <div class="writing-title"><h2>{copy.sections.writingTitle}</h2><p>{copy.sections.writingIntro}</p></div>
+      <div class="empty-note"><span>{copy.sections.writingEmpty}</span><p>{copy.sections.writingEmptyDetail}</p></div>
+    </section>
+
+    <section class="identity-strip">
+      <div class="shell strip-inner">
+        <div class="binary" aria-hidden="true">01 / 一零 / IO / YOUNG / 杨 / INPUT / OUTPUT /</div>
+        <div class="identity-copy">
+          <p>{copy.identityMeanings[0]}</p>
+          <strong>YOUNG<span>.IO</span></strong>
+          <p>{copy.identityMeanings[1]}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="links shell" data-reveal>
+      <p class="section-number">{copy.sections.presence}</p>
+      <div class="link-list">{links.map((link) => <a href={link.url}><span>{link.label}</span><i>↗</i></a>)}</div>
+    </section>
+
+    <Footer name={profile.name.display} website={profile.links.website.label} locale={locale} />
+  </main>
+</BaseLayout>

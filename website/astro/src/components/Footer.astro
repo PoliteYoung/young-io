@@ -1,18 +1,23 @@
 ---
+import type { Locale } from '../i18n/home';
+import { homeCopy } from '../i18n/home';
+
 interface Props {
   name: string;
   website: string;
+  locale: Locale;
 }
-const { name, website } = Astro.props;
+const { name, website, locale } = Astro.props;
+const copy = homeCopy[locale];
 ---
 <footer id="contact" class="site-footer">
   <div>
-    <p class="eyebrow">Output / connection</p>
-    <h2>Building an identity<br />that can keep learning.</h2>
+    <p class="eyebrow">{copy.footerEyebrow}</p>
+    <h2>{copy.footerTitle[0]}<br />{copy.footerTitle[1]}</h2>
   </div>
   <div class="footer-meta">
-    <p>Young.io is a living knowledge system for {name}.</p>
+    <p>{copy.footerDescription(name)}</p>
     <a href={`https://${website}`}>{website} ↗</a>
-    <p class="copyright">© {new Date().getFullYear()} · compiled from verified knowledge</p>
+    <p class="copyright">© {new Date().getFullYear()} · {copy.copyright}</p>
   </div>
 </footer>
