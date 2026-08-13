@@ -2,7 +2,7 @@
 
 **Young.io is Yaodong Yang's digital identity compiler:** a durable, AI-readable system that turns verified personal knowledge into a website, biographies, CVs, GitHub material, and future public communication.
 
-The name connects **Yang / Young** with computer **I/O** and the sounds of **一 / 零 · 幺 / 洞** — a bridge between human identity and digital identity.
+The canonical brand interpretation and localized identity statement are maintained in [`identity/core.yaml`](./identity/core.yaml), so public channels can derive them without keeping competing copies.
 
 ## Current phase: Phase 0 — Identity Reconstruction
 
@@ -53,13 +53,16 @@ pnpm preview   # preview the production build
 
 ## Editing data safely
 
-1. Add facts to `knowledge/*.yaml`; do not copy them into pages.
-2. Every important record must include `source`, `verified`, and `visibility`.
-3. Use `verified: false` or `status: needs verification` when evidence is incomplete.
-4. Public outputs must only expose records with `visibility: public`.
-5. Run `pnpm check && pnpm build` before committing.
+The current schema stores localized facts in `knowledge/` and localized identity interpretation in `identity/`. Website components consume the validated `getPublicIdentity(locale)` interface; `i18n/` contains interface and channel labels rather than duplicate personal data.
 
-See [`AGENTS.md`](./AGENTS.md) for the operating contract used by Codex, Claude Code, OpenCode, ChatGPT, and human contributors.
+1. Add facts to `knowledge/*.yaml`; do not copy them into pages.
+2. Add positioning and narrative changes to the appropriate file in `identity/`.
+3. Every important record must include `source`, `verified`, `status`, and `visibility`.
+4. Use `verified: false` or `status: needs verification` when evidence is incomplete.
+5. Public outputs only accept records that are public, verified, and have `status: verified`.
+6. Run `pnpm check && pnpm build` before committing.
+
+See [`MAINTENANCE.md`](./MAINTENANCE.md) for the content ownership map, record-addition workflow, and instructions for adding a new section. See [`AGENTS.md`](./AGENTS.md) for the operating contract used by Codex, Claude Code, OpenCode, ChatGPT, and human contributors.
 
 ## Public-record source hierarchy
 

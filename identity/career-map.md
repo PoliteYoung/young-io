@@ -17,14 +17,14 @@ These concerns later converge in the current intersection:
 Research + Engineering + Infrastructure
 ```
 
-They support work in digital humans, computer graphics, XR systems, research engineering, and AI infrastructure. Verified role names should remain visible as factual metadata, while public narrative may lead with the system contribution.
+They support work in digital avatars, computer graphics, XR systems, research engineering, and AI infrastructure. Verified role names should remain visible as factual metadata, while public narrative may lead with the system contribution.
 
 ## Verified timeline
 
 - **2022-07 — 2023-06** · Minsheng Fintech · Back-end Developer
 - **2021-05 — 2022-06** · Institute of Software, Chinese Academy of Sciences · Software Engineer internship
-- **2019-03 — 2019-07** · 威爱教育VIVEDU · Software Engineer internship
-- **2016-08 — 2016-11** · MoboTap · Software Test Engineer internship
+- **2019-03 — 2019-07** · VIVEDU· Software Engineer internship
+- **2016-08 — 2016-11** · MoboTap· Software Test Engineer internship
 
 ## Remaining reconstruction queue
 

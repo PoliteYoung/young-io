@@ -51,7 +51,7 @@ Additional rules:
 
 ## Writing style
 
-- Describe Yaodong as a **researcher and research engineer** across digital humans, computer graphics, XR systems, and AI infrastructure.
+- Describe Yaodong as a **researcher and research engineer** across digital avatars, computer graphics, XR systems, and AI infrastructure.
 - Preserve the intersection: **Research + Engineering + Infrastructure**.
 - Do not reduce the identity to a single job title or generic role.
 - Prefer concrete, calm, technically literate language.

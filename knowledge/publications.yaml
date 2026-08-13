@@ -1,7 +1,9 @@
-schema_version: 1
+schema_version: 2
 publications:
   - id: degas-3dv-2025
-    title: "DEGAS: Detailed Expressions on Full-Body Gaussian Avatars"
+    title:
+      en: "DEGAS: Detailed Expressions on Full-Body Gaussian Avatars"
+      zh: "DEGAS: Detailed Expressions on Full-Body Gaussian Avatars"
     authors:
       - Zhijing Shao
       - Duotun Wang
@@ -14,7 +16,9 @@ publications:
       - Kang Zhang
       - Zeyu Wang
     year: 2025
-    venue: 2025 International Conference on 3D Vision (3DV)
+    venue:
+      en: 2025 International Conference on 3D Vision (3DV)
+      zh: 2025 年国际三维视觉大会（3DV）
     pages: 1529–1540
     type: conference-paper
     identifiers:
@@ -31,7 +35,9 @@ publications:
     status: verified
     visibility: public
   - id: hi-reco-cgi-2025
-    title: "Hi-Reco: High-Fidelity Real-Time Conversational Digital Humans"
+    title:
+      en: "Hi-Reco: High-Fidelity Real-Time Conversational Digital Humans"
+      zh: "Hi-Reco: High-Fidelity Real-Time Conversational Digital Humans"
     authors:
       - Hongbin Huang
       - Junwei Li
@@ -45,7 +51,9 @@ publications:
       - Zhijing Shao
       - Zeyu Wang
     year: 2025
-    venue: Computer Graphics International Conference (CGI)
+    venue:
+      en: Computer Graphics International Conference (CGI)
+      zh: 国际计算机图形学大会（CGI）
     pages: 167–179
     type: conference-paper
     notes: DBLP and Google Scholar associate the work with CGI 2025; the Crossref DOI record currently reports a 2026 publication date for the Springer proceedings chapter. DBLP currently links the Yaodong Yang author entry to a different researcher profile, so an author-disambiguation correction is needed.

@@ -6,8 +6,12 @@ Add one YAML file per substantial project. Use stable IDs and include scope, rol
 schema_version: 1
 project:
   id: stable-project-id
-  title: Project title
-  summary: Factual one-sentence description
+  title:
+    en: Project title
+    zh: 项目标题
+  summary:
+    en: Factual one-sentence description
+    zh: 一句话事实描述
   role: null
   period:
     start: null

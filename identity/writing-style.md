@@ -13,7 +13,7 @@ Lead with the problem space and the intersection of disciplines. Follow with sel
 
 Preferred:
 
-> I work where digital-human research meets the engineering and infrastructure required to make it real.
+> I work where digital avatar research meets the engineering and infrastructure required to make it real.
 
 Avoid:
 
@@ -26,3 +26,11 @@ Avoid:
 - LinkedIn: accessible distribution of reviewed updates.
 - CV: terse, verifiable, date-precise evidence.
 - Speaker bio: audience-relevant narrative, never invented prestige.
+
+
+## Language and terminology
+
+- Keep each public channel internally consistent: Chinese pages use Chinese organization names; English pages use English organization names. Do not concatenate both names in one label unless the target channel explicitly calls for a bilingual form.
+- Canonical organization pairs currently include `威爱教育` / `VIVEDU` and `百纳信息` / `MoboTap`.
+- Translate `数字人` as `digital avatar` in Young.io identity copy. Use `digital human` only when it is part of a source title or an externally established proper name that must be preserved.
+- Product names, standards, technologies, venues, and profile brands may remain in their established form (for example HTC VIVE, VR, XR, AI, GPU, DOI, arXiv, GitHub, LinkedIn, ORCID, OpenReview, SMPL-X). This is not treated as accidental language mixing.

@@ -1,7 +1,8 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { getPublicKnowledge } from '../lib/knowledge';
-import { capabilityZh, educationZh, experienceZh, homeCopy, publicationZh, type Locale } from '../i18n/home';
+import { getPublicIdentity } from '../lib/knowledge';
+import { homeCopy } from '../i18n/home';
+import type { Locale } from '../i18n/types';
 import type { PageKey } from './Header.astro';
 
 interface Props {
@@ -11,11 +12,7 @@ interface Props {
 
 const { locale, page } = Astro.props;
 const copy = homeCopy[locale];
-const { profile, capabilities, education, experience, publications, experienceNarrative } = await getPublicKnowledge();
-const narrativeByExperience = new Map(experienceNarrative.experience.map((item) => [item.experience_id, item]));
-const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
-const knownAuthorNames = new Set([profile.name.display, ...profile.name.alternatives]);
-const formatAuthor = (author: string) => knownAuthorNames.has(author) ? displayName : author;
+const { profile, capabilities, education, experience, publications, careerThroughline } = await getPublicIdentity(locale);
 const formatPeriod = (value: string | Date | null | undefined) => {
   if (!value) return copy.present;
   const text = value instanceof Date ? value.toISOString().slice(0, 10) : String(value);
@@ -39,7 +36,7 @@ const pageMap = {
   },
   writing: {
     number: copy.sections.writing,
-    title: [copy.sections.writingTitle, locale === 'zh' ? '等待真实内容。' : 'Waiting for real material.'],
+    title: [copy.sections.writingTitle, copy.writingTitleContinuation],
     intro: copy.sections.writingIntro,
   },
 } as const;
@@ -47,7 +44,7 @@ const current = pageMap[page];
 const path = `/${page}`;
 ---
 <SiteLayout
-  title={`${current.title.join(' ')} — ${displayName}`}
+  title={`${current.title.join(' ')} — ${profile.displayName}`}
   description={current.intro}
   locale={locale}
   activePage={page}
@@ -65,20 +62,17 @@ const path = `/${page}`;
   {page === 'research' && (
     <section class="domains page-content shell">
       <div class="domain-list">
-        {capabilities.map((domain, index) => {
-          const translated = locale === 'zh' ? capabilityZh[domain.id] : null;
-          return (
+        {capabilities.map((domain, index) => (
             <article class="domain-row" data-reveal>
               <div class="domain-number">{String(index + 1).padStart(2, '0')}</div>
               <div class="domain-title">
-                <h3>{translated?.title ?? domain.title}</h3>
-                <p>{translated?.summary ?? domain.summary}</p>
+                <h3>{domain.title}</h3>
+                <p>{domain.summary}</p>
               </div>
-              <ul>{(translated?.topics ?? domain.topics).map((topic) => <li>{topic}</li>)}</ul>
+              <ul>{domain.topics.map((topic) => <li>{topic}</li>)}</ul>
               <span class="domain-arrow">↗</span>
             </article>
-          );
-        })}
+        ))}
       </div>
     </section>
   )}
@@ -87,7 +81,6 @@ const path = `/${page}`;
     <section class="publications page-content shell">
       <div class="publication-list">
         {publications.map((publication, index) => {
-          const translated = locale === 'zh' ? publicationZh[publication.id] : null;
           const publicationLinks = [
             { key: 'doi', label: copy.publicationLinks.doi, url: publication.links.primary },
             ...(publication.links.preprint ? [{ key: 'arxiv', label: copy.publicationLinks.arxiv, url: publication.links.preprint }] : []),
@@ -97,13 +90,13 @@ const path = `/${page}`;
             <article class="publication-row" data-reveal>
               <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
               <div>
-                <h3><a href={publication.links.primary} target="_blank" rel="noopener noreferrer">{translated?.title ?? publication.title}</a></h3>
-                <p>{translated?.authors ?? publication.authors.map(formatAuthor).join(' · ')}</p>
+                <h3><a href={publication.links.primary} target="_blank" rel="noopener noreferrer">{publication.title}</a></h3>
+                <p>{publication.authorDisplay ?? publication.authors.join(' · ')}</p>
               </div>
               <div class="publication-meta">
                 <strong>{publication.year}</strong>
-                <span>{translated?.venue ?? publication.venue}</span>
-                <div class="publication-links" aria-label={`${translated?.title ?? publication.title} links`}>
+                <span>{publication.venue}</span>
+                <div class="publication-links" aria-label={copy.publicationLinksLabel(publication.title)}>
                   {publicationLinks.map((link) => (
                     <a class={`publication-link publication-link--${link.key}`} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>
                   ))}
@@ -122,40 +115,34 @@ const path = `/${page}`;
         <header class="experience-heading" data-reveal>
           <span>01</span>
           <h2>{copy.sections.professionalExperienceTitle}</h2>
-          <p>{locale === 'zh' ? '事实来自已核验的公开职业记录；贡献标题属于身份层的解释性表达。' : 'Facts come from verified public career records; contribution headings are interpretive identity framing.'}</p>
+          <p>{copy.experienceRecordNote}</p>
         </header>
         <aside class="career-throughline" data-reveal>
-          <span>{locale === 'zh' ? '系统能力路径' : 'SYSTEMS THROUGH-LINE'}</span>
-          <p>{experienceNarrative.career_throughline[locale]}</p>
+          <span>{copy.careerThroughlineLabel}</span>
+          <p>{careerThroughline}</p>
         </aside>
         <div class="career-list">
-          {experience.map((item, index) => {
-            const translated = locale === 'zh' ? experienceZh[item.id] : null;
-            const location = translated?.location ?? [item.location.city, item.location.region, item.location.country].filter(Boolean).join(', ');
-            const narrative = narrativeByExperience.get(item.id);
-            if (!narrative) throw new Error(`Missing identity narrative for experience record: ${item.id}`);
-            return (
+          {experience.map((item, index) => (
               <article class="career-row" data-reveal>
                 <div class="career-rail">
                   <span>{String(index + 1).padStart(2, '0')}</span>
                   <div class="career-period"><strong>{formatPeriod(item.period.start)}</strong><i>→</i><strong>{formatPeriod(item.period.end)}</strong></div>
                 </div>
                 <div class="career-main">
-                  <p class="career-type">{narrative.contribution[locale]}</p>
-                  <h3>{narrative.framing[locale]}</h3>
+                  <p class="career-type">{item.contribution}</p>
+                  <h3>{item.framing}</h3>
                   <div class="career-role">
-                    <strong>{translated?.title ?? item.title}</strong>
+                    <strong>{item.title}</strong>
                     <span aria-hidden="true">/</span>
-                    <b>{translated?.organization ?? item.organization}</b>
-                    <small>{translated?.employmentType ?? item.employment_type}</small>
+                    <b>{item.organization}</b>
+                    <small>{item.employmentType}</small>
                   </div>
-                  <p class="career-summary">{translated?.summary ?? item.summary}</p>
-                  <ul>{(translated?.highlights ?? item.highlights).map((highlight) => <li>{highlight}</li>)}</ul>
+                  <p class="career-summary">{item.summary}</p>
+                  <ul>{item.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
                 </div>
-                <p class="career-location">{location}</p>
+                <p class="career-location">{item.locationDisplay}</p>
               </article>
-            );
-          })}
+          ))}
         </div>
       </div>
 
@@ -163,23 +150,20 @@ const path = `/${page}`;
         <header class="experience-heading" data-reveal>
           <span>02</span>
           <h2>{copy.sections.educationHistoryTitle}</h2>
-          <p>{locale === 'zh' ? '依据公开职业档案与研究者身份记录整理。' : 'Compiled from public professional and researcher identity records.'}</p>
+          <p>{copy.educationRecordNote}</p>
         </header>
         <div class="education-list">
-          {education.map((item, index) => {
-            const translated = locale === 'zh' ? educationZh[item.id] : null;
-            return (
+          {education.map((item, index) => (
               <article class="education-row" data-reveal>
                 <span class="education-index">{String(index + 1).padStart(2, '0')}</span>
                 <div>
-                  <h3>{translated?.institution ?? item.institution}</h3>
-                  <p>{translated?.degree ?? item.degree}{(translated?.field ?? item.field) ? ` · ${translated?.field ?? item.field}` : ''}</p>
-                  {(translated?.school ?? item.school) && <small>{translated?.school ?? item.school}</small>}
+                  <h3>{item.institution}</h3>
+                  <p>{item.degree}{item.field ? ` · ${item.field}` : ''}</p>
+                  {item.school && <small>{item.school}</small>}
                 </div>
                 <div class="education-period"><strong>{formatPeriod(item.period.start)}</strong><span>→</span><strong>{formatPeriod(item.period.end)}</strong></div>
               </article>
-            );
-          })}
+          ))}
         </div>
       </div>
     </section>

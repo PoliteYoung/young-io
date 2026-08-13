@@ -1,5 +1,5 @@
 ---
-import type { Locale } from '../i18n/home';
+import type { Locale } from '../i18n/types';
 import { homeCopy } from '../i18n/home';
 
 export type PageKey = 'home' | 'research' | 'publications' | 'experience' | 'writing';
@@ -30,7 +30,7 @@ const routeHref = (path: string) => `${localeBase}${path}` || '/';
   <a class="wordmark" href={routeHref('')} aria-label={`${brand} ${copy.nav.home}`}>
     <span>{brand.replace('.io', '')}</span><i>.io</i>
   </a>
-  <nav aria-label={locale === 'zh' ? '主导航' : 'Primary navigation'}>
+  <nav aria-label={copy.primaryNavigationLabel}>
     {routes.map((route) => (
       <a href={routeHref(route.path)} aria-current={route.key === activePage ? 'page' : undefined}>{route.label}</a>
     ))}

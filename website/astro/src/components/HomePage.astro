@@ -1,19 +1,21 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { getPublicKnowledge } from '../lib/knowledge';
-import { homeCopy, type Locale } from '../i18n/home';
+import { getPublicIdentity } from '../lib/knowledge';
+import { homeCopy } from '../i18n/home';
+import type { Locale } from '../i18n/types';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const copy = homeCopy[locale];
-const { profile } = await getPublicKnowledge();
-const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
-const profileTagKeys = ['github', 'linkedin', 'orcid', 'scholar', 'openreview'] as const;
+const { profile, brand } = await getPublicIdentity(locale);
+const profileTagKeys = ['email', 'github', 'linkedin', 'orcid', 'scholar', 'openreview'] as const;
 const profileTags = [
   ...profileTagKeys.map((key) => ({
     key,
     label: copy.profileTags[key],
-    value: key === 'github' || key === 'linkedin'
+    value: key === 'email'
+      ? profile.links.email.label
+      : key === 'github' || key === 'linkedin'
       ? `@${profile.links[key].label}`
       : key === 'scholar'
         ? copy.profileTags.scholarValue
@@ -21,7 +23,7 @@ const profileTags = [
           ? copy.profileTags.openreviewValue
           : profile.links[key].label,
     url: profile.links[key].url,
-    external: true,
+    external: key !== 'email',
   })),
   {
     key: 'resume',
@@ -31,21 +33,21 @@ const profileTags = [
     external: false,
   },
 ];
-const synthesis = locale === 'zh' ? ['研究', '工程', '基础设施'] : profile.synthesis;
-const affiliation = locale === 'zh'
-  ? { institution: profile.affiliation.institution_zh, role: copy.affiliationRole, field: '计算媒体与艺术' }
-  : { institution: profile.affiliation.institution, role: profile.affiliation.role, field: profile.affiliation.field };
+const synthesis = profile.synthesis.map((item) => item.label);
+const affiliation = profile.affiliation;
+const brandMeaningById = new Map(brand.meanings.map((item) => [item.id, item.detail]));
+const [brandStem, brandSuffix] = brand.name.split('.', 2);
 const localeBase = locale === 'zh' ? '/zh' : '';
 const directory = [
   { index: '02', path: '/research', label: copy.nav.research, title: copy.sections.researchTitle, description: copy.sections.researchIntro },
   { index: '03', path: '/publications', label: copy.nav.publications, title: copy.sections.publicationsTitle, description: copy.sections.publicationsIntro },
   { index: '04', path: '/experience', label: copy.nav.experience, title: copy.sections.educationTitle, description: copy.sections.educationIntro },
-  { index: '05', path: '/writing', label: copy.nav.writing, title: [copy.sections.writingTitle, locale === 'zh' ? '等待真实内容。' : 'Waiting for real material.'], description: copy.sections.writingIntro },
+  { index: '05', path: '/writing', label: copy.nav.writing, title: [copy.sections.writingTitle, copy.writingTitleContinuation], description: copy.sections.writingIntro },
 ];
 ---
 <SiteLayout
-  title={`${displayName} — ${copy.titleHeadline}`}
-  description={copy.description}
+  title={`${profile.displayName} — ${profile.headline}`}
+  description={profile.positioning}
   locale={locale}
   activePage="home"
   home
@@ -55,12 +57,12 @@ const directory = [
     <div class="hero-copy">
       <p class="eyebrow hero-eyebrow">{copy.heroEyebrow[0]} <span>↔</span> {copy.heroEyebrow[1]}</p>
       <div class="affiliation-lockup" aria-label={`${affiliation.role} · ${affiliation.institution}`}>
-        <span class="affiliation-code">{copy.affiliationCode}</span>
+        <span class="affiliation-code">{affiliation.shortName}</span>
         <span class="affiliation-divider" aria-hidden="true"></span>
         <span class="affiliation-name"><strong>{affiliation.institution}</strong><small>{affiliation.role} · {affiliation.field}</small></span>
       </div>
-      <h1>{copy.heroTitle[0]}<br /><span>{copy.heroTitle[1]}</span></h1>
-      <p class="hero-intro">{copy.heroIntro}</p>
+      <h1>{profile.heroTitle[0]}<br /><span>{profile.heroTitle[1]}</span></h1>
+      <p class="hero-intro">{profile.introduction}</p>
       <div class="hero-actions">
         <a class="button button-primary" href={`${localeBase}/research`}>{copy.explore} <span>↗</span></a>
       </div>
@@ -68,6 +70,7 @@ const directory = [
         {profileTags.map((link) => (
           <a class:list={["profile-tag", `profile-tag--${link.key}`]} href={link.url} target={link.external ? "_blank" : undefined} rel={link.external ? "me noopener noreferrer" : undefined} aria-label={`${link.label}: ${link.value}`}>
             <span class="profile-tag-icon" aria-hidden="true">
+              {link.key === 'email' && <svg viewBox="0 0 24 24" role="img"><path d="M3 5h18v14H3V5Zm2 2v.45l7 5.25 7-5.25V7H5Zm14 10V9.95l-7 5.25-7-5.25V17h14Z" /></svg>}
               {link.key === 'github' && <svg viewBox="0 0 24 24" role="img"><path d="M12 .7A11.5 11.5 0 0 0 8.36 23.1c.58.1.79-.25.79-.56v-2.23c-3.24.7-3.92-1.38-3.92-1.38-.53-1.35-1.3-1.71-1.3-1.71-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.27.74-1.56-2.59-.29-5.31-1.29-5.31-5.7 0-1.26.45-2.29 1.2-3.1-.12-.3-.52-1.48.11-3.07 0 0 .98-.32 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.07.75.81 1.2 1.84 1.2 3.1 0 4.43-2.73 5.4-5.32 5.7.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z" /></svg>}
               {link.key === 'linkedin' && <svg viewBox="0 0 24 24" role="img"><path d="M5.35 7.9H1.8V22h3.55V7.9ZM3.57 2A2.07 2.07 0 1 0 3.6 6.13 2.07 2.07 0 0 0 3.57 2ZM22.2 13.92c0-4.24-2.26-6.21-5.28-6.21a4.57 4.57 0 0 0-4.15 2.28V7.9H9.22V22h3.55v-6.99c0-1.84.35-3.63 2.64-3.63 2.25 0 2.28 2.11 2.28 3.75V22h3.55l.96-8.08Z" /></svg>}
               {link.key === 'orcid' && <span class="profile-tag-letter">iD</span>}
@@ -84,20 +87,20 @@ const directory = [
     <figure class="portrait-card">
       <div class="portrait-grid" aria-hidden="true"></div><div class="portrait-orbit" aria-hidden="true"></div>
       <img src="/images/yaodong-yang-portrait.jpg" alt={copy.portraitAlt} width="853" height="1280" loading="eager" fetchpriority="high" decoding="async" />
-      <figcaption><span class="portrait-id">{copy.portraitId}</span><span class="portrait-name">{displayName}</span><span class="portrait-role">{affiliation.role}<br />{affiliation.institution}</span></figcaption>
+      <figcaption><span class="portrait-id">{copy.portraitId}</span><span class="portrait-name">{profile.displayName}</span><span class="portrait-role">{affiliation.role}<br />{affiliation.institution}</span></figcaption>
       <div class="portrait-synthesis" aria-label={synthesis.join('、')}>{synthesis.map((item, index) => <span>{String(index + 1).padStart(2, '0')} / {item}</span>)}</div>
     </figure>
   </section>
 
   <section class="manifesto shell" data-reveal>
     <p class="section-number">{copy.sections.position}</p>
-    <div><p class="manifesto-lead">{copy.sections.positionLead}</p><h2>{copy.sections.positionLines[0]}<br />{copy.sections.positionLines[1]}<br /><em>{copy.sections.positionLines[2]}</em></h2></div>
+    <div><p class="manifesto-lead">{profile.position.lead}</p><h2>{profile.position.lines[0]}<br />{profile.position.lines[1]}<br /><em>{profile.position.lines[2]}</em></h2></div>
   </section>
 
-  <section class="page-directory shell" aria-label={locale === 'zh' ? '页面目录' : 'Page directory'}>
+  <section class="page-directory shell" aria-label={copy.directoryLabel}>
     <div class="directory-heading" data-reveal>
-      <p class="section-number">{locale === 'zh' ? '02—05 / 页面' : '02—05 / PAGES'}</p>
-      <h2>{locale === 'zh' ? '每个主题，独立展开。' : 'One subject. One page.'}</h2>
+      <p class="section-number">{copy.directoryNumber}</p>
+      <h2>{copy.directoryTitle}</h2>
     </div>
     <div class="directory-list">
       {directory.map((item) => (
@@ -113,7 +116,7 @@ const directory = [
   <section class="identity-strip">
     <div class="shell strip-inner">
       <div class="binary" aria-hidden="true">{copy.identityTicker}</div>
-      <div class="identity-copy"><p>{copy.identityMeanings[0]}</p><strong>YOUNG<span>.IO</span></strong><p>{copy.identityMeanings[1]}</p></div>
+      <div class="identity-copy"><p>{brandMeaningById.get('young')}</p><strong>{brandStem.toUpperCase()}<span>.{brandSuffix.toUpperCase()}</span></strong><p>{brandMeaningById.get('io')}</p></div>
     </div>
   </section>
 </SiteLayout>

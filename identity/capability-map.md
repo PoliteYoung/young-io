@@ -1,7 +1,7 @@
 # Capability map
 
 ```text
-Digital Humans
+Digital Avatars
 ├── Human Reconstruction
 ├── SMPL / SMPL-X
 ├── Human Pose Estimation

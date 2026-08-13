@@ -1,13 +1,14 @@
 ---
-import type { Locale } from '../i18n/home';
+import type { Locale } from '../i18n/types';
 import { homeCopy } from '../i18n/home';
 
 interface Props {
   name: string;
-  website: string;
+  email: { label: string; url: string };
+  website: { label: string; url: string };
   locale: Locale;
 }
-const { name, website, locale } = Astro.props;
+const { name, email, website, locale } = Astro.props;
 const copy = homeCopy[locale];
 ---
 <footer id="contact" class="site-footer" transition:name="site-footer" transition:animate="none">
@@ -17,7 +18,10 @@ const copy = homeCopy[locale];
   </div>
   <div class="footer-meta">
     <p>{copy.footerDescription(name)}</p>
-    <a href={`https://${website}`}>{website} ↗</a>
+    <div class="footer-links">
+      <a href={email.url} aria-label={`${copy.footerEmailLabel}: ${email.label}`}>{email.label} ↗</a>
+      <a href={website.url}>{website.label} ↗</a>
+    </div>
     <p class="copyright">© {new Date().getFullYear()} · {copy.copyright}</p>
   </div>
 </footer>

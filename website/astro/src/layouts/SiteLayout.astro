@@ -2,8 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import Header, { type PageKey } from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { getPublicKnowledge } from '../lib/knowledge';
-import type { Locale } from '../i18n/home';
+import { getPublicIdentity } from '../lib/knowledge';
+import type { Locale } from '../i18n/types';
 
 interface Props {
   title: string;
@@ -15,8 +15,7 @@ interface Props {
 }
 
 const { title, description, locale, activePage, alternatePath = '/', home = false } = Astro.props;
-const { profile, brand } = await getPublicKnowledge();
-const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
+const { profile, brand } = await getPublicIdentity(locale);
 ---
 <BaseLayout
   title={title}
@@ -30,6 +29,6 @@ const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.dis
     <main class="site-main">
       <slot />
     </main>
-    <Footer name={displayName} website={profile.links.website.label} locale={locale} />
+    <Footer name={profile.displayName} email={profile.links.email} website={profile.links.website} locale={locale} />
   </div>
 </BaseLayout>

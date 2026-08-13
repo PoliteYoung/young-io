@@ -1,10 +1,18 @@
-schema_version: 1
+schema_version: 2
 education:
   - id: hkust-gz-phd-compute-media-art
-    institution: The Hong Kong University of Science and Technology (Guangzhou)
-    school: Info Hub
-    degree: Doctor of Philosophy
-    field: Compute Media Art
+    institution:
+      en: The Hong Kong University of Science and Technology (Guangzhou)
+      zh: 香港科技大学（广州）
+    school:
+      en: Info Hub
+      zh: 信息枢纽
+    degree:
+      en: Doctor of Philosophy
+      zh: 哲学博士
+    field:
+      en: Compute Media Art
+      zh: 计算媒体与艺术
     period:
       start: 2024-08
     location:
@@ -18,10 +26,18 @@ education:
     status: verified
     visibility: public
   - id: binghamton-university-msc-cs
-    institution: Binghamton University
-    school: Thomas J. Watson College of Engineering and Applied Science
-    degree: Master of Science
-    field: Computer Science
+    institution:
+      en: Binghamton University
+      zh: 宾汉姆顿大学
+    school:
+      en: Thomas J. Watson College of Engineering and Applied Science
+      zh: 托马斯·J·沃森工程与应用科学学院
+    degree:
+      en: Master of Science
+      zh: 理学硕士
+    field:
+      en: Computer Science
+      zh: 计算机科学
     period:
       start: 2019-08-22
       end: 2021-12-26
@@ -35,10 +51,18 @@ education:
     status: verified
     visibility: public
   - id: hubei-university-economics-beng-software-engineering
-    institution: Hubei University of Economics
-    school: School of Information Management and Statistics
-    degree: Bachelor of Engineering
-    field: Software Engineering
+    institution:
+      en: Hubei University of Economics
+      zh: 湖北经济学院
+    school:
+      en: School of Information Management and Statistics
+      zh: 信息管理与统计学院
+    degree:
+      en: Bachelor of Engineering
+      zh: 工学学士
+    field:
+      en: Software Engineering
+      zh: 软件工程
     period:
       start: 2013-09-01
       end: 2017-06-30

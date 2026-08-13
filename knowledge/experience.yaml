@@ -1,9 +1,15 @@
-schema_version: 1
+schema_version: 2
 experience:
   - id: minsheng-fintech-back-end-developer
-    organization: Minsheng Fintech
-    title: Back-end Developer
-    employment_type: Full-time
+    organization:
+      en: Minsheng Fintech
+      zh: 民生科技
+    title:
+      en: Back-end Developer
+      zh: 后端开发工程师
+    employment_type:
+      en: Full-time
+      zh: 全职
     period:
       start: 2022-07
       end: 2023-06
@@ -11,19 +17,33 @@ experience:
       city: null
       region: Sichuan
       country: CN
-    summary: Developed internal group tools centered on server-side application creation, integrating reusable framework components and personalized configuration to support a one-stop application setup process for project teams.
+      display:
+        en: Sichuan, China
+        zh: 中国四川
+    summary:
+      en: Developed internal group tools centered on server-side application creation, integrating reusable framework components and personalized configuration to support a one-stop application setup process for project teams.
+      zh: 参与集团内部工具开发，以服务端应用创建为核心，整合可复用的框架组件与个性化配置，为项目团队提供一站式应用创建流程。
     highlights:
-      - Supported technology R&D by helping project teams create and configure server-side applications through a shared internal toolchain.
+      en:
+        - Supported technology R&D by helping project teams create and configure server-side applications through a shared internal toolchain.
+      zh:
+        - 通过共享内部工具链，支持项目团队创建和配置服务端应用。
     source:
       type: public-profile
-      reference: LinkedIn experience section, politeyoung, checked 2026-08-13
+      reference: LinkedIn experience section, politeyoung, checked 2026-08-13; Chinese display name matched to 民生科技 through China Minsheng Bank and KPMG public records, checked 2026-08-13
     verified: true
     status: verified
     visibility: public
   - id: iscas-software-engineer-intern
-    organization: Institute of Software, Chinese Academy of Sciences
-    title: Software Engineer
-    employment_type: Internship
+    organization:
+      en: Institute of Software, Chinese Academy of Sciences
+      zh: 中国科学院软件研究所
+    title:
+      en: Software Engineer
+      zh: 软件工程师
+    employment_type:
+      en: Internship
+      zh: 实习
     period:
       start: 2021-05
       end: 2022-06
@@ -31,9 +51,17 @@ experience:
       city: Guiyang
       region: Guizhou
       country: CN
-    summary: Contributed to back-end development and maintenance of a departmental portal using Spring Boot and MySQL.
+      display:
+        en: Guiyang, Guizhou, China
+        zh: 中国贵州贵阳
+    summary:
+      en: Contributed to back-end development and maintenance of a departmental portal using Spring Boot and MySQL.
+      zh: 使用 Spring Boot 与 MySQL 参与部门门户的后端开发与维护。
     highlights:
-      - Added an expert views section and wrote Python scripts to collect news from other departments.
+      en:
+        - Added an expert views section and wrote Python scripts to collect news from other departments.
+      zh:
+        - 新增专家观点栏目，并编写 Python 脚本采集其他部门的新闻信息。
     source:
       type: public-profile
       reference: LinkedIn experience section, politeyoung, checked 2026-08-13; source description references the historical yyd003/ISCAS_spider repository
@@ -41,9 +69,15 @@ experience:
     status: verified
     visibility: public
   - id: vivedu-software-engineer-intern
-    organization: 威爱教育VIVEDU
-    title: Software Engineer
-    employment_type: Internship
+    organization:
+      en: VIVEDU
+      zh: 威爱教育
+    title:
+      en: Software Engineer
+      zh: 软件工程师
+    employment_type:
+      en: Internship
+      zh: 实习
     period:
       start: 2019-03
       end: 2019-07
@@ -51,20 +85,35 @@ experience:
       city: Chengdu
       region: Sichuan
       country: CN
-    summary: Worked on VR and education solutions built around HTC VIVE, including project development, maintenance, and technology selection.
+      display:
+        en: Chengdu, Sichuan, China
+        zh: 中国四川成都
+    summary:
+      en: Worked on VR and education solutions built around HTC VIVE, including project development, maintenance, and technology selection.
+      zh: 参与围绕 HTC VIVE 的 VR+教育解决方案，负责项目开发、维护与技术选型。
     highlights:
-      - Built a Jenkins continuous-integration environment and an SMB file-sharing service.
-      - Replaced a commercial VR live-streaming module with an open-source solution, increasing user capacity by more than 200%.
+      en:
+        - Built a Jenkins continuous-integration environment and an SMB file-sharing service.
+        - Replaced a commercial VR live-streaming module with an open-source solution, increasing user capacity by more than 200%.
+      zh:
+        - 搭建 Jenkins 持续集成环境与 SMB 文件共享服务。
+        - 以开源方案替代商业 VR 直播模块，用户容量提升超过 200%。
     source:
       type: public-profile
-      reference: LinkedIn experience section, politeyoung, checked 2026-08-13
+      reference: LinkedIn experience section, politeyoung, checked 2026-08-13; English organization name confirmed by legacy CV; Chinese-English name pair confirmed by the user and corroborated by HTC VIVE and Computer Education records, checked 2026-08-13
     verified: true
     status: verified
     visibility: public
   - id: mobotap-software-test-engineer-intern
-    organization: MoboTap
-    title: Software Test Engineer
-    employment_type: Internship
+    organization:
+      en: MoboTap
+      zh: 百纳信息
+    title:
+      en: Software Test Engineer
+      zh: 软件测试工程师
+    employment_type:
+      en: Internship
+      zh: 实习
     period:
       start: 2016-08
       end: 2016-11
@@ -72,39 +121,68 @@ experience:
       city: Wuhan
       region: Hubei
       country: CN
-    summary: Participated in weekly Android release testing for Dolphin Browser, which the LinkedIn record describes as serving 6M daily active users, and monitored daily crash logs.
+      display:
+        en: Wuhan, Hubei, China
+        zh: 中国湖北武汉
+    summary:
+      en: Participated in weekly Android release testing for Dolphin Browser, which the LinkedIn record describes as serving 6M daily active users, and monitored daily crash logs.
+      zh: 参与 Dolphin Browser Android 版本的每周发布测试，并监控日常崩溃日志；领英记录注明该产品拥有 600 万日活跃用户。
     highlights:
-      - Reproduced more than 10 high-frequency crash cases with support from the XDA forum and device manufacturers.
-      - Documented a general method for simulating user device environments in the internal wiki.
+      en:
+        - Reproduced more than 10 high-frequency crash cases with support from the XDA forum and device manufacturers.
+        - Documented a general method for simulating user device environments in the internal wiki.
+      zh:
+        - 在 XDA 论坛与设备厂商支持下，复现 10 余个高频崩溃问题。
+        - 在内部 Wiki 中整理并分享模拟用户设备环境的通用方法。
     source:
       type: public-profile
-      reference: LinkedIn experience section, politeyoung, checked 2026-08-13
+      reference: LinkedIn experience section, politeyoung, checked 2026-08-13; Chinese-English name pair confirmed by the user and corroborated by Huazhong University of Science and Technology and MoboTap public records, checked 2026-08-13
     verified: true
     status: verified
     visibility: public
 capability_domains:
   - id: digital-humans
-    title: Digital Humans
-    summary: Human reconstruction, body models, pose, and avatar systems.
+    title:
+      en: Digital Avatars
+      zh: 数字人
+    summary:
+      en: Human reconstruction, body models, pose, and avatar systems.
+      zh: 人体重建、人体模型、姿态估计与数字人系统。
     topics:
-      - Human Reconstruction
-      - SMPL / SMPL-X
-      - 3DGS Avatar
-      - Human Pose Estimation
+      en:
+        - Human Reconstruction
+        - SMPL / SMPL-X
+        - 3DGS Avatar
+        - Human Pose Estimation
+      zh:
+        - 人体重建
+        - SMPL / SMPL-X
+        - 3DGS 数字人
+        - 人体姿态估计
     source:
       type: user-provided
-      reference: Initial Young.io project brief
+      reference: "Initial Young.io project brief; terminology corrected by user, 2026-08-13: 数字人 corresponds to digital avatar"
     verified: true
     status: verified
     visibility: public
   - id: graphics-xr
-    title: Graphics & XR
-    summary: Computer graphics, Gaussian Splatting, immersive systems, motion capture, and XR development.
+    title:
+      en: Graphics & XR
+      zh: 图形学与 XR
+    summary:
+      en: Computer graphics, Gaussian Splatting, immersive systems, motion capture, and XR development.
+      zh: 计算机图形学、高斯泼溅、沉浸式系统、动作捕捉与 XR 开发。
     topics:
-      - Computer Graphics
-      - Gaussian Splatting
-      - XR / Immersive Systems
-      - Motion Capture Systems
+      en:
+        - Computer Graphics
+        - Gaussian Splatting
+        - XR / Immersive Systems
+        - Motion Capture Systems
+      zh:
+        - 计算机图形学
+        - 高斯泼溅
+        - XR / 沉浸式系统
+        - 动作捕捉系统
     source:
       type: user-provided
       reference: Initial Young.io project brief
@@ -112,13 +190,23 @@ capability_domains:
     status: verified
     visibility: public
   - id: research-engineering
-    title: Research Engineering
-    summary: Modernizing research code and making demanding GPU systems reproducible across environments.
+    title:
+      en: Research Engineering
+      zh: 科研工程
+    summary:
+      en: Modernizing research code and making demanding GPU systems reproducible across environments.
+      zh: 升级科研代码，让高要求的 GPU 系统能够跨环境复现。
     topics:
-      - PyTorch Ecosystem
-      - CUDA Migration
-      - GPU Computing
-      - Legacy Framework Migration
+      en:
+        - PyTorch Ecosystem
+        - CUDA Migration
+        - GPU Computing
+        - Legacy Framework Migration
+      zh:
+        - PyTorch 生态
+        - CUDA 迁移
+        - GPU 计算
+        - 旧框架迁移
     source:
       type: user-provided
       reference: Initial Young.io project brief
@@ -126,13 +214,23 @@ capability_domains:
     status: verified
     visibility: public
   - id: infrastructure
-    title: AI Infrastructure
-    summary: The systems layer beneath research, from GPU clusters to Linux and Windows environments and research facilities.
+    title:
+      en: AI Infrastructure
+      zh: AI 基础设施
+    summary:
+      en: The systems layer beneath research, from GPU clusters to Linux and Windows environments and research facilities.
+      zh: 支撑研究的系统层：从 GPU 集群，到 Linux、Windows 环境与科研设施。
     topics:
-      - GPU Cluster Infrastructure
-      - Linux / Windows Research Environments
-      - Research Facility Operation
-      - Research Code Modernization
+      en:
+        - GPU Cluster Infrastructure
+        - Linux / Windows Research Environments
+        - Research Facility Operation
+        - Research Code Modernization
+      zh:
+        - GPU 集群基础设施
+        - Linux / Windows 科研环境
+        - 科研设施运行
+        - 科研代码现代化
     source:
       type: user-provided
       reference: Initial Young.io project brief

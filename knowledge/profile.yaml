@@ -1,28 +1,34 @@
-schema_version: 1
+schema_version: 2
 profile:
   id: yaodong-yang
   name:
-    display: "Yao-Dong 'Polite Young' Yang"
-    display_zh: 杨耀东
+    canonical: Yao-Dong Yang
+    display:
+      en: "Yao-Dong 'Polite Young' Yang"
+      zh: 杨耀东
     alternatives:
       - Yaodong Yang
       - Yao-Dong Yang
       - Polite Yaodong Yang
       - PoliteYoung
-  headline: Researcher and Research Engineer
-  positioning: Researcher and Research Engineer working on Digital Humans, Computer Graphics, XR systems, and AI infrastructure.
-  synthesis:
-    - Research
-    - Engineering
-    - Infrastructure
-  introduction: I work where digital-human research meets the engineering and infrastructure required to make it real — from reconstruction and avatar systems to GPU environments, motion capture, and XR platforms.
-  location: Guangzhou, China
+  location:
+    en: Guangzhou, China
+    zh: 中国广州
   affiliation:
-    institution: The Hong Kong University of Science and Technology (Guangzhou)
-    institution_zh: 香港科技大学（广州）
-    role: PhD Student
-    field: Compute Media Art
+    short_name: HKUST(GZ)
+    institution:
+      en: The Hong Kong University of Science and Technology (Guangzhou)
+      zh: 香港科技大学（广州）
+    role:
+      en: PhD Student
+      zh: 博士生
+    field:
+      en: Compute Media Art
+      zh: 计算媒体与艺术
   links:
+    email:
+      label: me@politeyoung.eu.org
+      url: mailto:me@politeyoung.eu.org
     website:
       label: pol1te.cc.cd
       url: https://pol1te.cc.cd
@@ -43,18 +49,12 @@ profile:
       url: https://openreview.net/profile?id=~Yao-Dong_Yang2
   source:
     type: user-provided
-    reference: Initial Young.io project brief
+    reference: Initial Young.io project brief and user-confirmed public profile details
   verified: true
   status: verified
   visibility: public
 brand:
   name: Young.io
-  statement: A bridge between human identity and digital identity.
-  meanings:
-    - term: Young
-      detail: Connects Yang (杨), personal identity, growth, and continuous learning.
-    - term: IO
-      detail: Connects input/output, binary 1/0, and the sounds 一/零 and 幺/洞.
   source:
     type: user-provided
     reference: Initial Young.io project brief

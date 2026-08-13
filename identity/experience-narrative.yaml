@@ -1,7 +1,14 @@
-schema_version: 1
+schema_version: 2
 career_throughline:
-  en: These roles form a systems foundation rather than a collection of disconnected software jobs. Platform construction, workflow automation, XR integration, and product-scale reliability later converge in research engineering and AI infrastructure.
-  zh: 这些经历不是彼此割裂的“后端、运维、爬虫与测试”，而是一条逐渐成形的系统能力路径：平台构建、流程自动化、XR 系统集成与大规模软件可靠性，最终汇入今天的科研工程与 AI 基础设施工作。
+  text:
+    en: These roles form a systems foundation rather than a collection of disconnected software jobs. Platform construction, workflow automation, XR integration, and product-scale reliability later converge in research engineering and AI infrastructure.
+    zh: 这些经历并非彼此割裂的软件岗位，而是一条逐渐成形的系统能力路径：平台构建、流程自动化、XR 系统集成与大规模软件可靠性，最终汇入今天的科研工程与 AI 基础设施工作。
+  source:
+    type: user-provided
+    reference: Initial Young.io project brief
+  verified: true
+  status: verified
+  visibility: public
 experience:
   - experience_id: minsheng-fintech-back-end-developer
     contribution:
@@ -10,6 +17,12 @@ experience:
     framing:
       en: Turned reusable server-side frameworks and configuration into a shared application-creation workflow for project teams.
       zh: 将可复用的服务端框架与配置整合为共享的应用创建流程，帮助项目团队更快建立工程基础。
+    source:
+      type: user-provided
+      reference: Initial Young.io project brief
+    verified: true
+    status: verified
+    visibility: public
   - experience_id: iscas-software-engineer-intern
     contribution:
       en: Information Automation for Research Operations
@@ -17,6 +30,12 @@ experience:
     framing:
       en: Connected portal engineering with automated information collection to improve how departmental knowledge was gathered and presented.
       zh: 将部门门户建设与信息自动采集结合，改善科研机构内部知识的汇集与呈现方式。
+    source:
+      type: user-provided
+      reference: Initial Young.io project brief
+    verified: true
+    status: verified
+    visibility: public
   - experience_id: vivedu-software-engineer-intern
     contribution:
       en: XR Systems Integration
@@ -24,6 +43,12 @@ experience:
     framing:
       en: Worked across delivery infrastructure, file services, technology selection, and live-streaming architecture for an end-to-end VR education system.
       zh: 跨越交付基础设施、文件服务、技术选型与直播架构，参与端到端 VR 教育系统的集成与演进。
+    source:
+      type: user-provided
+      reference: Initial Young.io project brief
+    verified: true
+    status: verified
+    visibility: public
   - experience_id: mobotap-software-test-engineer-intern
     contribution:
       en: Software Reliability at Product Scale
@@ -31,3 +56,9 @@ experience:
     framing:
       en: Investigated release quality and difficult crash reproduction across heterogeneous Android device environments for a large-scale consumer product.
       zh: 面向大规模消费级产品，在异构 Android 设备环境中处理版本质量与复杂崩溃复现问题。
+    source:
+      type: user-provided
+      reference: Initial Young.io project brief
+    verified: true
+    status: verified
+    visibility: public

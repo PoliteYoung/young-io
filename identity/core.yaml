@@ -1,0 +1,66 @@
+schema_version: 1
+identity:
+  profile:
+    headline:
+      en: Researcher and Research Engineer
+      zh: 研究者与研究工程师
+    positioning:
+      en: Researcher and Research Engineer working on digital avatars, computer graphics, XR systems, and AI infrastructure.
+      zh: 专注数字人、计算机图形学、XR 系统与 AI 基础设施的研究者和研究工程师。
+    introduction:
+      en: I work where digital avatar research meets the engineering and infrastructure required to make it real — from human reconstruction and avatar systems to GPU environments, motion capture, and XR platforms.
+      zh: 我的工作位于数字人研究及其落地所需的工程与基础设施交汇处——从人体重建和数字人系统，到 GPU 环境、动作捕捉与 XR 平台。
+    hero_title:
+      en:
+        - I build the systems
+        - behind digital avatars.
+      zh:
+        - 我构建数字人
+        - 背后的系统。
+    synthesis:
+      - id: research
+        label:
+          en: Research
+          zh: 研究
+      - id: engineering
+        label:
+          en: Engineering
+          zh: 工程
+      - id: infrastructure
+        label:
+          en: Infrastructure
+          zh: 基础设施
+    position:
+      lead:
+        en: Not one role. A working intersection.
+        zh: 不止一种角色，而是一个持续运转的交汇点。
+      lines:
+        en:
+          - Research asks the question.
+          - Engineering makes it possible.
+          - Infrastructure keeps it real.
+        zh:
+          - 研究提出问题。
+          - 工程让它成为可能。
+          - 基础设施让它真正运转。
+  brand:
+    statement:
+      en: A bridge between human identity and digital identity.
+      zh: 一座连接人类身份与数字身份的桥梁。
+    meanings:
+      - id: young
+        term: Young
+        detail:
+          en: Connects Yang, personal identity, growth, and continuous learning.
+          zh: Young 连接 Yang（杨）、个人身份、成长与持续学习。
+      - id: io
+        term: IO
+        detail:
+          en: Connects input/output and binary 1/0 with the Chinese readings “yi/ling” and “yao/dong” behind the name.
+          zh: IO 连接输入与输出、二进制 1/0，以及品牌名背后的“一/零”和“幺/洞”两组读音。
+  source:
+    type: user-provided
+    reference: Initial Young.io project brief; terminology corrected by user, 2026-08-13
+  verified: true
+  status: verified
+  visibility: public
