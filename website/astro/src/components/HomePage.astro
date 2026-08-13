@@ -15,18 +15,15 @@ const formatPeriod = (value: string | Date | null) => {
   return text.slice(0, 7);
 };
 const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
-const linkLabels: Record<string, string> = locale === 'zh'
-  ? { website: '个人网站', github: 'GitHub', linkedin: '领英', orcid: '研究者身份档案', scholar: 'Google 学术' }
-  : Object.fromEntries(Object.entries(profile.links).map(([key, value]) => [key, value.label]));
-const links = Object.entries(profile.links).map(([key, value]) => ({ ...value, label: linkLabels[key] ?? value.label }));
+const profileTagKeys = ['github', 'linkedin', 'orcid', 'scholar'] as const;
+const profileTags = profileTagKeys.map((key) => ({
+  key,
+  label: copy.profileTags[key],
+  value: key === 'scholar' ? copy.profileTags.scholarValue : profile.links[key].label,
+  url: profile.links[key].url,
+}));
 const knownAuthorNames = new Set([profile.name.display, ...profile.name.alternatives]);
 const formatAuthor = (author: string) => knownAuthorNames.has(author) ? displayName : author;
-const outputLinks = [
-  locale === 'zh' ? '/zh' : '/',
-  profile.links.github.url,
-  null,
-  profile.links.linkedin.url,
-] as const;
 const synthesis = locale === 'zh' ? ['研究', '工程', '基础设施'] : profile.synthesis;
 const affiliation = locale === 'zh'
   ? { institution: profile.affiliation.institution_zh, role: copy.affiliationRole, field: '计算媒体与艺术' }
@@ -52,8 +49,27 @@ const affiliation = locale === 'zh'
         <p class="hero-intro">{copy.heroIntro}</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#research">{copy.explore} <span>↓</span></a>
-          <a class="text-link" href={profile.links.github.url}>{copy.proof} ↗</a>
         </div>
+        <nav class="profile-tags" aria-label={copy.profileTags.label}>
+          {profileTags.map((link) => (
+            <a class:list={["profile-tag", `profile-tag--${link.key}`]} href={link.url} target="_blank" rel="me noopener noreferrer" aria-label={`${link.label}: ${link.value}`}>
+              <span class="profile-tag-icon" aria-hidden="true">
+                {link.key === 'github' && (
+                  <svg viewBox="0 0 24 24" role="img"><path d="M12 .7A11.5 11.5 0 0 0 8.36 23.1c.58.1.79-.25.79-.56v-2.23c-3.24.7-3.92-1.38-3.92-1.38-.53-1.35-1.3-1.71-1.3-1.71-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.27.74-1.56-2.59-.29-5.31-1.29-5.31-5.7 0-1.26.45-2.29 1.2-3.1-.12-.3-.52-1.48.11-3.07 0 0 .98-.32 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.07.75.81 1.2 1.84 1.2 3.1 0 4.43-2.73 5.4-5.32 5.7.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z" /></svg>
+                )}
+                {link.key === 'linkedin' && (
+                  <svg viewBox="0 0 24 24" role="img"><path d="M5.35 7.9H1.8V22h3.55V7.9ZM3.57 2A2.07 2.07 0 1 0 3.6 6.13 2.07 2.07 0 0 0 3.57 2ZM22.2 13.92c0-4.24-2.26-6.21-5.28-6.21a4.57 4.57 0 0 0-4.15 2.28V7.9H9.22V22h3.55v-6.99c0-1.84.35-3.63 2.64-3.63 2.25 0 2.28 2.11 2.28 3.75V22h3.55l.96-8.08Z" /></svg>
+                )}
+                {link.key === 'orcid' && <span class="profile-tag-letter">iD</span>}
+                {link.key === 'scholar' && (
+                  <svg viewBox="0 0 24 24" role="img"><path d="m12 2 10 5.4-4.1 2.2v5.75h-1.7v-4.83L12 12.8 2 7.4 12 2Zm-6.4 8.15L12 13.6l6.4-3.45v6.1c0 1.58-2.87 3.65-6.4 3.65s-6.4-2.07-6.4-3.65v-6.1Z" /></svg>
+                )}
+              </span>
+              <span class="profile-tag-copy"><b>#{link.label}</b><span>{link.value}</span></span>
+              <i aria-hidden="true">↗</i>
+            </a>
+          ))}
+        </nav>
       </div>
       <figure class="portrait-card">
         <div class="portrait-grid" aria-hidden="true"></div>
@@ -149,22 +165,6 @@ const affiliation = locale === 'zh'
       </div>
     </section>
 
-    <section class="outputs shell">
-      <div class="section-heading compact" data-reveal>
-        <div><p class="section-number">{copy.sections.outputs}</p><h2>{copy.sections.outputsTitle[0]}<br />{copy.sections.outputsTitle[1]}</h2></div>
-        <p>{copy.sections.outputsIntro}</p>
-      </div>
-      <div class="output-grid" data-reveal>
-        {copy.outputs.map((item, index) => {
-          const href = outputLinks[index];
-          const content = <><span>{String(index + 1).padStart(2, '0')}</span><h3>{item[0]}</h3><p>{item[1]}</p><i>{item[2]}{href && index > 0 ? ' ↗' : ''}</i></>;
-          return href
-            ? <a class:list={['output-card', { active: index === 0 }]} href={href} target={index > 0 ? '_blank' : undefined} rel={index > 0 ? 'me noopener noreferrer' : undefined} aria-label={`${item[0]} — ${item[2]}`}>{content}</a>
-            : <article class="output-card output-card-pending">{content}</article>;
-        })}
-      </div>
-    </section>
-
     <section class="education shell" id="experience">
       <div class="section-heading compact" data-reveal>
         <div><p class="section-number">{copy.sections.education}</p><h2>{copy.sections.educationTitle[0]}<br />{copy.sections.educationTitle[1]}</h2></div>
@@ -203,11 +203,6 @@ const affiliation = locale === 'zh'
           <p>{copy.identityMeanings[1]}</p>
         </div>
       </div>
-    </section>
-
-    <section class="links shell" data-reveal>
-      <p class="section-number">{copy.sections.presence}</p>
-      <div class="link-list">{links.map((link) => <a href={link.url} target="_blank" rel="me noopener noreferrer"><span>{link.label}</span><i>↗</i></a>)}</div>
     </section>
 
     <Footer name={displayName} website={profile.links.website.label} locale={locale} />
