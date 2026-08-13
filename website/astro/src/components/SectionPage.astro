@@ -11,7 +11,8 @@ interface Props {
 
 const { locale, page } = Astro.props;
 const copy = homeCopy[locale];
-const { profile, capabilities, education, experience, publications } = await getPublicKnowledge();
+const { profile, capabilities, education, experience, publications, experienceNarrative } = await getPublicKnowledge();
+const narrativeByExperience = new Map(experienceNarrative.experience.map((item) => [item.experience_id, item]));
 const displayName = locale === 'zh' ? profile.name.display_zh : profile.name.display;
 const knownAuthorNames = new Set([profile.name.display, ...profile.name.alternatives]);
 const formatAuthor = (author: string) => knownAuthorNames.has(author) ? displayName : author;
@@ -121,12 +122,18 @@ const path = `/${page}`;
         <header class="experience-heading" data-reveal>
           <span>01</span>
           <h2>{copy.sections.professionalExperienceTitle}</h2>
-          <p>{locale === 'zh' ? '来源：公开领英职业经历，核验于 2026 年 8 月 13 日。' : 'Source: public LinkedIn experience records, verified August 13, 2026.'}</p>
+          <p>{locale === 'zh' ? '事实来自已核验的公开职业记录；贡献标题属于身份层的解释性表达。' : 'Facts come from verified public career records; contribution headings are interpretive identity framing.'}</p>
         </header>
+        <aside class="career-throughline" data-reveal>
+          <span>{locale === 'zh' ? '系统能力路径' : 'SYSTEMS THROUGH-LINE'}</span>
+          <p>{experienceNarrative.career_throughline[locale]}</p>
+        </aside>
         <div class="career-list">
           {experience.map((item, index) => {
             const translated = locale === 'zh' ? experienceZh[item.id] : null;
             const location = translated?.location ?? [item.location.city, item.location.region, item.location.country].filter(Boolean).join(', ');
+            const narrative = narrativeByExperience.get(item.id);
+            if (!narrative) throw new Error(`Missing identity narrative for experience record: ${item.id}`);
             return (
               <article class="career-row" data-reveal>
                 <div class="career-rail">
@@ -134,9 +141,14 @@ const path = `/${page}`;
                   <div class="career-period"><strong>{formatPeriod(item.period.start)}</strong><i>→</i><strong>{formatPeriod(item.period.end)}</strong></div>
                 </div>
                 <div class="career-main">
-                  <p class="career-type">{translated?.employmentType ?? item.employment_type}</p>
-                  <h3>{translated?.title ?? item.title}</h3>
-                  <h4>{translated?.organization ?? item.organization}</h4>
+                  <p class="career-type">{narrative.contribution[locale]}</p>
+                  <h3>{narrative.framing[locale]}</h3>
+                  <div class="career-role">
+                    <strong>{translated?.title ?? item.title}</strong>
+                    <span aria-hidden="true">/</span>
+                    <b>{translated?.organization ?? item.organization}</b>
+                    <small>{translated?.employmentType ?? item.employment_type}</small>
+                  </div>
                   <p class="career-summary">{translated?.summary ?? item.summary}</p>
                   <ul>{(translated?.highlights ?? item.highlights).map((highlight) => <li>{highlight}</li>)}</ul>
                 </div>

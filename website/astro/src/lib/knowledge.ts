@@ -84,19 +84,35 @@ const publicationSchema = recordMetaSchema.extend({
 });
 const publicationsFileSchema = z.object({ schema_version: z.number(), publications: z.array(publicationSchema) });
 const talksFileSchema = z.object({ schema_version: z.number(), talks: z.array(z.unknown()) });
+const localizedTextSchema = z.object({ en: z.string().min(1), zh: z.string().min(1) });
+const experienceNarrativeFileSchema = z.object({
+  schema_version: z.number(),
+  career_throughline: localizedTextSchema,
+  experience: z.array(z.object({
+    experience_id: z.string().min(1),
+    contribution: localizedTextSchema,
+    framing: localizedTextSchema,
+  })),
+});
 
-function knowledgePath(file: string) { return resolve(process.cwd(), '../../knowledge', file); }
-async function readYaml(file: string) { return parse(await readFile(knowledgePath(file), 'utf8')) as unknown; }
+function projectPath(directory: 'knowledge' | 'identity', file: string) { return resolve(process.cwd(), `../../${directory}`, file); }
+async function readYaml(directory: 'knowledge' | 'identity', file: string) { return parse(await readFile(projectPath(directory, file), 'utf8')) as unknown; }
 
 export async function getPublicKnowledge() {
-  const [profileData, experienceData, educationData, publicationsData, talksData] = await Promise.all([
-    readYaml('profile.yaml'), readYaml('experience.yaml'), readYaml('education.yaml'), readYaml('publications.yaml'), readYaml('talks.yaml'),
+  const [profileData, experienceData, educationData, publicationsData, talksData, experienceNarrativeData] = await Promise.all([
+    readYaml('knowledge', 'profile.yaml'),
+    readYaml('knowledge', 'experience.yaml'),
+    readYaml('knowledge', 'education.yaml'),
+    readYaml('knowledge', 'publications.yaml'),
+    readYaml('knowledge', 'talks.yaml'),
+    readYaml('identity', 'experience-narrative.yaml'),
   ]);
   const { profile, brand } = profileFileSchema.parse(profileData);
   const experience = experienceFileSchema.parse(experienceData);
   const education = educationFileSchema.parse(educationData).education;
   const publications = publicationsFileSchema.parse(publicationsData).publications;
   const talks = talksFileSchema.parse(talksData).talks;
+  const experienceNarrative = experienceNarrativeFileSchema.parse(experienceNarrativeData);
   if (profile.visibility !== 'public' || brand.visibility !== 'public') throw new Error('The primary profile and brand records must be public to build the website.');
   return {
     profile, brand,
@@ -105,5 +121,6 @@ export async function getPublicKnowledge() {
     education: education.filter((item) => item.visibility === 'public'),
     publications: publications.filter((item) => item.visibility === 'public'),
     talks,
+    experienceNarrative,
   };
 }

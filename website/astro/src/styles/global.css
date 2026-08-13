@@ -439,6 +439,17 @@ html[lang='en'] .portrait-name { font-size: clamp(1.35rem, 1.9vw, 2.05rem); max-
 .experience-heading > span { color: var(--orange); font: 500 .62rem/1 var(--mono); letter-spacing: .08em; }
 .experience-heading h2 { font: 600 clamp(2.8rem, 5.2vw, 6.1rem)/.92 var(--display); letter-spacing: -.07em; }
 .experience-heading p { justify-self: end; max-width: 350px; color: #77746d; font-size: .68rem; line-height: 1.55; text-align: right; }
+.career-throughline {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 42px;
+  margin: 0 0 34px;
+  padding: 22px 0 24px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+.career-throughline span { color: var(--orange); font: 500 .58rem/1.2 var(--mono); letter-spacing: .11em; }
+.career-throughline p { max-width: 900px; color: #4f4c46; font: 500 clamp(1rem, 1.45vw, 1.35rem)/1.55 var(--body); }
 .career-list { border-top: 1px solid var(--ink); }
 .career-row {
   display: grid;
@@ -454,9 +465,13 @@ html[lang='en'] .portrait-name { font-size: clamp(1.35rem, 1.9vw, 2.05rem); max-
 .career-rail > span { color: #77746d; font: 400 .65rem/1 var(--mono); }
 .career-period { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: #4f4c46; font: 500 .66rem/1 var(--mono); }
 .career-period i { color: var(--orange); font-style: normal; }
-.career-type { margin-bottom: 12px; color: var(--orange); font: 500 .58rem/1 var(--mono); letter-spacing: .11em; text-transform: uppercase; }
-.career-main h3 { font: 600 clamp(2rem, 3.8vw, 4.5rem)/.95 var(--display); letter-spacing: -.06em; }
-.career-main h4 { margin-top: 11px; color: #4e4b45; font: 600 clamp(1rem, 1.5vw, 1.4rem)/1.2 var(--body); }
+.career-type { margin-bottom: 14px; color: var(--orange); font: 500 .58rem/1 var(--mono); letter-spacing: .11em; text-transform: uppercase; }
+.career-main h3 { max-width: 900px; font: 600 clamp(1.85rem, 3.35vw, 3.9rem)/1 var(--display); letter-spacing: -.055em; }
+.career-role { display: flex; flex-wrap: wrap; gap: 7px 11px; align-items: baseline; margin-top: 17px; color: #4e4b45; }
+.career-role strong { font: 600 clamp(.95rem, 1.35vw, 1.25rem)/1.2 var(--body); }
+.career-role b { font: 500 clamp(.9rem, 1.2vw, 1.1rem)/1.2 var(--body); }
+.career-role span { color: var(--orange); font-family: var(--mono); }
+.career-role small { margin-left: auto; color: #77746d; font: 500 .56rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 .career-summary { max-width: 800px; margin-top: 25px; color: #67645d; font-size: .78rem; line-height: 1.65; }
 .career-main ul { max-width: 800px; margin: 18px 0 0; padding: 0; display: grid; gap: 8px; list-style: none; }
 .career-main li { position: relative; padding-left: 18px; color: #3e3c37; font-size: .72rem; line-height: 1.6; }
@@ -467,6 +482,7 @@ html[lang='en'] .portrait-name { font-size: clamp(1.35rem, 1.9vw, 2.05rem); max-
 @media (max-width: 900px) {
   .experience-heading { grid-template-columns: 50px 1fr; }
   .experience-heading p { grid-column: 2; justify-self: start; text-align: left; }
+  .career-throughline { grid-template-columns: 125px minmax(0, 1fr); gap: 28px; }
   .career-row { grid-template-columns: 125px minmax(0, 1fr); gap: 28px; }
   .career-location { grid-column: 2; justify-self: start; margin-top: -20px; text-align: left; }
 }
@@ -476,12 +492,15 @@ html[lang='en'] .portrait-name { font-size: clamp(1.35rem, 1.9vw, 2.05rem); max-
   .experience-heading { grid-template-columns: 34px 1fr; gap: 14px; margin-bottom: 26px; }
   .experience-heading h2 { font-size: 2.65rem; }
   .experience-heading p { font-size: .64rem; }
+  .career-throughline { grid-template-columns: 1fr; gap: 12px; margin-bottom: 26px; }
+  .career-throughline p { font-size: .92rem; }
   .career-row { grid-template-columns: 34px 1fr; gap: 14px; min-height: 0; padding: 30px 0 34px; }
   .career-row:hover { padding-inline: 0; }
   .career-rail { justify-content: flex-start; gap: 26px; }
   .career-period { writing-mode: vertical-rl; transform: rotate(180deg); flex-wrap: nowrap; font-size: .55rem; }
   .career-main h3 { font-size: 2.15rem; }
-  .career-main h4 { font-size: 1rem; }
+  .career-role { gap: 6px 8px; }
+  .career-role small { width: 100%; margin-left: 0; }
   .career-summary { margin-top: 20px; font-size: .72rem; }
   .career-main li { font-size: .68rem; }
   .career-location { grid-column: 2; margin-top: 0; }

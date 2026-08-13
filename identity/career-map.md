@@ -1,17 +1,33 @@
 # Career map
 
-Phase 0 has not yet reconstructed a complete dated career timeline. The canonical timeline belongs in `knowledge/education.yaml` and `knowledge/experience.yaml` once primary sources have been collected.
+The dated professional timeline is maintained in `knowledge/experience.yaml` and the education timeline in `knowledge/education.yaml`. This document interprets those verified records without replacing their titles, dates, organizations, or metrics.
 
-## Known through-lines
+## Career through-line
 
-1. **Digital human research** — reconstruction, body models, avatars, pose, and graphics.
-2. **Research engineering** — PyTorch/CUDA ecosystems, legacy modernization, and reproducible research environments.
-3. **Research infrastructure** — GPU computing, motion capture, XR systems, and facility operation.
+The early record is not best understood as a collection of disconnected backend, operations, scraping, and testing tasks. It shows a systems foundation developing through four recurring concerns:
 
-## Reconstruction queue
+1. **Platform construction** — turning reusable server-side frameworks and configuration into shared application infrastructure.
+2. **Workflow automation** — connecting institutional portals with automated information collection and maintenance.
+3. **XR systems integration** — working across delivery infrastructure, file services, technology selection, and live-streaming architecture.
+4. **Software reliability** — reproducing failures across heterogeneous devices and documenting repeatable diagnostic methods at product scale.
 
-- Old resumes and biographies — needs verification
-- LinkedIn export — needs verification
-- GitHub history and contribution chronology — needs verification
-- Publication list and author records — needs verification
+These concerns later converge in the current intersection:
+
+```text
+Research + Engineering + Infrastructure
+```
+
+They support work in digital humans, computer graphics, XR systems, research engineering, and AI infrastructure. Verified role names should remain visible as factual metadata, while public narrative may lead with the system contribution.
+
+## Verified timeline
+
+- **2022-07 — 2023-06** · Minsheng Fintech · Back-end Developer
+- **2021-05 — 2022-06** · Institute of Software, Chinese Academy of Sciences · Software Engineer internship
+- **2019-03 — 2019-07** · 威爱教育VIVEDU · Software Engineer internship
+- **2016-08 — 2016-11** · MoboTap · Software Test Engineer internship
+
+## Remaining reconstruction queue
+
+- Older resumes and biographies — needs verification
+- GitHub contribution chronology and project-to-role relationships — needs verification
 - Project timelines and outcomes — needs verification

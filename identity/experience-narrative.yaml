@@ -1,0 +1,33 @@
+schema_version: 1
+career_throughline:
+  en: These roles form a systems foundation rather than a collection of disconnected software jobs. Platform construction, workflow automation, XR integration, and product-scale reliability later converge in research engineering and AI infrastructure.
+  zh: 这些经历不是彼此割裂的“后端、运维、爬虫与测试”，而是一条逐渐成形的系统能力路径：平台构建、流程自动化、XR 系统集成与大规模软件可靠性，最终汇入今天的科研工程与 AI 基础设施工作。
+experience:
+  - experience_id: minsheng-fintech-back-end-developer
+    contribution:
+      en: Internal Developer Platforms
+      zh: 内部开发者平台
+    framing:
+      en: Turned reusable server-side frameworks and configuration into a shared application-creation workflow for project teams.
+      zh: 将可复用的服务端框架与配置整合为共享的应用创建流程，帮助项目团队更快建立工程基础。
+  - experience_id: iscas-software-engineer-intern
+    contribution:
+      en: Information Automation for Research Operations
+      zh: 科研运营的信息自动化
+    framing:
+      en: Connected portal engineering with automated information collection to improve how departmental knowledge was gathered and presented.
+      zh: 将部门门户建设与信息自动采集结合，改善科研机构内部知识的汇集与呈现方式。
+  - experience_id: vivedu-software-engineer-intern
+    contribution:
+      en: XR Systems Integration
+      zh: XR 系统集成
+    framing:
+      en: Worked across delivery infrastructure, file services, technology selection, and live-streaming architecture for an end-to-end VR education system.
+      zh: 跨越交付基础设施、文件服务、技术选型与直播架构，参与端到端 VR 教育系统的集成与演进。
+  - experience_id: mobotap-software-test-engineer-intern
+    contribution:
+      en: Software Reliability at Product Scale
+      zh: 产品规模的软件可靠性
+    framing:
+      en: Investigated release quality and difficult crash reproduction across heterogeneous Android device environments for a large-scale consumer product.
+      zh: 面向大规模消费级产品，在异构 Android 设备环境中处理版本质量与复杂崩溃复现问题。
