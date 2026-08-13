@@ -41,7 +41,6 @@ const educationSchema = recordMetaSchema.extend({
   period: z.object({
     start: z.union([z.string(), z.date()]).nullable(),
     end: z.union([z.string(), z.date()]).nullable().optional(),
-    expected_end: z.union([z.string(), z.date()]).nullable().optional(),
   }),
   location: z.object({ city: z.string(), country: z.string() }),
   notes: z.string().optional(),
