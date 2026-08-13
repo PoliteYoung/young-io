@@ -20,6 +20,12 @@ const profileRecordSchema = recordMetaSchema.extend({
   synthesis: z.array(z.string()).length(3),
   introduction: z.string(),
   location: z.string().nullable(),
+  affiliation: z.object({
+    institution: z.string(),
+    institution_zh: z.string(),
+    role: z.string(),
+    field: z.string(),
+  }),
   links: z.record(z.string(), z.object({ label: z.string(), url: z.url() })),
 });
 const brandRecordSchema = recordMetaSchema.extend({

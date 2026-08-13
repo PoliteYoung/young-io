@@ -13,7 +13,12 @@ profile:
     - Engineering
     - Infrastructure
   introduction: I work where digital-human research meets the engineering and infrastructure required to make it real — from reconstruction and avatar systems to GPU environments, motion capture, and XR platforms.
-  location: null
+  location: Guangzhou, China
+  affiliation:
+    institution: The Hong Kong University of Science and Technology (Guangzhou)
+    institution_zh: 香港科技大学（广州）
+    role: PhD Student
+    field: Compute Media Art
   links:
     website:
       label: pol1te.cc.cd
