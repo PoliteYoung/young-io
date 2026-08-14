@@ -28,21 +28,19 @@ const profileTags = [
   {
     key: 'resume',
     label: copy.profileTags.resume,
-    value: copy.profileTags.resumeValue,
+    value: '',
     url: locale === 'zh' ? '/zh/resume' : '/resume',
     external: false,
   },
 ];
 const synthesis = profile.synthesis.map((item) => item.label);
 const affiliation = profile.affiliation;
-const brandMeaningById = new Map(brand.meanings.map((item) => [item.id, item.detail]));
 const [brandStem, brandSuffix] = brand.name.split('.', 2);
 const localeBase = locale === 'zh' ? '/zh' : '';
 const directory = [
   { index: '02', path: '/research', label: copy.nav.research, title: copy.sections.researchTitle, description: copy.sections.researchIntro },
   { index: '03', path: '/publications', label: copy.nav.publications, title: copy.sections.publicationsTitle, description: copy.sections.publicationsIntro },
   { index: '04', path: '/experience', label: copy.nav.experience, title: copy.sections.educationTitle, description: copy.sections.educationIntro },
-  { index: '05', path: '/writing', label: copy.nav.writing, title: [copy.sections.writingTitle, copy.writingTitleContinuation], description: copy.sections.writingIntro },
 ];
 ---
 <SiteLayout
@@ -78,7 +76,7 @@ const directory = [
               {link.key === 'openreview' && <span class="profile-tag-letter">OR</span>}
               {link.key === 'resume' && <svg viewBox="0 0 24 24" role="img"><path d="M5 2h10l4 4v16H5V2Zm9 1.7V7h3.3L14 3.7ZM8 11v1.5h8V11H8Zm0 4v1.5h8V15H8Zm0 4v1h5v-1H8Z" /></svg>}
             </span>
-            <span class="profile-tag-copy"><b>#{link.label}</b><span>{link.value}</span></span>
+            <span class="profile-tag-copy"><b>{link.label}</b>{link.value && <span>{link.value}</span>}</span>
             <i aria-hidden="true">↗</i>
           </a>
         ))}
@@ -115,8 +113,7 @@ const directory = [
 
   <section class="identity-strip">
     <div class="shell strip-inner">
-      <div class="binary" aria-hidden="true">{copy.identityTicker}</div>
-      <div class="identity-copy"><p>{brandMeaningById.get('young')}</p><strong>{brandStem.toUpperCase()}<span>.{brandSuffix.toUpperCase()}</span></strong><p>{brandMeaningById.get('io')}</p></div>
+      <div class="identity-wordmark"><strong>{brandStem.toUpperCase()}<span>.{brandSuffix.toUpperCase()}</span></strong></div>
     </div>
   </section>
 </SiteLayout>

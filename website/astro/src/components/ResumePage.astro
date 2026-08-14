@@ -44,7 +44,6 @@ const pageDescription = `${copy.descriptionPrefix}${locale === 'zh' ? '' : ' '}$
   <main class="resume-stage">
     <nav class="resume-toolbar" aria-label={copy.toolbarLabel}>
       <a class="resume-tool resume-tool--back" href={homeHref}><span aria-hidden="true">←</span> {copy.back}</a>
-      <p>{copy.printHint}</p>
       <div>
         <a class="resume-tool" href={languageHref} lang={languageCode} hreflang={languageCode}>{copy.language}</a>
         <button class="resume-tool resume-tool--print" type="button" data-print-resume>{copy.print} <span aria-hidden="true">↗</span></button>
@@ -172,7 +171,6 @@ const pageDescription = `${copy.descriptionPrefix}${locale === 'zh' ? '' : ' '}$
 
       <footer class="resume-footer">
         <span>{brandStem}<span class="resume-acid">.{brandSuffix}</span></span>
-        <p>{copy.footer}</p>
         <strong>{profile.links.website.label}</strong>
       </footer>
     </article>
@@ -199,15 +197,15 @@ const pageDescription = `${copy.descriptionPrefix}${locale === 'zh' ? '' : ' '}$
     min-height: 48px;
     margin: 0 auto 18px;
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr auto;
     align-items: center;
     gap: 18px;
     color: #dedbd1;
     font: 500 .66rem/1.2 var(--mono);
     letter-spacing: .04em;
   }
-  .resume-toolbar > p { color: #7f7d76; text-align: center; white-space: nowrap; }
   .resume-toolbar > div { justify-self: end; display: flex; gap: 8px; }
+  .resume-tool--back { justify-self: start; }
   .resume-tool {
     min-height: 38px;
     padding: 0 13px;
@@ -336,7 +334,7 @@ const pageDescription = `${copy.descriptionPrefix}${locale === 'zh' ? '' : ' '}$
     margin-top: 6mm;
     padding-top: 2.8mm;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr;
     gap: 5mm;
     align-items: center;
     border-top: .55mm solid #171714;
@@ -344,14 +342,12 @@ const pageDescription = `${copy.descriptionPrefix}${locale === 'zh' ? '' : ' '}$
     font: 500 5.8pt/1.2 var(--mono);
   }
   .resume-footer > span { color: #171714; font: 800 9pt/1 var(--display); letter-spacing: -.05em; }
-  .resume-footer p { text-align: center; }
-  .resume-footer strong { color: #171714; font-weight: 500; }
+  .resume-footer strong { justify-self: end; color: #171714; font-weight: 500; }
   .resume-acid { display: inline !important; color: #819d27 !important; }
 
   @media (max-width: 860px) {
     .resume-stage { padding: 18px 14px 50px; }
     .resume-toolbar { grid-template-columns: 1fr auto; }
-    .resume-toolbar > p { display: none; }
     .resume-tool--back { justify-self: start; }
     .resume-sheet {
       width: min(100%, 680px);
@@ -390,7 +386,6 @@ const pageDescription = `${copy.descriptionPrefix}${locale === 'zh' ? '' : ' '}$
     .resume-focus-list article > span { top: 20px; }
     .resume-focus-list li { padding: 5px 7px; font-size: .58rem; }
     .resume-footer { margin-top: 34px; grid-template-columns: auto 1fr; }
-    .resume-footer p { display: none; }
     .resume-footer strong { text-align: right; }
   }
 
@@ -426,10 +421,9 @@ const pageDescription = `${copy.descriptionPrefix}${locale === 'zh' ? '' : ' '}$
     .resume-identity { grid-template-columns: minmax(0, 1.6fr) minmax(53mm, .7fr); gap: 9mm; }
     .resume-contact { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .resume-columns { grid-template-columns: minmax(0, 1.55fr) minmax(52mm, .72fr); gap: 9mm; }
-    .resume-footer { grid-template-columns: auto 1fr auto; }
+    .resume-footer { grid-template-columns: auto 1fr; }
     .resume-contact-screen { display: none; }
     .resume-contact-print { display: block; overflow: visible; overflow-wrap: anywhere; word-break: break-word; text-overflow: clip; white-space: normal; }
-    .resume-footer p { display: block; }
     a { color: inherit !important; }
   }
 </style>

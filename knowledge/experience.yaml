@@ -93,10 +93,10 @@ experience:
       zh: 参与围绕 HTC VIVE 的 VR+教育解决方案，负责项目开发、维护与技术选型。
     highlights:
       en:
-        - Built a Jenkins continuous-integration environment and an SMB file-sharing service.
+        - Established delivery infrastructure for the VR education system, including continuous integration and shared asset services.
         - Replaced a commercial VR live-streaming module with an open-source solution, increasing user capacity by more than 200%.
       zh:
-        - 搭建 Jenkins 持续集成环境与 SMB 文件共享服务。
+        - 为 VR 教育系统建立交付基础设施，包括持续集成与共享资源服务。
         - 以开源方案替代商业 VR 直播模块，用户容量提升超过 200%。
     source:
       type: public-profile

@@ -34,11 +34,6 @@ const pageMap = {
     title: copy.sections.educationTitle,
     intro: copy.sections.educationIntro,
   },
-  writing: {
-    number: copy.sections.writing,
-    title: [copy.sections.writingTitle, copy.writingTitleContinuation],
-    intro: copy.sections.writingIntro,
-  },
 } as const;
 const current = pageMap[page];
 const path = `/${page}`;
@@ -55,7 +50,7 @@ const path = `/${page}`;
       <p class="section-number">{current.number}</p>
       <h1>{current.title[0]}<br /><span>{current.title[1]}</span></h1>
       <p>{current.intro}</p>
-      <span class="page-coordinate" aria-hidden="true">Y/O — {String(['research', 'publications', 'experience', 'writing'].indexOf(page) + 2).padStart(3, '0')}</span>
+      <span class="page-coordinate" aria-hidden="true">Y/O — {String(['research', 'publications', 'experience'].indexOf(page) + 2).padStart(3, '0')}</span>
     </div>
   </section>
 
@@ -199,14 +194,6 @@ const path = `/${page}`;
           ))}
         </div>
       </div>
-    </section>
-  )}
-
-  {page === 'writing' && (
-    <section class="writing writing-page shell" data-reveal>
-      <p class="section-number">{copy.sections.writing}</p>
-      <div class="writing-title"><h2>{copy.sections.writingTitle}</h2><p>{copy.sections.writingIntro}</p></div>
-      <div class="empty-note"><span>{copy.sections.writingEmpty}</span><p>{copy.sections.writingEmptyDetail}</p></div>
     </section>
   )}
 </SiteLayout>

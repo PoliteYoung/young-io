@@ -27,9 +27,7 @@ export const resumeCopy = {
     back: 'Back to Young.io',
     print: 'Print / Save PDF',
     language: '中文',
-    printHint: 'A4 print view · links remain clickable in PDF',
     toolbarLabel: 'Résumé tools',
-    footer: 'Compiled from verified public records in Young.io.',
   },
   zh: {
     titleSuffix: '简历',
@@ -57,8 +55,6 @@ export const resumeCopy = {
     back: '返回 Young.io',
     print: '打印 / 保存为 PDF',
     language: 'English',
-    printHint: 'A4 打印版 · PDF 中可保留超链接',
     toolbarLabel: '简历工具',
-    footer: '内容由 Young.io 中经过核验的公开记录生成。',
   },
 } as const satisfies Record<Locale, object>;
