@@ -111,9 +111,42 @@ const path = `/${page}`;
 
   {page === 'experience' && (
     <section class="experience-page page-content shell">
-      <div class="experience-group">
+      <div class="experience-group experience-group--practice">
         <header class="experience-heading" data-reveal>
           <span>01</span>
+          <h2>{copy.sections.currentPracticeTitle}</h2>
+          <p>{copy.sections.currentPracticeNote}</p>
+        </header>
+        <div class="practice-overview" data-reveal>
+          <div class="practice-overview-copy">
+            <p class="practice-kicker">{profile.headline}</p>
+            <h3>{profile.positioning}</h3>
+            <p>{profile.introduction}</p>
+          </div>
+          <ul class="practice-synthesis" aria-label={profile.synthesis.map((item) => item.label).join(', ')}>
+            {profile.synthesis.map((item, index) => (
+              <li><span>{String(index + 1).padStart(2, '0')}</span>{item.label}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="practice-capabilities">
+          {capabilities.map((domain, index) => (
+            <article class="practice-capability" data-reveal>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h3>{domain.title}</h3>
+              <p>{domain.summary}</p>
+              <ul>{domain.topics.map((topic) => <li>{topic}</li>)}</ul>
+            </article>
+          ))}
+        </div>
+        <a class="practice-link" href={`${locale === 'zh' ? '/zh' : ''}/research`} data-reveal>
+          <span>{copy.sections.currentPracticeLink}</span><i aria-hidden="true">↗</i>
+        </a>
+      </div>
+
+      <div class="experience-group experience-group--career">
+        <header class="experience-heading" data-reveal>
+          <span>02</span>
           <h2>{copy.sections.professionalExperienceTitle}</h2>
           <p>{copy.experienceRecordNote}</p>
         </header>
@@ -130,13 +163,13 @@ const path = `/${page}`;
                 </div>
                 <div class="career-main">
                   <p class="career-type">{item.contribution}</p>
-                  <h3>{item.framing}</h3>
                   <div class="career-role">
-                    <strong>{item.title}</strong>
+                    <h3>{item.title}</h3>
                     <span aria-hidden="true">/</span>
                     <b>{item.organization}</b>
                     <small>{item.employmentType}</small>
                   </div>
+                  <p class="career-framing">{item.framing}</p>
                   <p class="career-summary">{item.summary}</p>
                   <ul>{item.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
                 </div>
@@ -148,7 +181,7 @@ const path = `/${page}`;
 
       <div class="experience-group experience-group--education">
         <header class="experience-heading" data-reveal>
-          <span>02</span>
+          <span>03</span>
           <h2>{copy.sections.educationHistoryTitle}</h2>
           <p>{copy.educationRecordNote}</p>
         </header>
