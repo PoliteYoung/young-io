@@ -125,8 +125,8 @@ experience:
         en: Wuhan, Hubei, China
         zh: 中国湖北武汉
     summary:
-      en: Participated in weekly Android release testing for Dolphin Browser, which the LinkedIn record describes as serving 6M daily active users, and monitored daily crash logs.
-      zh: 参与 Dolphin Browser Android 版本的每周发布测试，并监控日常崩溃日志；领英记录注明该产品拥有 600 万日活跃用户。
+      en: Participated in weekly Android release testing for Dolphin Browser, which a manager reported at a company monthly meeting as serving 6M daily active users, and monitored daily crash logs.
+      zh: 参与 Dolphin Browser Android 版本的每周发布测试，并监控日常崩溃日志；据经理在公司月会上披露的数据，该产品当时拥有 600 万日活跃用户。
     highlights:
       en:
         - Reproduced more than 10 high-frequency crash cases with support from the XDA forum and device manufacturers.
@@ -135,8 +135,8 @@ experience:
         - 在 XDA 论坛与设备厂商支持下，复现 10 余个高频崩溃问题。
         - 在内部 Wiki 中整理并分享模拟用户设备环境的通用方法。
     source:
-      type: public-profile
-      reference: LinkedIn experience section, politeyoung, checked 2026-08-13; Chinese-English name pair confirmed by the user and corroborated by Huazhong University of Science and Technology and MoboTap public records, checked 2026-08-13
+      type: user-provided
+      reference: 'User-provided correction, 2026-08-14: the 6M daily-active-user figure was disclosed by the user’s manager during a company monthly meeting; screenshot supplied. Employment details are based on the LinkedIn experience section, politeyoung, checked 2026-08-13; the Chinese-English organization name pair was confirmed by the user and corroborated by Huazhong University of Science and Technology and MoboTap public records, checked 2026-08-13.'
     verified: true
     status: verified
     visibility: public
