@@ -33,7 +33,7 @@ export const homeCopy = {
       openreviewValue: 'peer review',
       resume: 'Résumé',
     },
-    portraitAlt: 'Portrait of Yao-Dong Yang',
+    portraitAlt: "Portrait of Yao-Dong 'Polite Young' Yang",
     portraitId: 'Y/O — PORTRAIT 001',
     sections: {
       position: '01 / POSITION',
