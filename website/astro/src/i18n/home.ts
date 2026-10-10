@@ -14,7 +14,7 @@ export const homeCopy = {
     publicationLinksLabel: (title: string) => `${title} links`,
     experienceRecordNote: 'Developer platforms, information automation, XR integration, and product-scale reliability.',
     careerThroughlineLabel: 'HOW IT CONNECTS',
-    educationRecordNote: 'Compute Media Art, Computer Science, and Software Engineering.',
+    educationRecordNote: 'Computational Media and Arts, Computer Science, and Software Engineering.',
     languageShort: '中文',
     heroIndex: 'Y/O — 001',
     publicationLinks: { doi: 'DOI', arxiv: 'arXiv', github: 'GitHub' },
@@ -33,7 +33,7 @@ export const homeCopy = {
       openreviewValue: 'peer review',
       resume: 'Résumé',
     },
-    portraitAlt: "Portrait of Yao-Dong 'Polite Young' Yang",
+    portraitAlt: 'Portrait of Yao-Dong Yang',
     portraitId: 'Y/O — PORTRAIT 001',
     sections: {
       position: '01 / POSITION',

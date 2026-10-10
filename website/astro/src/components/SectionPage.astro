@@ -35,11 +35,12 @@ const pageMap = {
     intro: copy.sections.educationIntro,
   },
 } as const;
+const selfNames = new Set([profile.canonicalName, ...profile.alternatives]);
 const current = pageMap[page];
 const path = `/${page}`;
 ---
 <SiteLayout
-  title={`${current.title.join(' ')} — ${profile.displayName}`}
+  title={`${current.title.join(locale === 'zh' ? '' : ' ')} — ${profile.displayName}`}
   description={current.intro}
   locale={locale}
   activePage={page}
@@ -86,7 +87,9 @@ const path = `/${page}`;
               <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
               <div>
                 <h3><a href={publication.links.primary} target="_blank" rel="noopener noreferrer">{publication.title}</a></h3>
-                <p>{publication.authorDisplay ?? publication.authors.join(' · ')}</p>
+                <p>{publication.authorDisplay ?? publication.authors.map((author, authorIndex) => (
+                  <>{authorIndex > 0 && ' · '}{selfNames.has(author) ? <strong class="publication-self">{author}</strong> : author}</>
+                ))}</p>
               </div>
               <div class="publication-meta">
                 <strong>{publication.year}</strong>
@@ -123,16 +126,6 @@ const path = `/${page}`;
               <li><span>{String(index + 1).padStart(2, '0')}</span>{item.label}</li>
             ))}
           </ul>
-        </div>
-        <div class="practice-capabilities">
-          {capabilities.map((domain, index) => (
-            <article class="practice-capability" data-reveal>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <h3>{domain.title}</h3>
-              <p>{domain.summary}</p>
-              <ul>{domain.topics.map((topic) => <li>{topic}</li>)}</ul>
-            </article>
-          ))}
         </div>
         <a class="practice-link" href={`${locale === 'zh' ? '/zh' : ''}/research`} data-reveal>
           <span>{copy.sections.currentPracticeLink}</span><i aria-hidden="true">↗</i>
