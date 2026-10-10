@@ -125,8 +125,8 @@ experience:
         en: Wuhan, Hubei, China
         zh: 中国湖北武汉
     summary:
-      en: Participated in weekly Android release testing for Dolphin Browser, which a manager reported at a company monthly meeting as serving 6M daily active users, and monitored daily crash logs.
-      zh: 参与 Dolphin Browser Android 版本的每周发布测试，并监控日常崩溃日志；据经理在公司月会上披露的数据，该产品当时拥有 600 万日活跃用户。
+      en: Participated in weekly Android release testing for Dolphin Browser (about 6M daily active users at the time) and monitored daily crash logs.
+      zh: 参与 Dolphin Browser Android 版本（当时日活约 600 万）的每周发布测试，并监控日常崩溃日志。
     highlights:
       en:
         - Reproduced more than 10 high-frequency crash cases with support from the XDA forum and device manufacturers.

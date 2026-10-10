@@ -11,17 +11,17 @@ education:
       en: Doctor of Philosophy
       zh: 哲学博士
     field:
-      en: Compute Media Art
+      en: Computational Media and Arts
       zh: 计算媒体与艺术
     period:
       start: 2024-08
     location:
       city: Guangzhou
       country: CN
-    notes: Current doctoral program at the Guangzhou campus. The field name is preserved exactly as displayed on LinkedIn.
+    notes: Current doctoral program at the Guangzhou campus. The English field name follows the official program title (Computational Media and Arts); LinkedIn previously displayed it as Compute Media Art.
     source:
       type: user-provided
-      reference: User-provided correction, 2026-08-13, adds Info Hub; LinkedIn education section, politeyoung, checked 2026-08-12; Google Scholar profile mKJL8mQAAAAJ confirms PhD Student at HKUST(GZ)
+      reference: User-provided correction, 2026-08-13, adds Info Hub; LinkedIn education section, politeyoung, checked 2026-08-12; Google Scholar profile mKJL8mQAAAAJ confirms PhD Student at HKUST(GZ); English program title per HKUST(GZ) FYTGS postgraduate program listing, checked 2026-10-10
     verified: true
     status: verified
     visibility: public
