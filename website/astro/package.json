@@ -10,13 +10,14 @@
     "check": "astro check"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.7.4",
+    "@young-io/knowledge": "workspace:*",
     "astro": "^7.2.1",
-    "typescript": "^6.0.3",
-    "yaml": "^2.9.0",
-    "zod": "^4.4.3"
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
-    "@types/node": "^26.2.0"
+    "@astrojs/check": "^0.9.4",
+    "@types/node": "^26.2.0",
+    "typescript": "^6.0.3"
   }
 }

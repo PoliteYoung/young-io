@@ -9,7 +9,7 @@ const { locale } = Astro.props;
 const copy = resumeCopy[locale];
 const { profile, brand, capabilities, education, experience, publications } = await getPublicIdentity(locale);
 const homeHref = locale === 'zh' ? '/zh' : '/';
-const languageHref = locale === 'zh' ? '/resume?lang=en' : '/zh/resume?lang=zh';
+const languageHref = locale === 'zh' ? '/resume' : '/zh/resume';
 const languageCode = locale === 'zh' ? 'en' : 'zh-CN';
 const knownAuthorNames = new Set([profile.canonicalName, ...profile.alternatives]);
 const dateText = (value: string | Date | null | undefined) => {

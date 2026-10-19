@@ -21,8 +21,8 @@ const routes: Array<{ key: PageKey; label: string; path: string }> = [
 ];
 const currentPath = routes.find((route) => route.key === activePage)?.path ?? '';
 const languageHref = locale === 'zh'
-  ? `${currentPath || '/'}?lang=en`
-  : `/zh${currentPath}?lang=zh`;
+  ? `${currentPath || '/'}`
+  : `/zh${currentPath}`;
 const routeHref = (path: string) => `${localeBase}${path}` || '/';
 ---
 <header class="site-header" transition:name="site-header" transition:animate="none">

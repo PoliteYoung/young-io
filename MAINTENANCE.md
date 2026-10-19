@@ -34,7 +34,7 @@ highlights:
     - 中文条目
 ```
 
-`website/astro/src/lib/knowledge.ts` 负责校验 YAML，并通过 `getPublicIdentity(locale)` 向页面提供已经本地化的数据。Astro 组件不应再自行维护 ID 到中文文案的映射表。
+`packages/knowledge/index.ts` 负责校验 YAML，并通过 `getPublicIdentity(locale)` 向页面提供已经本地化的数据。Astro 组件不应再自行维护 ID 到中文文案的映射表。
 
 ## 3. 修改现有内容
 
@@ -99,7 +99,7 @@ status: needs verification
 
 1. 先在 `knowledge/` 定义 canonical YAML 结构和稳定 ID。
 2. 为重要记录加入来源、核验状态与可见性元数据。
-3. 在 `website/astro/src/lib/knowledge.ts` 增加 schema、读取、隐私过滤、本地化转换和关系校验。
+3. 在 `packages/knowledge/index.ts` 增加 schema、读取、隐私过滤、本地化转换和关系校验。
 4. 将该集合加入 `getPublicIdentity(locale)` 的返回值。
 5. 页面只消费这个统一接口。
 6. 若需要解释层，再在 `identity/` 建立以事实 ID 为外键的叙事记录。

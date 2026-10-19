@@ -46,7 +46,9 @@ Then open the local address printed by Astro.
 Other useful commands:
 
 ```bash
-pnpm check     # Astro and TypeScript validation
+pnpm validate  # shared knowledge and identity validation
+pnpm test      # data contract regression tests
+pnpm check     # data, Astro and TypeScript validation
 pnpm build     # production build
 pnpm preview   # preview the production build
 ```
@@ -58,7 +60,7 @@ The current schema stores localized facts in `knowledge/` and localized identity
 1. Add facts to `knowledge/*.yaml`; do not copy them into pages.
 2. Add positioning and narrative changes to the appropriate file in `identity/`.
 3. Every important record must include `source`, `verified`, `status`, and `visibility`.
-4. Use `verified: false` or `status: needs verification` when evidence is incomplete.
+4. Use `verified: false` together with `status: needs verification` when evidence is incomplete.
 5. Public outputs only accept records that are public, verified, and have `status: verified`.
 6. Run `pnpm check && pnpm build` before committing.
 
@@ -94,3 +96,13 @@ The Astro configuration targets the custom-domain root. If the site is temporari
 ## Long-term principle
 
 > Facts are stored once. Narratives are generated deliberately. Nothing personal is invented.
+
+## Shared validation and public discovery
+
+`packages/knowledge` owns schemas, provenance checks, public filtering, and the cached server-side loader. It resolves repository data relative to its package entry, independently of the caller's working directory, including during Astro prerendering. YAML 1.2 keeps dates as strings; dates must be valid `YYYY`, `YYYY-MM`, or `YYYY-MM-DD` values. `verified` and `status` must agree for every record. `pnpm check` includes `pnpm validate`, so CI validates data before building.
+
+Validation includes `knowledge/talks.yaml` and every `.yaml`/`.yml` file directly inside `knowledge/projects/`. Project records follow the template in that directory; talk records require stable `id`, localized `title` and `event`, nullable `date`, `links` (label/URL pairs), and the standard record metadata. Neither collection is published automatically.
+
+The website emits Person JSON-LD, social image metadata, a sitemap, robots.txt, a custom 404, `/identity.json`, and `/llms.txt`. The machine-readable endpoints select public fields explicitly and exclude provenance, internal notes, and email. The current social preview reuses the verified public portrait. Astro emits file-format HTML for extensionless GitHub Pages URLs; canonical and sitemap URLs omit `.html` and trailing slashes. Language switching uses explicit links, without regional routing or preference cookies.
+
+Local changes require human review before publication. The optional GitHub profile generator remains future work. Existing source notes about the Hi-Reco proceedings year and DBLP author disambiguation remain unresolved; no external correction has been submitted.
