@@ -14,6 +14,7 @@ export default defineConfig({
       const url = new URL(item.url);
       const path = url.pathname.replace(/^\/zh(?=\/|$)/, '') || '/';
       item.links = [
+        { lang: 'x-default', url: new URL(path, url.origin).href },
         { lang: 'en', url: new URL(path, url.origin).href },
         { lang: 'zh-CN', url: new URL(`/zh${path === '/' ? '' : path}`, url.origin).href },
       ];
@@ -22,7 +23,6 @@ export default defineConfig({
   })],
   site: 'https://pol1te.cc.cd',
   output: 'static',
-  image: { service: { entrypoint: './src/images/service.ts' } },
   build: { format: 'file' },
   trailingSlash: 'never',
 });
