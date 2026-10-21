@@ -12,9 +12,10 @@ interface Props {
   locale: Locale;
   alternatePath?: string;
   bodyClass?: string;
+  noindex?: boolean;
 }
 
-const { title, description, locale, alternatePath = '/', bodyClass } = Astro.props;
+const { title, description, locale, alternatePath = '/', bodyClass, noindex = false } = Astro.props;
 const { profile } = await getPublicIdentity(locale);
 const socialImage = await getImage({ src: portrait, width: 800, format: 'jpg' });
 const imageUrl = new URL(socialImage.src, Astro.site);
@@ -39,14 +40,17 @@ const chineseUrl = new URL(`/zh${normalizedPath}`, Astro.site);
     <meta name="description" content={description} />
     <meta name="theme-color" content="#10100f" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <>
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={englishUrl} />
     <link rel="alternate" hreflang="zh-CN" href={chineseUrl} />
     <link rel="alternate" hreflang="x-default" href={englishUrl} />
+    </>}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:locale" content={locale === 'zh' ? 'zh_CN' : 'en_US'} />
     <meta property="og:image" content={imageUrl} />
     <meta property="og:image:alt" content={profile.displayName} />
@@ -54,7 +58,7 @@ const chineseUrl = new URL(`/zh${normalizedPath}`, Astro.site);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(person).replace(/</g, '\\u003c')} />
+    {!noindex && <script is:inline type="application/ld+json" set:html={JSON.stringify(person).replace(/</g, '\\u003c')} />}
     <title>{title}</title>
     <ClientRouter fallback="animate" />
   </head>
