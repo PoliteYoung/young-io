@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '../i18n/types';
+import { getPublicIdentity } from '../lib/knowledge';
 import { homeCopy } from '../i18n/home';
 
 interface Props {
@@ -10,6 +11,8 @@ interface Props {
 }
 const { name, email, website, locale } = Astro.props;
 const copy = homeCopy[locale];
+const { profile } = await getPublicIdentity(locale);
+const copyrightName = locale === 'en' ? profile.canonicalName : profile.displayName;
 ---
 <footer id="contact" class="site-footer" transition:name="site-footer" transition:animate="none">
   <div>
@@ -22,6 +25,6 @@ const copy = homeCopy[locale];
       <a href={email.url} aria-label={`${copy.footerEmailLabel}: ${email.label}`}>{email.label} ↗</a>
       <a href={website.url}>{website.label} ↗</a>
     </div>
-    <p class="copyright">© {new Date().getFullYear()} · {copy.copyright}</p>
+    <p class="copyright">© {new Date().getFullYear()} · {copyrightName}</p>
   </div>
 </footer>

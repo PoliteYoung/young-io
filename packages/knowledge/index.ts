@@ -1,4 +1,5 @@
 import { readFile, readdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'yaml';
 import { z } from 'zod';
@@ -175,12 +176,14 @@ export const talksFileSchema = z.object({
   reconstruction_note: z.object({ message: z.string(), status: z.literal('needs verification'), visibility: z.literal('internal') }).optional(),
 });
 
-function projectPath(directory: 'knowledge' | 'identity', file: string) {
-  return fileURLToPath(new URL(`../../${directory}/${file}`, import.meta.resolve('@young-io/knowledge')));
+const repositoryRoot = fileURLToPath(new URL('../../', import.meta.resolve('@young-io/knowledge')));
+
+function projectPath(directory: 'knowledge' | 'identity', file: string, root: string) {
+  return resolve(root, directory, file);
 }
 
-async function readYaml(directory: 'knowledge' | 'identity', file: string) {
-  return parse(await readFile(projectPath(directory, file), 'utf8'), { version: '1.2' }) as unknown;
+async function readYaml(directory: 'knowledge' | 'identity', file: string, root: string) {
+  return parse(await readFile(projectPath(directory, file, root), 'utf8'), { version: '1.2' }) as unknown;
 }
 
 function assertUniqueIds(records: Array<{ id: string }>, label: string) {
@@ -202,14 +205,14 @@ function publicOnly<T extends z.infer<typeof recordMetaSchema>>(records: T[], la
   return records.filter((record) => record.visibility === 'public' && record.verified && record.status === 'verified');
 }
 
-export async function loadPublicKnowledge() {
+export async function loadPublicKnowledge(root = repositoryRoot) {
   const [profileData, identityData, experienceData, educationData, publicationsData, experienceNarrativeData] = await Promise.all([
-    readYaml('knowledge', 'profile.yaml'),
-    readYaml('identity', 'core.yaml'),
-    readYaml('knowledge', 'experience.yaml'),
-    readYaml('knowledge', 'education.yaml'),
-    readYaml('knowledge', 'publications.yaml'),
-    readYaml('identity', 'experience-narrative.yaml'),
+    readYaml('knowledge', 'profile.yaml', root),
+    readYaml('identity', 'core.yaml', root),
+    readYaml('knowledge', 'experience.yaml', root),
+    readYaml('knowledge', 'education.yaml', root),
+    readYaml('knowledge', 'publications.yaml', root),
+    readYaml('identity', 'experience-narrative.yaml', root),
   ]);
 
   const { profile, brand } = profileFileSchema.parse(profileData);
@@ -219,9 +222,9 @@ export async function loadPublicKnowledge() {
   const publications = publicationsFileSchema.parse(publicationsData).publications;
   const experienceNarrative = experienceNarrativeFileSchema.parse(experienceNarrativeData);
 
-  const talks = talksFileSchema.parse(await readYaml('knowledge', 'talks.yaml')).talks;
-  const projectFiles = (await readdir(projectPath('knowledge', 'projects'))).filter((name) => /\.ya?ml$/.test(name));
-  const projects = await Promise.all(projectFiles.map(async (name) => projectFileSchema.parse(await readYaml('knowledge', `projects/${name}`)).project));
+  const talks = talksFileSchema.parse(await readYaml('knowledge', 'talks.yaml', root)).talks;
+  const projectFiles = (await readdir(projectPath('knowledge', 'projects', root))).filter((name) => /\.ya?ml$/.test(name));
+  const projects = await Promise.all(projectFiles.map(async (name) => projectFileSchema.parse(await readYaml('knowledge', `projects/${name}`, root)).project));
   assertUniqueIds(talks, 'talk');
   assertUniqueIds(projects, 'project');
   publicOnly(talks, 'talk');
@@ -277,10 +280,21 @@ export async function loadPublicKnowledge() {
   };
 }
 
-let publicKnowledge: ReturnType<typeof loadPublicKnowledge> | undefined;
-export function getPublicKnowledge() {
-  return publicKnowledge ??= loadPublicKnowledge().catch((error) => { publicKnowledge = undefined; throw error; });
+// Each loader owns its root and production cache. Tests can use a temporary
+// repository copy without touching canonical files or the website's cache.
+export function createKnowledgeLoader(root = repositoryRoot) {
+  const dataRoot = resolve(root);
+  let publicKnowledge: ReturnType<typeof loadPublicKnowledge> | undefined;
+  return function getPublicKnowledge() {
+    if (process.env.NODE_ENV !== 'production') return loadPublicKnowledge(dataRoot);
+    return publicKnowledge ??= loadPublicKnowledge(dataRoot).catch((error) => {
+      publicKnowledge = undefined;
+      throw error;
+    });
+  };
 }
+
+export const getPublicKnowledge = createKnowledgeLoader();
 
 const localize = <T>(value: Record<Locale, T>, locale: Locale) => value[locale];
 

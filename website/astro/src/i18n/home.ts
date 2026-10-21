@@ -33,7 +33,7 @@ export const homeCopy = {
       openreviewValue: 'peer review',
       resume: 'Résumé',
     },
-    portraitAlt: "Portrait of Yao-Dong 'Polite Young' Yang",
+    portraitAlt: (name: string) => `Portrait of ${name}`,
     portraitId: 'Y/O — PORTRAIT 001',
     sections: {
       position: '01 / POSITION',
@@ -56,7 +56,6 @@ export const homeCopy = {
     footerTitle: ['Research, engineering,', 'and infrastructure.'],
     footerDescription: (_name: string) => 'Digital avatars, computer graphics, XR systems, and AI infrastructure.',
     footerEmailLabel: 'Email',
-    copyright: 'Yao-Dong Yang',
     present: 'Present',
   },
   zh: {
@@ -91,7 +90,7 @@ export const homeCopy = {
       openreviewValue: '评审主页',
       resume: '简历',
     },
-    portraitAlt: '杨耀东肖像',
+    portraitAlt: (name: string) => `${name}肖像`,
     portraitId: '人物档案 001',
     sections: {
       position: '01 / 定位',
@@ -114,7 +113,6 @@ export const homeCopy = {
     footerTitle: ['研究、工程，', '与基础设施。'],
     footerDescription: (_name: string) => '数字人、计算机图形学、XR 系统与 AI 基础设施。',
     footerEmailLabel: '发送邮件',
-    copyright: '杨耀东',
     present: '至今',
   },
 } as const;

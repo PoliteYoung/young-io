@@ -12,10 +12,9 @@ const homeHref = locale === 'zh' ? '/zh' : '/';
 const languageHref = locale === 'zh' ? '/resume' : '/zh/resume';
 const languageCode = locale === 'zh' ? 'en' : 'zh-CN';
 const knownAuthorNames = new Set([profile.canonicalName, ...profile.alternatives]);
-const dateText = (value: string | Date | null | undefined) => {
+const dateText = (value: string | null | undefined) => {
   if (!value) return copy.present;
-  const normalized = value instanceof Date ? value.toISOString() : String(value);
-  return normalized.slice(0, 7).replace('-', '.');
+  return value.slice(0, 7).replace('-', '.');
 };
 const printableUrl = (url: string) => {
   const parsed = new URL(url);

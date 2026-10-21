@@ -12,11 +12,12 @@ interface Props {
   locale: Locale;
   alternatePath?: string;
   bodyClass?: string;
+  noindex?: boolean;
 }
 
-const { title, description, locale, alternatePath = '/', bodyClass } = Astro.props;
-const { profile } = await getPublicIdentity(locale);
-const socialImage = await getImage({ src: portrait, width: 800, format: 'jpg' });
+const { title, description, locale, alternatePath = '/', bodyClass, noindex = false } = Astro.props;
+const { profile, capabilities, education, publications } = await getPublicIdentity(locale);
+const socialImage = await getImage({ src: portrait, width: 853, height: 853, fit: 'cover', position: 'top', format: 'jpg' });
 const imageUrl = new URL(socialImage.src, Astro.site);
 const person = {
   '@context': 'https://schema.org', '@type': 'Person',
@@ -24,6 +25,21 @@ const person = {
   name: profile.canonicalName, alternateName: profile.alternatives,
   url: profile.links.website.url, description: profile.positioning,
   image: imageUrl.href,
+  affiliation: { '@type': 'CollegeOrUniversity', name: profile.affiliation.institution },
+  alumniOf: [...new Set(education
+    .filter((item) => item.period.end && item.institution !== profile.affiliation.institution)
+    .map((item) => item.institution))]
+    .map((name) => ({ '@type': 'CollegeOrUniversity', name })),
+  knowsAbout: capabilities.map((item) => item.title),
+  identifier: { '@type': 'PropertyValue', propertyID: 'ORCID', value: profile.links.orcid.label, url: profile.links.orcid.url },
+  subjectOf: publications.map((item) => ({
+    '@type': 'ScholarlyArticle', name: item.title,
+    '@id': `https://doi.org/${item.identifiers.doi}`,
+    identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: item.identifiers.doi },
+    url: `https://doi.org/${item.identifiers.doi}`,
+    author: item.authors.map((name) => ({ '@type': 'Person', name })),
+    isPartOf: { '@type': 'CreativeWork', name: item.venue },
+  })),
   sameAs: ['orcid', 'scholar', 'github', 'linkedin', 'openreview'].map((key) => profile.links[key as keyof typeof profile.links].url),
 };
 const canonical = new URL(Astro.url.pathname.replace(/^\/index\.html$/, '/').replace(/\.html$/, ''), Astro.site);
@@ -39,22 +55,28 @@ const chineseUrl = new URL(`/zh${normalizedPath}`, Astro.site);
     <meta name="description" content={description} />
     <meta name="theme-color" content="#10100f" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <>
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={englishUrl} />
     <link rel="alternate" hreflang="zh-CN" href={chineseUrl} />
     <link rel="alternate" hreflang="x-default" href={englishUrl} />
+    </>}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:locale" content={locale === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta property="og:locale:alternate" content={locale === 'zh' ? 'en_US' : 'zh_CN'} />
     <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="853" />
+    <meta property="og:image:height" content="853" />
     <meta property="og:image:alt" content={profile.displayName} />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(person).replace(/</g, '\\u003c')} />
+    {!noindex && <script is:inline type="application/ld+json" set:html={JSON.stringify(person).replace(/</g, '\\u003c')} />}
     <title>{title}</title>
     <ClientRouter fallback="animate" />
   </head>
