@@ -17,7 +17,7 @@ interface Props {
 
 const { title, description, locale, alternatePath = '/', bodyClass, noindex = false } = Astro.props;
 const { profile, capabilities, education, publications } = await getPublicIdentity(locale);
-const socialImage = await getImage({ src: portrait, width: 1200, height: 1200, fit: 'cover', position: 'top', format: 'jpg' });
+const socialImage = await getImage({ src: portrait, width: 1200, height: 1200, fit: 'cover', position: 'top', format: 'jpg', allowUpscale: true });
 const imageUrl = new URL(socialImage.src, Astro.site);
 const person = {
   '@context': 'https://schema.org', '@type': 'Person',

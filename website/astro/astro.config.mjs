@@ -22,6 +22,7 @@ export default defineConfig({
   })],
   site: 'https://pol1te.cc.cd',
   output: 'static',
+  image: { service: { entrypoint: './src/images/service.ts' } },
   build: { format: 'file' },
   trailingSlash: 'never',
 });
