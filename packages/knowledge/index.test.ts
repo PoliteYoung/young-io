@@ -20,12 +20,39 @@ test('project and talk records require provenance and consistent verification', 
   assert.equal(talksFileSchema.safeParse({ schema_version: 1, talks: [{ ...talk, source: undefined }] }).success, false);
 });
 
-test('shared loader resolves data independently of working directory and caches one promise', async () => {
+test('shared loader resolves data independently of working directory', async () => {
   const previous = process.cwd();
   try {
     process.chdir('/tmp');
     const data = await loadPublicKnowledge();
     assert.ok(data.profile.id);
-    assert.strictEqual(getPublicKnowledge(), getPublicKnowledge());
   } finally { process.chdir(previous); }
+});
+
+test('production caches one promise while development reloads edited YAML', async () => {
+  const previous = process.env.NODE_ENV;
+  // A temporary public text edit is always restored, including on assertion failure.
+  const { readFile, writeFile } = await import('node:fs/promises');
+  const file = new URL('../../knowledge/profile.yaml', import.meta.url);
+  const original = await readFile(file, 'utf8');
+  try {
+    process.env.NODE_ENV = 'production';
+    const first = getPublicKnowledge();
+    assert.strictEqual(first, getPublicKnowledge());
+    const cached = await first;
+    process.env.NODE_ENV = 'development';
+    const before = await getPublicKnowledge();
+    const edited = original.replace('id: yaodong-yang', 'id: cache-reload-fixture');
+    assert.notEqual(edited, original);
+    await writeFile(file, edited);
+    const after = await getPublicKnowledge();
+    assert.notStrictEqual(before, after);
+    assert.equal(after.profile.id, 'cache-reload-fixture');
+    process.env.NODE_ENV = 'production';
+    assert.strictEqual(await getPublicKnowledge(), cached);
+  } finally {
+    await writeFile(file, original);
+    if (previous === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previous;
+  }
 });

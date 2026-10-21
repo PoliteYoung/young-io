@@ -279,6 +279,7 @@ export async function loadPublicKnowledge() {
 
 let publicKnowledge: ReturnType<typeof loadPublicKnowledge> | undefined;
 export function getPublicKnowledge() {
+  if (process.env.NODE_ENV !== 'production') return loadPublicKnowledge();
   return publicKnowledge ??= loadPublicKnowledge().catch((error) => { publicKnowledge = undefined; throw error; });
 }
 
