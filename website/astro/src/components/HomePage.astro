@@ -86,7 +86,7 @@ const directory = [
     </div>
     <figure class="portrait-card">
       <div class="portrait-grid" aria-hidden="true"></div><div class="portrait-orbit" aria-hidden="true"></div>
-      <Picture src={portrait} formats={['avif', 'webp']} widths={[360, 520, 853]} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 76vw, 520px" alt={copy.portraitAlt} width="853" height="1280" loading="eager" fetchpriority="high" decoding="async" />
+      <Picture src={portrait} formats={['avif', 'webp']} widths={[360, 520, 853]} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 76vw, 520px" alt={copy.portraitAlt(locale === 'en' ? profile.canonicalName : profile.displayName)} width="853" height="1280" loading="eager" fetchpriority="high" decoding="async" />
       <figcaption><span class="portrait-id">{copy.portraitId}</span><span class="portrait-name">{profile.displayName}</span><span class="portrait-role">{affiliation.role}<br />{affiliation.institution}</span></figcaption>
       <div class="portrait-synthesis" aria-label={synthesis.join('、')}>{synthesis.map((item, index) => <span>{String(index + 1).padStart(2, '0')} / {item}</span>)}</div>
     </figure>

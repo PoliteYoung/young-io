@@ -13,10 +13,9 @@ interface Props {
 const { locale, page } = Astro.props;
 const copy = homeCopy[locale];
 const { profile, capabilities, education, experience, publications, careerThroughline } = await getPublicIdentity(locale);
-const formatPeriod = (value: string | Date | null | undefined) => {
+const formatPeriod = (value: string | null | undefined) => {
   if (!value) return copy.present;
-  const text = value instanceof Date ? value.toISOString().slice(0, 10) : String(value);
-  return text.slice(0, 7);
+  return value.slice(0, 7);
 };
 const pageMap = {
   research: {
